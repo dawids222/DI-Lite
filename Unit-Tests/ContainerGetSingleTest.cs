@@ -6,7 +6,7 @@ using Unit_Tests.Models;
 namespace Unit_Tests
 {
     [TestClass]
-    public class ContainerGetTest : ContainerBaseTest
+    public class ContainerGetSingleTest : ContainerBaseTest
     {
         private Func<IMockDependency> CreateFunction { get; set; }
 
@@ -18,7 +18,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void ReturnsSameValueWhenSingleWithoutTag()
+        public void ReturnsSameValueWhenWithoutTag()
         {
             Container.Single(CreateFunction);
 
@@ -29,7 +29,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void ReturnsSameValueWhenSingleWithTag()
+        public void ReturnsSameValueWhenWithTag()
         {
             Container.Single("tag", CreateFunction);
 
@@ -40,7 +40,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void ReturnsDifferentValuesWhenSingleWithDifferentTags()
+        public void ReturnsDifferentValuesWhenWithDifferentTags()
         {
             Container.Single("tag", CreateFunction);
             Container.Single("gat", CreateFunction);
@@ -52,7 +52,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void ReturnsDifferentValuesWhenSingleWithDifferentTypes()
+        public void ReturnsDifferentValuesWhenWithDifferentTypes()
         {
             Container.Single(CreateFunction);
             Container.Single(() => "");

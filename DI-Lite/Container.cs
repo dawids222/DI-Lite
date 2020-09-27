@@ -26,6 +26,22 @@ namespace DI_Lite
             dependencies.Add(key, dependency);
         }
 
+        public void Factory<T>(Func<T> creator)
+        {
+            Factory(null, creator);
+        }
+
+        public void Factory<T>(object tag, Func<T> creator)
+        {
+            var key = new DependencyKey(typeof(T), tag);
+            if (dependencies.ContainsKey(key))
+            {
+                dependencies.Remove(key);
+            }
+            var dependency = new Factory<T>(creator);
+            dependencies.Add(key, dependency);
+        }
+
         public T Get<T>(object tag = null)
         {
             var key = new DependencyKey(typeof(T), tag);

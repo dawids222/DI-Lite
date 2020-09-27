@@ -50,7 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContainerBaseTest.cs" />
-    <Compile Include="ContainerGetTest.cs" />
+    <Compile Include="ContainerFactoryTest.cs" />
+    <Compile Include="ContainerGetFactoryTest.cs" />
+    <Compile Include="ContainerGetSingleTest.cs" />
     <Compile Include="ContainerSingleTest.cs" />
     <Compile Include="Models\MockDependency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
