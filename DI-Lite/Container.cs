@@ -1,12 +1,14 @@
-﻿using System;
+﻿using DI_Lite.Dependencies;
+using DI_Lite.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace DI_Lite
 {
     public class Container
     {
-        private Dictionary<DependencyKey, object> dependencies { get; } = new Dictionary<DependencyKey, object>();
-        public IEnumerable<KeyValuePair<DependencyKey, object>> Dependencies { get => dependencies; }
+        private Dictionary<DependencyKey, IDependency> dependencies { get; } = new Dictionary<DependencyKey, IDependency>();
+        public IEnumerable<KeyValuePair<DependencyKey, IDependency>> Dependencies { get => dependencies; }
 
         public void Single<T>(Func<T> creator)
         {
@@ -20,7 +22,19 @@ namespace DI_Lite
             {
                 dependencies.Remove(key);
             }
-            dependencies.Add(key, creator);
+            var dependency = new Singleton<T>(creator);
+            dependencies.Add(key, dependency);
+        }
+
+        public T Get<T>(object tag = null)
+        {
+            var key = new DependencyKey(typeof(T), tag);
+            if (!dependencies.ContainsKey(key))
+            {
+                throw new DependencyNotRegisteredException();
+            }
+            var dependency = dependencies[key];
+            return (T)dependency.Get();
         }
     }
 }

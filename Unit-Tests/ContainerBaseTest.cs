@@ -9,7 +9,7 @@ namespace Unit_Tests
         protected Container Container { get; set; }
 
         [TestInitialize]
-        public void Before()
+        public virtual void Before()
         {
             Container = new Container();
         }
