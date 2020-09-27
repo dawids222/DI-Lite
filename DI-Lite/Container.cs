@@ -17,13 +17,7 @@ namespace DI_Lite
 
         public void Single<T>(object tag, Func<T> creator)
         {
-            var key = new DependencyKey(typeof(T), tag);
-            if (dependencies.ContainsKey(key))
-            {
-                dependencies.Remove(key);
-            }
-            var dependency = new Singleton<T>(creator);
-            dependencies.Add(key, dependency);
+            AddDependency<T>(tag, new Singleton<T>(creator));
         }
 
         public void Factory<T>(Func<T> creator)
@@ -33,12 +27,16 @@ namespace DI_Lite
 
         public void Factory<T>(object tag, Func<T> creator)
         {
+            AddDependency<T>(tag, new Factory<T>(creator));
+        }
+
+        private void AddDependency<T>(object tag, IDependency dependency)
+        {
             var key = new DependencyKey(typeof(T), tag);
             if (dependencies.ContainsKey(key))
             {
                 dependencies.Remove(key);
             }
-            var dependency = new Factory<T>(creator);
             dependencies.Add(key, dependency);
         }
 
