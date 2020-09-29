@@ -4,11 +4,12 @@ namespace DI_Lite.Exceptions
 {
     public class DependencyNotRegisteredException : Exception
     {
-        private const string ERROR_MESSAGE = "Requested dependency type does not exist. Try registering it first";
+        public DependencyKey Key { get; }
 
-        public DependencyNotRegisteredException() : base(ERROR_MESSAGE)
+        public DependencyNotRegisteredException(DependencyKey key)
+            : base($"Requested dependency of type {key.Type.FullName} and tag {key.Tag} does not exist. Try registering it first")
         {
-
+            Key = key;
         }
     }
 }

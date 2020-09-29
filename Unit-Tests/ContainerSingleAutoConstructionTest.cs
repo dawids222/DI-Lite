@@ -53,7 +53,7 @@ namespace Unit_Tests
 
             var dep = Container.Get<MockDepenedency>();
 
-            Assert.AreNotEqual(null, dep.Inner);
+            Assert.AreNotEqual(null, dep.Inner); 
         }
 
         [TestMethod]

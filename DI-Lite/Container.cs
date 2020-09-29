@@ -71,7 +71,7 @@ namespace DI_Lite
             var key = new DependencyKey(typeof(T), tag);
             if (!dependencies.ContainsKey(key))
             {
-                throw new DependencyNotRegisteredException();
+                throw new DependencyNotRegisteredException(key);
             }
             var dependency = dependencies[key];
             return (T)dependency.Get();
