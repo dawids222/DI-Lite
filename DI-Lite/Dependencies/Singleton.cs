@@ -4,9 +4,14 @@ namespace DI_Lite.Dependencies
 {
     public class Singleton<T> : IDependency
     {
-        private Func<T> Creator { get; }
+        protected Func<T> Creator { get; set; }
         private T Instance { get; set; }
         private bool IsInitialized { get; set; } = false;
+
+        protected Singleton()
+        {
+
+        }
 
         public Singleton(Func<T> creator)
         {

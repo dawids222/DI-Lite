@@ -20,6 +20,12 @@ namespace DI_Lite
             AddDependency<T>(tag, new Singleton<T>(creator));
         }
 
+        public void Single<T, R>(object tag = null)
+            where R : class, T
+        {
+            AddDependency<T>(tag, new AutoConstructedSingleton<T, R>(this));
+        }
+
         public void Factory<T>(Func<T> creator)
         {
             Factory(null, creator);

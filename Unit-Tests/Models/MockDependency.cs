@@ -1,16 +1,21 @@
 ﻿namespace Unit_Tests.Models
 {
-    internal interface IMockDependency
+    public interface IMockDependency
     {
         IMockDependency Inner { get; }
         void DoSomething();
     }
 
-    internal class MockDepenedency : IMockDependency
+    public class MockDepenedency : IMockDependency
     {
         public IMockDependency Inner { get; }
 
-        public MockDepenedency(IMockDependency inner = null)
+        public MockDepenedency() : this(null)
+        {
+
+        }
+
+        public MockDepenedency(IMockDependency inner)
         {
             Inner = inner;
         }

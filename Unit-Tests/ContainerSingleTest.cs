@@ -8,7 +8,7 @@ namespace Unit_Tests
     public class ContainerSingleTest : ContainerBaseTest
     {
         [TestMethod]
-        public void SingleAddsDependency()
+        public void AddsDependency()
         {
             Container.Single<string>(() => "");
 
@@ -16,7 +16,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void SingleAddsDependencyWithDefaultKey()
+        public void AddsDependencyWithDefaultKey()
         {
             Container.Single<string>(() => "");
 
@@ -25,7 +25,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void SingleAddsDependencyWithSpecifiedKey()
+        public void AddsDependencyWithSpecifiedKey()
         {
             Container.Single<string>("key", () => "");
 
@@ -34,7 +34,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void SingleAddsMultipleDifferentDependenciesWithSameTag()
+        public void AddsMultipleDifferentDependenciesWithSameTag()
         {
             Container.Single<string>(() => "1");
             Container.Single<int>(() => 1);
@@ -46,7 +46,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void SingleAddsMultipleDifferentDependenciesWithSameType()
+        public void AddsMultipleDifferentDependenciesWithSameType()
         {
             Container.Single<string>("1", () => "");
             Container.Single<string>("2", () => "");
@@ -58,7 +58,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void SingleOverridesMultipleSameDependencies()
+        public void OverridesMultipleSameDependencies()
         {
             Container.Single<string>(() => "");
             Container.Single<string>(() => "");
