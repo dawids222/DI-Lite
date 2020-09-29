@@ -7,12 +7,12 @@ using Unit_Tests.Models;
 namespace Unit_Tests
 {
     [TestClass]
-    public class ContainerSingleAutoConstructionTest : ContainerBaseTest
+    public class ContainerFactoryAutoConstructionTest : ContainerBaseTest
     {
         [TestMethod]
         public void AddsDependency()
         {
-            Container.Single<IMockDependency, MockDepenedency>();
+            Container.Factory<IMockDependency, MockDepenedency>();
 
             Assert.AreEqual(1, Container.Dependencies.Count());
         }
@@ -20,7 +20,7 @@ namespace Unit_Tests
         [TestMethod]
         public void AddsDependencyWithShorthand()
         {
-            Container.Single<MockDepenedency>();
+            Container.Factory<MockDepenedency>();
 
             Assert.AreEqual(1, Container.Dependencies.Count());
         }
@@ -28,8 +28,8 @@ namespace Unit_Tests
         [TestMethod]
         public void AddsDependencyWithDefaultKey()
         {
-            Container.Single<IMockDependency>(() => new MockDepenedency());
-            Container.Single<MockDepenedency, MockDepenedency>();
+            Container.Factory<IMockDependency>(() => new MockDepenedency());
+            Container.Factory<MockDepenedency, MockDepenedency>();
 
             var key = new DependencyKey(typeof(MockDepenedency), null);
             Assert.AreEqual(key, Container.Dependencies.ElementAt(1).Key);
@@ -38,8 +38,8 @@ namespace Unit_Tests
         [TestMethod]
         public void AddsDependencyWithSpecifiedKey()
         {
-            Container.Single<IMockDependency>(() => new MockDepenedency());
-            Container.Single<IMockDependency, MockDepenedency>("key");
+            Container.Factory<IMockDependency>(() => new MockDepenedency());
+            Container.Factory<IMockDependency, MockDepenedency>("key");
 
             var key = new DependencyKey(typeof(IMockDependency), "key");
             Assert.AreEqual(key, Container.Dependencies.ElementAt(1).Key);
@@ -48,8 +48,8 @@ namespace Unit_Tests
         [TestMethod]
         public void ReturnsValueUsingLongestConstructor()
         {
-            Container.Single<IMockDependency>(() => new MockDepenedency());
-            Container.Single<MockDepenedency, MockDepenedency>();
+            Container.Factory<IMockDependency>(() => new MockDepenedency());
+            Container.Factory<MockDepenedency, MockDepenedency>();
 
             var dep = Container.Get<MockDepenedency>();
 
@@ -57,34 +57,34 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void ReturnsSameValue()
+        public void ReturnsDifferentValue()
         {
-            Container.Single<IMockDependency>(() => new MockDepenedency());
-            Container.Single<MockDepenedency, MockDepenedency>();
+            Container.Factory<IMockDependency>(() => new MockDepenedency());
+            Container.Factory<MockDepenedency, MockDepenedency>();
 
             var dep1 = Container.Get<MockDepenedency>();
             var dep2 = Container.Get<MockDepenedency>();
 
-            Assert.AreEqual(dep1, dep2);
+            Assert.AreNotEqual(dep1, dep2);
         }
 
         [TestMethod]
-        public void ReturnsSameValueWithShortHand()
+        public void ReturnsDifferentValueWithShortHand()
         {
-            Container.Single<IMockDependency>(() => new MockDepenedency());
-            Container.Single<MockDepenedency>();
+            Container.Factory<IMockDependency>(() => new MockDepenedency());
+            Container.Factory<MockDepenedency>();
 
             var dep1 = Container.Get<MockDepenedency>();
             var dep2 = Container.Get<MockDepenedency>();
 
-            Assert.AreEqual(dep1, dep2);
+            Assert.AreNotEqual(dep1, dep2);
         }
 
         [TestMethod]
         [ExpectedException(typeof(DependencyNotRegisteredException))]
         public void ThrowsDependencyNotRegisteredException()
         {
-            Container.Single<MockDepenedency, MockDepenedency>();
+            Container.Factory<MockDepenedency, MockDepenedency>();
 
             var dep = Container.Get<MockDepenedency>();
 

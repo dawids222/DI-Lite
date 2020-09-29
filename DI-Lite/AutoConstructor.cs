@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DI_Lite.Dependencies
+namespace DI_Lite
 {
-    public class AutoConstructedSingleton<T, R> : Singleton<T>
+    internal class AutoConstructor<T, R>
         where R : class, T
     {
+        public Func<T> Creator { get; }
         private Container Container { get; }
 
-        public AutoConstructedSingleton(Container container)
+        public AutoConstructor(Container container)
         {
             Container = container;
             Creator = InitializeCreator();

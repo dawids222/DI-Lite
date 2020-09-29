@@ -20,10 +20,17 @@ namespace DI_Lite
             AddDependency<T>(tag, new Singleton<T>(creator));
         }
 
+        public void Single<T>(object tag = null)
+            where T : class
+        {
+            Single<T, T>(tag);
+        }
+
         public void Single<T, R>(object tag = null)
             where R : class, T
         {
-            AddDependency<T>(tag, new AutoConstructedSingleton<T, R>(this));
+            var autoConstructor = new AutoConstructor<T, R>(this);
+            Single<T>(tag, autoConstructor.Creator);
         }
 
         public void Factory<T>(Func<T> creator)
@@ -34,6 +41,19 @@ namespace DI_Lite
         public void Factory<T>(object tag, Func<T> creator)
         {
             AddDependency<T>(tag, new Factory<T>(creator));
+        }
+
+        public void Factory<T>(object tag = null)
+            where T : class
+        {
+            Factory<T, T>(tag);
+        }
+
+        public void Factory<T, R>(object tag = null)
+            where R : class, T
+        {
+            var autoConstructor = new AutoConstructor<T, R>(this);
+            Factory<T>(tag, autoConstructor.Creator);
         }
 
         private void AddDependency<T>(object tag, IDependency dependency)
