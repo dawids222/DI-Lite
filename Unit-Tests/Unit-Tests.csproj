@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContainerAddDependencyBaseTest.cs" />
     <Compile Include="ContainerFactoryAutoConstructionTest.cs" />
     <Compile Include="ContainerSingleAutoConstructionTest.cs" />
     <Compile Include="ContainerBaseTest.cs" />
