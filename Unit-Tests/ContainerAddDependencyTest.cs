@@ -6,6 +6,24 @@ using System.Linq;
 namespace Unit_Tests
 {
     [TestClass]
+    public class ContainerSingleTest : ContainerAddDependencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.Single(tag, creator);
+        }
+    }
+
+    [TestClass]
+    public class ContainerFactoryTest : ContainerAddDependencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.Factory(tag, creator);
+        }
+    }
+
+    [TestClass]
     public abstract class ContainerAddDependencyBaseTest : ContainerBaseTest
     {
         protected abstract void AddDependency<T>(object tag, Func<T> creator);

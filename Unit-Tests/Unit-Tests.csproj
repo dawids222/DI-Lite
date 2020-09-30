@@ -49,16 +49,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContainerAddDependencyBaseTest.cs" />
+    <Compile Include="ContainerAddDependencyTest.cs" />
     <Compile Include="ContainerFactoryAutoConstructionTest.cs" />
-    <Compile Include="ContainerGetDependencyBaseTest.cs" />
+    <Compile Include="ContainerGetDependencyTest.cs" />
     <Compile Include="ContainerSingleAutoConstructionTest.cs" />
     <Compile Include="ContainerBaseTest.cs" />
-    <Compile Include="ContainerFactoryTest.cs" />
-    <Compile Include="ContainerGetFactoryTest.cs" />
     <Compile Include="ContainerGetNested.cs" />
-    <Compile Include="ContainerGetSingleTest.cs" />
-    <Compile Include="ContainerSingleTest.cs" />
     <Compile Include="Models\MockDependency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

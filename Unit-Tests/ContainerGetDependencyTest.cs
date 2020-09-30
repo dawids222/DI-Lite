@@ -6,6 +6,28 @@ using Unit_Tests.Models;
 namespace Unit_Tests
 {
     [TestClass]
+    public class ContainerGetSingleTest : ContainerGetDependencyBaseTest
+    {
+        protected override bool SameKeyProducesSameDependency => true;
+
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.Single(tag, creator);
+        }
+    }
+
+    [TestClass]
+    public class ContainerGetFactoryTest : ContainerGetDependencyBaseTest
+    {
+        protected override bool SameKeyProducesSameDependency => false;
+
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.Factory(tag, creator);
+        }
+    }
+
+    [TestClass]
     public abstract class ContainerGetDependencyBaseTest : ContainerBaseTest
     {
         private Func<IMockDependency> CreateFunction { get; set; }
