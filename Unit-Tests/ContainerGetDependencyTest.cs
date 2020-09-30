@@ -58,10 +58,7 @@ namespace Unit_Tests
             var dep1 = Container.Get<IMockDependency>();
             var dep2 = Container.Get<IMockDependency>();
 
-            if (SameKeyProducesSameDependency)
-                Assert.AreEqual(dep1, dep2);
-            else
-                Assert.AreNotEqual(dep1, dep2);
+            AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
 
         [TestMethod]
@@ -72,10 +69,7 @@ namespace Unit_Tests
             var dep1 = Container.Get<IMockDependency>("tag");
             var dep2 = Container.Get<IMockDependency>("tag");
 
-            if (SameKeyProducesSameDependency)
-                Assert.AreEqual(dep1, dep2);
-            else
-                Assert.AreNotEqual(dep1, dep2);
+            AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
 
         [TestMethod]
@@ -129,10 +123,7 @@ namespace Unit_Tests
             var dep1 = Container.Get<MockDepenedency>();
             var dep2 = Container.Get<MockDepenedency>();
 
-            if (SameKeyProducesSameDependency)
-                Assert.AreEqual(dep1, dep2);
-            else
-                Assert.AreNotEqual(dep1, dep2);
+            AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
 
         [TestMethod]
@@ -144,10 +135,7 @@ namespace Unit_Tests
             var dep1 = Container.Get<MockDepenedency>();
             var dep2 = Container.Get<MockDepenedency>();
 
-            if (SameKeyProducesSameDependency)
-                Assert.AreEqual(dep1, dep2);
-            else
-                Assert.AreNotEqual(dep1, dep2);
+            AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
 
         [TestMethod]
@@ -181,6 +169,14 @@ namespace Unit_Tests
 
             Assert.AreNotEqual(null, dependency.Inner);
             Assert.AreEqual(null, dependency.Inner.Inner);
+        }
+
+        private void AssertEqualBaseOnSameKeyProducesSameDependency<T>(T dep1, T dep2)
+        {
+            if (SameKeyProducesSameDependency)
+                Assert.AreEqual(dep1, dep2);
+            else
+                Assert.AreNotEqual(dep1, dep2);
         }
     }
 }
