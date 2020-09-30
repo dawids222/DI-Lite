@@ -158,5 +158,29 @@ namespace Unit_Tests
 
             Container.Get<MockDepenedency>();
         }
+
+        [TestMethod]
+        public void GetNestedDependenciesRegisteredInLogicalOrder()
+        {
+            AddDependency<IMockDependency>(() => new MockDepenedency());
+            AddDependency<IMockDependency>("", () => new MockDepenedency(Container.Get<IMockDependency>()));
+
+            var dependency = Container.Get<IMockDependency>("");
+
+            Assert.AreNotEqual(null, dependency.Inner);
+            Assert.AreEqual(null, dependency.Inner.Inner);
+        }
+
+        [TestMethod]
+        public void GetNestedDependenciesRegisteredInNotLogicalOrder()
+        {
+            AddDependency<IMockDependency>("", () => new MockDepenedency(Container.Get<IMockDependency>()));
+            AddDependency<IMockDependency>(() => new MockDepenedency());
+
+            var dependency = Container.Get<IMockDependency>("");
+
+            Assert.AreNotEqual(null, dependency.Inner);
+            Assert.AreEqual(null, dependency.Inner.Inner);
+        }
     }
 }
