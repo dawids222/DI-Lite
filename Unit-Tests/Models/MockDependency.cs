@@ -10,12 +10,12 @@
     {
         public IMockDependency Inner { get; }
 
-        public MockDepenedency() : this(null)
+        public MockDepenedency(string x)
         {
-
+            throw new System.Exception();
         }
 
-        public MockDepenedency(IMockDependency inner)
+        public MockDepenedency(IMockDependency inner = null)
         {
             Inner = inner;
         }

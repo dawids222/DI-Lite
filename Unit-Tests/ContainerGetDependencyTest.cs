@@ -104,7 +104,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void ConstructsDependencyUsingLongestConstructor()
+        public void ConstructsDependencyUsingLastLongestConstructor()
         {
             AddDependency<IMockDependency>(() => new MockDepenedency());
             AddAutoConstructingDependency<MockDepenedency, MockDepenedency>();
