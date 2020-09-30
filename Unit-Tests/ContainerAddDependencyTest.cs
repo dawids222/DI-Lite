@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using Unit_Tests.Models;
 
 namespace Unit_Tests
 {
@@ -12,6 +13,11 @@ namespace Unit_Tests
         {
             Container.Single(tag, creator);
         }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.Single<T, R>(tag);
+        }
     }
 
     [TestClass]
@@ -21,17 +27,16 @@ namespace Unit_Tests
         {
             Container.Factory(tag, creator);
         }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.Factory<T, R>(tag);
+        }
     }
 
     [TestClass]
-    public abstract class ContainerAddDependencyBaseTest : ContainerBaseTest
+    public abstract class ContainerAddDependencyBaseTest : ContainerAddDependencyAbstractionBaseTest
     {
-        protected abstract void AddDependency<T>(object tag, Func<T> creator);
-        private void AddDependency<T>(Func<T> creator)
-        {
-            AddDependency<T>(null, creator);
-        }
-
         [TestMethod]
         public void AddsDependency()
         {
@@ -92,6 +97,42 @@ namespace Unit_Tests
             AddDependency(() => "");
 
             Assert.AreEqual(1, Container.Dependencies.Count());
+        }
+
+        [TestMethod]
+        public void AddsAutoConstructingDependency()
+        {
+            AddAutoConstructingDependency<IMockDependency, MockDepenedency>();
+
+            Assert.AreEqual(1, Container.Dependencies.Count());
+        }
+
+        [TestMethod]
+        public void AddsAutoConstructingDependencyWithShorthand()
+        {
+            AddAutoConstructingDependency<MockDepenedency>();
+
+            Assert.AreEqual(1, Container.Dependencies.Count());
+        }
+
+        [TestMethod]
+        public void AddsAutoConstructingDependencyWithDefaultKey()
+        {
+            AddDependency<IMockDependency>(() => new MockDepenedency());
+            AddAutoConstructingDependency<MockDepenedency, MockDepenedency>();
+
+            var key = new DependencyKey(typeof(MockDepenedency), null);
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(1).Key);
+        }
+
+        [TestMethod]
+        public void AddsAutoConstructingDependencyWithSpecifiedKey()
+        {
+            AddDependency<IMockDependency>(() => new MockDepenedency());
+            AddAutoConstructingDependency<IMockDependency, MockDepenedency>("key");
+
+            var key = new DependencyKey(typeof(IMockDependency), "key");
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(1).Key);
         }
     }
 }

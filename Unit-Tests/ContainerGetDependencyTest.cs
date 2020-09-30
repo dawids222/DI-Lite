@@ -14,6 +14,11 @@ namespace Unit_Tests
         {
             Container.Single(tag, creator);
         }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.Single<T, R>(tag);
+        }
     }
 
     [TestClass]
@@ -25,20 +30,18 @@ namespace Unit_Tests
         {
             Container.Factory(tag, creator);
         }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.Factory<T, R>(tag);
+        }
     }
 
     [TestClass]
-    public abstract class ContainerGetDependencyBaseTest : ContainerBaseTest
+    public abstract class ContainerGetDependencyBaseTest : ContainerAddDependencyAbstractionBaseTest
     {
         private Func<IMockDependency> CreateFunction { get; set; }
         protected abstract bool SameKeyProducesSameDependency { get; }
-
-        protected abstract void AddDependency<T>(object tag, Func<T> creator);
-
-        private void AddDependency<T>(Func<T> creator)
-        {
-            AddDependency(null, creator);
-        }
 
         [TestInitialize]
         public override void Before()
@@ -104,6 +107,56 @@ namespace Unit_Tests
         public void ThrowsDependencyNotRegisteredException()
         {
             Container.Get<IMockDependency>();
+        }
+
+        [TestMethod]
+        public void ConstructsDependencyUsingLongestConstructor()
+        {
+            AddDependency<IMockDependency>(() => new MockDepenedency());
+            AddAutoConstructingDependency<MockDepenedency, MockDepenedency>();
+
+            var dep = Container.Get<MockDepenedency>();
+
+            Assert.AreNotEqual(null, dep.Inner);
+        }
+
+        [TestMethod]
+        public void GetSameTypeWithoutTagsAutoConstructing()
+        {
+            AddDependency<IMockDependency>(() => new MockDepenedency());
+            AddAutoConstructingDependency<MockDepenedency, MockDepenedency>();
+
+            var dep1 = Container.Get<MockDepenedency>();
+            var dep2 = Container.Get<MockDepenedency>();
+
+            if (SameKeyProducesSameDependency)
+                Assert.AreEqual(dep1, dep2);
+            else
+                Assert.AreNotEqual(dep1, dep2);
+        }
+
+        [TestMethod]
+        public void GetSameTypeWithoutTagsAutoConstructingShorthand()
+        {
+            AddDependency<IMockDependency>(() => new MockDepenedency());
+            AddAutoConstructingDependency<MockDepenedency>();
+
+            var dep1 = Container.Get<MockDepenedency>();
+            var dep2 = Container.Get<MockDepenedency>();
+
+            if (SameKeyProducesSameDependency)
+                Assert.AreEqual(dep1, dep2);
+            else
+                Assert.AreNotEqual(dep1, dep2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DependencyNotRegisteredException))]
+        public void ThrowsDependencyNotRegisteredExceptionAutoConstructing()
+        {
+            AddAutoConstructingDependency<MockDepenedency, MockDepenedency>();
+
+            Container.Get<MockDepenedency>();
         }
     }
 }

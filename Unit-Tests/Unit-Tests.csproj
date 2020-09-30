@@ -49,10 +49,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContainerAddDependencyAbstractionBaseTest.cs" />
     <Compile Include="ContainerAddDependencyTest.cs" />
-    <Compile Include="ContainerFactoryAutoConstructionTest.cs" />
     <Compile Include="ContainerGetDependencyTest.cs" />
-    <Compile Include="ContainerSingleAutoConstructionTest.cs" />
     <Compile Include="ContainerBaseTest.cs" />
     <Compile Include="ContainerGetNested.cs" />
     <Compile Include="Models\MockDependency.cs" />
