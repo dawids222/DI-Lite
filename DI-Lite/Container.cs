@@ -10,6 +10,16 @@ namespace DI_Lite
         private Dictionary<DependencyKey, IDependency> dependencies { get; } = new Dictionary<DependencyKey, IDependency>();
         public IEnumerable<KeyValuePair<DependencyKey, IDependency>> Dependencies { get => dependencies; }
 
+        public void Single<T>(T instance)
+        {
+            Single(null, instance);
+        }
+
+        public void Single<T>(object tag, T instance)
+        {
+            Single(tag, () => instance);
+        }
+
         public void Single<T>(Func<T> creator)
         {
             Single(null, creator);
@@ -33,6 +43,16 @@ namespace DI_Lite
             Single<T>(tag, autoConstructor.Creator);
         }
 
+        public void TrySingle<T>(T instance)
+        {
+            TrySingle(null, instance);
+        }
+
+        public void TrySingle<T>(object tag, T instance)
+        {
+            TrySingle(tag, () => instance);
+        }
+
         public void TrySingle<T>(Func<T> creator)
         {
             TrySingle(null, creator);
@@ -54,6 +74,16 @@ namespace DI_Lite
         {
             var autoConstructor = new AutoConstructor<T, R>(this);
             TrySingle<T>(tag, autoConstructor.Creator);
+        }
+
+        public void ForceSingle<T>(T instance)
+        {
+            ForceSingle(null, instance);
+        }
+
+        public void ForceSingle<T>(object tag, T instance)
+        {
+            ForceSingle(tag, () => instance);
         }
 
         public void ForceSingle<T>(Func<T> creator)
