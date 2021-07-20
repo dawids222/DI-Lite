@@ -1,4 +1,5 @@
 ﻿using DI_Lite;
+using DI_Lite.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -7,7 +8,7 @@ using Unit_Tests.Models;
 namespace Unit_Tests
 {
     [TestClass]
-    public class ContainerSingleTest : ContainerAddDependencyBaseTest
+    public class ContainerSingleTest : ContainerStandardAddDepenedencyBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator)
         {
@@ -21,7 +22,35 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerFactoryTest : ContainerAddDependencyBaseTest
+    public class ContainerTrySingleTest : ContainerTryAddDepenedencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.TrySingle(tag, creator);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.TrySingle<T, R>(tag);
+        }
+    }
+
+    [TestClass]
+    public class ContainerForceSingleTest : ContainerForceAddDepenedencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.ForceSingle(tag, creator);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.ForceSingle<T, R>(tag);
+        }
+    }
+
+    [TestClass]
+    public class ContainerFactoryTest : ContainerStandardAddDepenedencyBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator)
         {
@@ -31,6 +60,77 @@ namespace Unit_Tests
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.Factory<T, R>(tag);
+        }
+    }
+
+    [TestClass]
+    public class ContainerTryFactoryTest : ContainerTryAddDepenedencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.TryFactory(tag, creator);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.TryFactory<T, R>(tag);
+        }
+    }
+
+    [TestClass]
+    public class ContainerForceFactoryTest : ContainerForceAddDepenedencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.ForceFactory(tag, creator);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.ForceFactory<T, R>(tag);
+        }
+    }
+
+    [TestClass]
+    public abstract class ContainerStandardAddDepenedencyBaseTest : ContainerAddDependencyBaseTest
+    {
+        [TestMethod]
+        public void ThrowsWhenSameDependenciesAreBeingRegistered()
+        {
+            AddDependency(() => "");
+            void act() => AddDependency(() => "");
+
+            Assert.ThrowsException<DependencyAlreadyRegisteredException>(act);
+        }
+    }
+
+    [TestClass]
+    public abstract class ContainerTryAddDepenedencyBaseTest : ContainerAddDependencyBaseTest
+    {
+        [TestMethod]
+        public void TakesFirstWhenSameDependenciesAreBeingRegistered()
+        {
+            AddDependency(() => "1");
+            AddDependency(() => "2");
+
+            var result = Container.Get<string>();
+
+            Assert.AreEqual(result, "1");
+        }
+    }
+
+    [TestClass]
+    public abstract class ContainerForceAddDepenedencyBaseTest : ContainerAddDependencyBaseTest
+    {
+        [TestMethod]
+        public void TakesSecondWhenSameDependenciesAreBeingRegistered()
+        {
+            AddDependency(() => "1");
+            AddDependency(() => "2");
+
+            var result = Container.Get<string>();
+
+            Assert.AreEqual(result, "2");
         }
     }
 
@@ -85,18 +185,6 @@ namespace Unit_Tests
             AddDependency(12, () => "");
 
             Assert.AreEqual(5, Container.Dependencies.Count());
-        }
-
-        [TestMethod]
-        public void OverridesMultipleSameDependencies()
-        {
-            AddDependency(() => "");
-            AddDependency(() => "");
-            AddDependency(() => "");
-            AddDependency(() => "");
-            AddDependency(() => "");
-
-            Assert.AreEqual(1, Container.Dependencies.Count());
         }
 
         [TestMethod]
