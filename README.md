@@ -47,6 +47,19 @@ Container.Factory<DependencyType>(() => new DependencyImp());
 ```
 
  ```CSharp
+// register variants
+// every register method has Try and Force variant
+Container.Factory(() => "1");
+Container.Factory(() => "2"); // this will throw an exception
+/*******/
+Container.Factory(() => "1");
+Container.TryFactory(() => "2"); // this will not override the dependency
+/*******/
+Container.Factory(() => "1"));
+Container.ForceFactory(() => "2"); // this will override the dependency
+```
+
+ ```CSharp
 // getting dependency object from container
 var dependency = Container.Get<DependencyType>();
 // we can also get dependencies registered with tag
