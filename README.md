@@ -29,6 +29,9 @@ Container.Single<DependencyType>(() => new DependencyImp());
 // dependency can have a tag to distinguish dependencies of the same type
 Container.Single<DependencyType>("tag", () => new DependencyImp());
 
+// already instantiated objects can be used
+Container.Single<DependencyType>(dependencyInstance);
+
 // we can already use our container for creating new dependencies
 Container.Single<DependencyType>("tag2", () => new DependencyImp(Container.Get<DependencyOfOurDependencyType>()));
 
@@ -43,7 +46,7 @@ Container.Single<DependencyImp>("tag4");
 // register factory
 // new object will be created with every Get call
 Container.Factory<DependencyType>(() => new DependencyImp());
-// every overload working with Single works with Factory
+// most overloads working with Single works with Factory with minor exceptions
 ```
 
  ```CSharp
