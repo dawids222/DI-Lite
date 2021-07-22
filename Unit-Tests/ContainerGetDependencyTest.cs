@@ -47,7 +47,7 @@ namespace Unit_Tests
         public override void Before()
         {
             base.Before();
-            CreateFunction = () => new MockDepenedency();
+            CreateFunction = () => new ValidMockDependency();
         }
 
         [TestMethod]
@@ -104,24 +104,26 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void ConstructsDependencyUsingLastLongestConstructor()
+        public void ConstructsDependencyUsingTheConstructor()
         {
-            AddDependency<IMockDependency>(() => new MockDepenedency());
-            AddAutoConstructingDependency<MockDepenedency, MockDepenedency>();
+            AddDependency<IMockDependency>(() => new ValidMockDependency());
+            AddAutoConstructingDependency<ValidMockDependency, ValidMockDependency>();
 
-            var dep = Container.Get<MockDepenedency>();
+            var inner = Container.Get<IMockDependency>();
+            var outer = Container.Get<ValidMockDependency>();
 
-            Assert.AreNotEqual(null, dep.Inner);
+            Assert.AreEqual(null, inner.Inner);
+            Assert.AreNotEqual(null, outer.Inner);
         }
 
         [TestMethod]
         public void GetSameTypeWithoutTagsAutoConstructing()
         {
-            AddDependency<IMockDependency>(() => new MockDepenedency());
-            AddAutoConstructingDependency<MockDepenedency, MockDepenedency>();
+            AddDependency<IMockDependency>(() => new ValidMockDependency());
+            AddAutoConstructingDependency<ValidMockDependency, ValidMockDependency>();
 
-            var dep1 = Container.Get<MockDepenedency>();
-            var dep2 = Container.Get<MockDepenedency>();
+            var dep1 = Container.Get<ValidMockDependency>();
+            var dep2 = Container.Get<ValidMockDependency>();
 
             AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
@@ -129,11 +131,11 @@ namespace Unit_Tests
         [TestMethod]
         public void GetSameTypeWithoutTagsAutoConstructingShorthand()
         {
-            AddDependency<IMockDependency>(() => new MockDepenedency());
-            AddAutoConstructingDependency<MockDepenedency>();
+            AddDependency<IMockDependency>(() => new ValidMockDependency());
+            AddAutoConstructingDependency<ValidMockDependency>();
 
-            var dep1 = Container.Get<MockDepenedency>();
-            var dep2 = Container.Get<MockDepenedency>();
+            var dep1 = Container.Get<ValidMockDependency>();
+            var dep2 = Container.Get<ValidMockDependency>();
 
             AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
@@ -142,16 +144,16 @@ namespace Unit_Tests
         [ExpectedException(typeof(DependencyNotRegisteredException))]
         public void ThrowsDependencyNotRegisteredExceptionAutoConstructing()
         {
-            AddAutoConstructingDependency<MockDepenedency, MockDepenedency>();
+            AddAutoConstructingDependency<ValidMockDependency>();
 
-            Container.Get<MockDepenedency>();
+            Container.Get<ValidMockDependency>();
         }
 
         [TestMethod]
         public void GetNestedDependenciesRegisteredInLogicalOrder()
         {
-            AddDependency<IMockDependency>(() => new MockDepenedency());
-            AddDependency<IMockDependency>("", () => new MockDepenedency(Container.Get<IMockDependency>()));
+            AddDependency<IMockDependency>(() => new ValidMockDependency());
+            AddDependency<IMockDependency>("", () => new ValidMockDependency(Container.Get<IMockDependency>()));
 
             var dependency = Container.Get<IMockDependency>("");
 
@@ -162,8 +164,8 @@ namespace Unit_Tests
         [TestMethod]
         public void GetNestedDependenciesRegisteredInNotLogicalOrder()
         {
-            AddDependency<IMockDependency>("", () => new MockDepenedency(Container.Get<IMockDependency>()));
-            AddDependency<IMockDependency>(() => new MockDepenedency());
+            AddDependency<IMockDependency>("", () => new ValidMockDependency(Container.Get<IMockDependency>()));
+            AddDependency<IMockDependency>(() => new ValidMockDependency());
 
             var dependency = Container.Get<IMockDependency>("");
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DI_Lite.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -19,12 +20,9 @@ namespace DI_Lite
 
         private Func<T> InitializeCreator()
         {
-            return (() =>
-            {
-                var type = typeof(R);
-                var args = GetConstructorArguments();
-                return (T)Activator.CreateInstance(type, args);
-            });
+            var type = typeof(R);
+            var args = GetConstructorArguments();
+            return () => (T)Activator.CreateInstance(type, args);
         }
 
         private object[] GetConstructorArguments()
@@ -45,10 +43,10 @@ namespace DI_Lite
         {
             return GetConstructorParameters()
                 .Select(type => typeof(Container)
-                .GetMethod("Get")
-                .MakeGenericMethod(type)
-                .Invoke(Container, new object[] { null })
-            ).ToArray();
+                    .GetMethod("Get")
+                    .MakeGenericMethod(type)
+                    .Invoke(Container, new object[] { null }))
+                .ToArray();
         }
 
         private IEnumerable<Type> GetConstructorParameters()
@@ -63,9 +61,11 @@ namespace DI_Lite
         {
             var type = typeof(R);
             var constructors = type.GetConstructors();
-            return constructors
-                .OrderBy(x => x.GetParameters().Length)
-                .Last();
+            if (constructors.Length == 0)
+                throw new DependencyHasNoConstructorException(type);
+            if (constructors.Length > 1)
+                throw new DependencyHasMultipleConstructorsException(type);
+            return constructors.First();
         }
     }
 }

@@ -190,7 +190,7 @@ namespace Unit_Tests
         [TestMethod]
         public void AddsAutoConstructingDependency()
         {
-            AddAutoConstructingDependency<IMockDependency, MockDepenedency>();
+            AddAutoConstructingDependency<IMockDependency, ValidConstructorlessMockDependency>();
 
             Assert.AreEqual(1, Container.Dependencies.Count());
         }
@@ -198,7 +198,7 @@ namespace Unit_Tests
         [TestMethod]
         public void AddsAutoConstructingDependencyWithShorthand()
         {
-            AddAutoConstructingDependency<MockDepenedency>();
+            AddAutoConstructingDependency<ValidConstructorlessMockDependency>();
 
             Assert.AreEqual(1, Container.Dependencies.Count());
         }
@@ -206,21 +206,35 @@ namespace Unit_Tests
         [TestMethod]
         public void AddsAutoConstructingDependencyWithDefaultKey()
         {
-            AddDependency<IMockDependency>(() => new MockDepenedency());
-            AddAutoConstructingDependency<MockDepenedency, MockDepenedency>();
+            AddDependency<IMockDependency>(() => new ValidMockDependency());
+            AddAutoConstructingDependency<ValidMockDependency, ValidMockDependency>();
 
-            var key = new DependencyKey(typeof(MockDepenedency), null);
+            var key = new DependencyKey(typeof(ValidMockDependency), null);
             Assert.AreEqual(key, Container.Dependencies.ElementAt(1).Key);
         }
 
         [TestMethod]
         public void AddsAutoConstructingDependencyWithSpecifiedKey()
         {
-            AddDependency<IMockDependency>(() => new MockDepenedency());
-            AddAutoConstructingDependency<IMockDependency, MockDepenedency>("key");
+            AddDependency<IMockDependency>(() => new ValidMockDependency());
+            AddAutoConstructingDependency<IMockDependency, ValidMockDependency>("key");
 
             var key = new DependencyKey(typeof(IMockDependency), "key");
             Assert.AreEqual(key, Container.Dependencies.ElementAt(1).Key);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DependencyHasMultipleConstructorsException))]
+        public void ThrowsDependencyHasMultipleConstructorsExceptionWhileAutoConstructing()
+        {
+            AddAutoConstructingDependency<InvalidMockDependency>();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DependencyHasNoConstructorException))]
+        public void ThrowsDependencyHasNoConstructorExceptionWhileAutoConstructing()
+        {
+            AddAutoConstructingDependency<InvalidPrivateConstructorMockDependency>();
         }
     }
 }

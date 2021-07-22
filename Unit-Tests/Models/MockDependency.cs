@@ -6,23 +6,45 @@
         void DoSomething();
     }
 
-    public class MockDepenedency : IMockDependency
+    public class ValidMockDependency : IMockDependency
     {
         public IMockDependency Inner { get; }
 
-        public MockDepenedency(string x)
-        {
-            throw new System.Exception();
-        }
-
-        public MockDepenedency(IMockDependency inner = null)
+        public ValidMockDependency(IMockDependency inner = null)
         {
             Inner = inner;
         }
 
-        public void DoSomething()
-        {
+        public void DoSomething() { }
+    }
 
+    public class ValidConstructorlessMockDependency : IMockDependency
+    {
+        public IMockDependency Inner { get; }
+
+        public void DoSomething() { }
+    }
+
+    public class InvalidMockDependency : IMockDependency
+    {
+        public IMockDependency Inner { get; }
+
+        public InvalidMockDependency() { }
+
+        public InvalidMockDependency(IMockDependency inner = null)
+        {
+            Inner = inner;
         }
+
+        public void DoSomething() { }
+    }
+
+    public class InvalidPrivateConstructorMockDependency : IMockDependency
+    {
+        public IMockDependency Inner { get; }
+
+        private InvalidPrivateConstructorMockDependency() { }
+
+        public void DoSomething() { }
     }
 }
