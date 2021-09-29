@@ -53,6 +53,7 @@
     <Compile Include="ContainerAddDependencyTest.cs" />
     <Compile Include="ContainerGetDependencyTest.cs" />
     <Compile Include="ContainerBaseTest.cs" />
+    <Compile Include="ContainerRemoveDependencyTest.cs" />
     <Compile Include="Models\MockDependency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

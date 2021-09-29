@@ -2,6 +2,7 @@
 using DI_Lite.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DI_Lite
 {
@@ -205,6 +206,40 @@ namespace DI_Lite
                 dependencies.Remove(key);
             }
             dependencies.Add(key, dependency);
+        }
+
+        public void Remove<T>()
+        {
+            var type = typeof(T);
+            Remove(key => key.Type == type);
+        }
+
+        public void Remove(object tag)
+        {
+            Remove(key => key.Tag == tag);
+        }
+
+        public void Remove<T>(object tag)
+        {
+            var type = typeof(T);
+            Remove(key => key.Type == type && key.Tag == tag);
+        }
+
+        public void Remove(Func<DependencyKey, bool> predicate)
+        {
+            var keys = dependencies.Keys.Where(predicate);
+            Remove(keys);
+        }
+
+        public void Remove(IEnumerable<DependencyKey> keys)
+        {
+            foreach (var key in keys.ToList())
+                Remove(key);
+        }
+
+        public void Remove(DependencyKey key)
+        {
+            dependencies.Remove(key);
         }
 
         public T Get<T>(object tag = null)
