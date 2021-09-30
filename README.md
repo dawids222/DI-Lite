@@ -11,8 +11,10 @@ DI-Lite is a small size, high performance tool for storing and retrieving object
 
   - Registering singletons
   - Registering factories
+  - Registering scoped dependencies
   - Getting dependencies
-  - Auto creating objects base on their most arguments constructor
+  - Scoping dependencies
+  - Auto creating objects base on their constructor
 
 ## Examples
 
@@ -35,18 +37,26 @@ Container.Single<DependencyType>(dependencyInstance);
 // we can already use our container for creating new dependencies
 Container.Single<DependencyType>("tag2", () => new DependencyImp(Container.Get<DependencyOfOurDependencyType>()));
 
-// when no creation callback is provided the object will be created using it's most arguments constructor, but we have to provide its concrete class
+// when no creation function is provided the object will be created using it's  constructor, but we have to provide its concrete class. Dependency class has to have exactly 1 constructor
 Container.Single<DependencyType, DependencyImp>("tag3");
 
-// if we for some reason don't want an abstraction then call can be simplified
+// if for some reason we don't want an abstraction then call can be simplified
 Container.Single<DependencyImp>("tag4");
 ```
 
  ```CSharp
 // register factory
 // new object will be created with every Get call
-Container.Factory<DependencyType>(() => new DependencyImp());
+Container.Factory<DependencyType>();
 // most overloads working with Single works with Factory with minor exceptions
+```
+
+ ```CSharp
+// register scoped dependency
+// same object will be returned for a given scope
+// different scopes will return different objects
+Container.Scoped<DependencyType>();
+// most overloads working with Single works with Scoped with minor exceptions
 ```
 
  ```CSharp
@@ -64,9 +74,20 @@ Container.ForceFactory(() => "2"); // this will override the dependency
 
  ```CSharp
 // getting dependency object from container
+// regular containers are unable to Get scoped dependencies
 var dependency = Container.Get<DependencyType>();
 // we can also get dependencies registered with tag
 var dependency = Container.Get<DependencyType>("tag");
+```
+
+ ```CSharp
+// to Get scoped dependencies we first have to create a scope
+var scope = Container.CreateScope();
+// scope is able to Get all kinds of dependencies
+// it is performed the same way as with Container
+var dependency = scope.Get<DependencyType>();
+// or
+var dependency = scope.Get<DependencyType>("tag");
 ```
 
 ### Todos
