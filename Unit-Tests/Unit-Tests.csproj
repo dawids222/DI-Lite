@@ -55,6 +55,7 @@
     <Compile Include="ContainerBaseTest.cs" />
     <Compile Include="Models\MockDependency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScopedContainerGetDependencyTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

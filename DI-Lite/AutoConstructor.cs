@@ -9,28 +9,31 @@ namespace DI_Lite
     internal class AutoConstructor<T, R>
         where R : class, T
     {
-        public Func<T> Creator { get; }
-        private Container Container { get; }
+        public Func<IDependencyProvider, T> Creator { get; }
 
-        public AutoConstructor(Container container)
+        public AutoConstructor()
         {
-            Container = container;
             Creator = InitializeCreator();
         }
 
-        private Func<T> InitializeCreator()
+        private Func<IDependencyProvider, T> InitializeCreator()
         {
             var type = typeof(R);
-            var args = GetConstructorArguments();
-            return () => (T)Activator.CreateInstance(type, args);
+            var parameters = GetConstructorParameters();
+
+            return (provider) =>
+            {
+                var args = GetConstructorArguments(parameters, provider);
+                return (T)Activator.CreateInstance(type, args);
+            };
         }
 
-        private object[] GetConstructorArguments()
+        private object[] GetConstructorArguments(IEnumerable<Type> parameters, IDependencyProvider provider)
         {
             object[] args;
             try
             {
-                args = GetConstructorArgumentsUnsafe();
+                args = GetConstructorArgumentsUnsafe(parameters, provider);
             }
             catch (TargetInvocationException ex)
             {
@@ -39,13 +42,13 @@ namespace DI_Lite
             return args;
         }
 
-        private object[] GetConstructorArgumentsUnsafe()
+        private object[] GetConstructorArgumentsUnsafe(IEnumerable<Type> parameters, IDependencyProvider provider)
         {
-            return GetConstructorParameters()
-                .Select(type => typeof(Container)
-                    .GetMethod("Get")
+            return parameters
+                .Select(type => typeof(IDependencyProvider)
+                    .GetMethod(nameof(IDependencyProvider.Get))
                     .MakeGenericMethod(type)
-                    .Invoke(Container, new object[] { null }))
+                    .Invoke(provider, new object[] { null }))
                 .ToArray();
         }
 

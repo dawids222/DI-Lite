@@ -2,6 +2,6 @@
 {
     public interface IDependency
     {
-        object Get();
+        object Get(IDependencyProvider provider);
     }
 }
