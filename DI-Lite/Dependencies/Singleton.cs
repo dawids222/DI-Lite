@@ -4,29 +4,26 @@ namespace DI_Lite.Dependencies
 {
     public class Singleton<T> : IDependency
     {
-        protected Func<T> Creator { get; set; }
+        protected Func<IDependencyProvider, T> Creator { get; set; }
         private T Instance { get; set; }
         private bool IsInitialized { get; set; } = false;
 
-        protected Singleton()
-        {
+        protected Singleton() { }
 
-        }
-
-        public Singleton(Func<T> creator)
+        public Singleton(Func<IDependencyProvider, T> creator)
         {
             Creator = creator;
         }
 
-        public object Get()
+        public object Get(IDependencyProvider provider)
         {
-            if (!IsInitialized) { Initialize(); }
+            if (!IsInitialized) { Initialize(provider); }
             return Instance;
         }
 
-        private void Initialize()
+        private void Initialize(IDependencyProvider provider)
         {
-            Instance = Creator();
+            Instance = Creator(provider);
             IsInitialized = true;
         }
     }

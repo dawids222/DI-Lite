@@ -4,16 +4,16 @@ namespace DI_Lite.Dependencies
 {
     public class Factory<T> : IDependency
     {
-        public Func<T> Creator { get; }
+        public Func<IDependencyProvider, T> Creator { get; }
 
-        public Factory(Func<T> creator)
+        public Factory(Func<IDependencyProvider, T> creator)
         {
             Creator = creator;
         }
 
-        public object Get()
+        public object Get(IDependencyProvider provider)
         {
-            return Creator();
+            return Creator(provider);
         }
     }
 }

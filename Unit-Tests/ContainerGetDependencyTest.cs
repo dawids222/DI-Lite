@@ -1,4 +1,5 @@
-﻿using DI_Lite.Exceptions;
+﻿using DI_Lite;
+using DI_Lite.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Unit_Tests.Models;
@@ -179,6 +180,28 @@ namespace Unit_Tests
                 Assert.AreEqual(dep1, dep2);
             else
                 Assert.AreNotEqual(dep1, dep2);
+        }
+    }
+
+    [TestClass]
+    public class ContainerGetScopedTest
+    {
+        private Container Container { get; set; }
+
+        [TestInitialize]
+        public void Before()
+        {
+            Container = new Container();
+        }
+
+        [TestMethod]
+        public void ThrowsExceptionWhenGettingScopedDepenedencyFromContainer()
+        {
+            Container.Scoped(() => "TEST");
+
+            string act() => Container.Get<string>();
+
+            Assert.ThrowsException<DependencyRetrievalRequireScopeException>(act);
         }
     }
 }

@@ -92,6 +92,48 @@ namespace Unit_Tests
     }
 
     [TestClass]
+    public class ContainerScopedTest : ContainerStandardAddDepenedencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.Scoped(tag, creator);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.Scoped<T, R>(tag);
+        }
+    }
+
+    [TestClass]
+    public class ContainerTryScopedTest : ContainerAddDependencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.TryScoped(tag, creator);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.TryScoped<T, R>(tag);
+        }
+    }
+
+    [TestClass]
+    public class ContainerForceScopedTest : ContainerAddDependencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, Func<T> creator)
+        {
+            Container.ForceScoped(tag, creator);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>(object tag)
+        {
+            Container.ForceScoped<T, R>(tag);
+        }
+    }
+
+    [TestClass]
     public abstract class ContainerStandardAddDepenedencyBaseTest : ContainerAddDependencyBaseTest
     {
         [TestMethod]

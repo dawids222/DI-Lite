@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace DI_Lite
 {
-    public class Container
+    public class Container : IDependencyProvider
     {
-        private Dictionary<DependencyKey, IDependency> dependencies { get; } = new Dictionary<DependencyKey, IDependency>();
+        private Dictionary<DependencyKey, IDependency> dependencies = new Dictionary<DependencyKey, IDependency>();
         public IEnumerable<KeyValuePair<DependencyKey, IDependency>> Dependencies { get => dependencies; }
 
         public void Single<T>(T instance)
@@ -28,6 +28,11 @@ namespace DI_Lite
 
         public void Single<T>(object tag, Func<T> creator)
         {
+            AddDependency<T>(tag, new Singleton<T>(ToProviderCreator(creator)));
+        }
+
+        private void Single<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
             AddDependency<T>(tag, new Singleton<T>(creator));
         }
 
@@ -40,7 +45,7 @@ namespace DI_Lite
         public void Single<T, R>(object tag = null)
             where R : class, T
         {
-            var autoConstructor = new AutoConstructor<T, R>(this);
+            var autoConstructor = new AutoConstructor<T, R>();
             Single<T>(tag, autoConstructor.Creator);
         }
 
@@ -61,7 +66,12 @@ namespace DI_Lite
 
         public void TrySingle<T>(object tag, Func<T> creator)
         {
-            TryAddDependency<T>(tag, new Singleton<T>(creator));
+            TryAddDependency<T>(tag, new Singleton<T>(ToProviderCreator(creator)));
+        }
+
+        private void TrySingle<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            AddDependency<T>(tag, new Singleton<T>(creator));
         }
 
         public void TrySingle<T>(object tag = null)
@@ -73,7 +83,7 @@ namespace DI_Lite
         public void TrySingle<T, R>(object tag = null)
             where R : class, T
         {
-            var autoConstructor = new AutoConstructor<T, R>(this);
+            var autoConstructor = new AutoConstructor<T, R>();
             TrySingle<T>(tag, autoConstructor.Creator);
         }
 
@@ -94,7 +104,12 @@ namespace DI_Lite
 
         public void ForceSingle<T>(object tag, Func<T> creator)
         {
-            ForceAddDependency<T>(tag, new Singleton<T>(creator));
+            ForceAddDependency<T>(tag, new Singleton<T>(ToProviderCreator(creator)));
+        }
+
+        private void ForceSingle<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            AddDependency<T>(tag, new Singleton<T>(creator));
         }
 
         public void ForceSingle<T>(object tag = null)
@@ -106,7 +121,7 @@ namespace DI_Lite
         public void ForceSingle<T, R>(object tag = null)
             where R : class, T
         {
-            var autoConstructor = new AutoConstructor<T, R>(this);
+            var autoConstructor = new AutoConstructor<T, R>();
             ForceSingle<T>(tag, autoConstructor.Creator);
         }
 
@@ -116,6 +131,11 @@ namespace DI_Lite
         }
 
         public void Factory<T>(object tag, Func<T> creator)
+        {
+            AddDependency<T>(tag, new Factory<T>(ToProviderCreator(creator)));
+        }
+
+        private void Factory<T>(object tag, Func<IDependencyProvider, T> creator)
         {
             AddDependency<T>(tag, new Factory<T>(creator));
         }
@@ -129,7 +149,7 @@ namespace DI_Lite
         public void Factory<T, R>(object tag = null)
             where R : class, T
         {
-            var autoConstructor = new AutoConstructor<T, R>(this);
+            var autoConstructor = new AutoConstructor<T, R>();
             Factory<T>(tag, autoConstructor.Creator);
         }
 
@@ -140,7 +160,12 @@ namespace DI_Lite
 
         public void TryFactory<T>(object tag, Func<T> creator)
         {
-            TryAddDependency<T>(tag, new Factory<T>(creator));
+            TryAddDependency<T>(tag, new Factory<T>(ToProviderCreator(creator)));
+        }
+
+        private void TryFactory<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            AddDependency<T>(tag, new Factory<T>(creator));
         }
 
         public void TryFactory<T>(object tag = null)
@@ -152,7 +177,7 @@ namespace DI_Lite
         public void TryFactory<T, R>(object tag = null)
             where R : class, T
         {
-            var autoConstructor = new AutoConstructor<T, R>(this);
+            var autoConstructor = new AutoConstructor<T, R>();
             TryFactory<T>(tag, autoConstructor.Creator);
         }
 
@@ -163,7 +188,12 @@ namespace DI_Lite
 
         public void ForceFactory<T>(object tag, Func<T> creator)
         {
-            ForceAddDependency<T>(tag, new Factory<T>(creator));
+            ForceAddDependency<T>(tag, new Factory<T>(ToProviderCreator(creator)));
+        }
+
+        private void ForceFactory<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            AddDependency<T>(tag, new Factory<T>(creator));
         }
 
         public void ForceFactory<T>(object tag = null)
@@ -175,8 +205,92 @@ namespace DI_Lite
         public void ForceFactory<T, R>(object tag = null)
             where R : class, T
         {
-            var autoConstructor = new AutoConstructor<T, R>(this);
+            var autoConstructor = new AutoConstructor<T, R>();
             ForceFactory<T>(tag, autoConstructor.Creator);
+        }
+
+        public void Scoped<T>(Func<T> creator)
+        {
+            Scoped(null, creator);
+        }
+
+        public void Scoped<T>(object tag, Func<T> creator)
+        {
+            AddDependency<T>(tag, new Scoped<T>(ToProviderCreator(creator)));
+        }
+
+        private void Scoped<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            AddDependency<T>(tag, new Scoped<T>(creator));
+        }
+
+        public void Scoped<T>(object tag = null)
+            where T : class
+        {
+            Scoped<T, T>(tag);
+        }
+
+        public void Scoped<T, R>(object tag = null)
+            where R : class, T
+        {
+            var autoConstructor = new AutoConstructor<T, R>();
+            Scoped<T>(tag, autoConstructor.Creator);
+        }
+
+        public void TryScoped<T>(Func<T> creator)
+        {
+            TryScoped(null, creator);
+        }
+
+        public void TryScoped<T>(object tag, Func<T> creator)
+        {
+            TryAddDependency<T>(tag, new Scoped<T>(ToProviderCreator(creator)));
+        }
+
+        private void TryScoped<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            AddDependency<T>(tag, new Scoped<T>(creator));
+        }
+
+        public void TryScoped<T>(object tag = null)
+            where T : class
+        {
+            TryScoped<T, T>(tag);
+        }
+
+        public void TryScoped<T, R>(object tag = null)
+            where R : class, T
+        {
+            var autoConstructor = new AutoConstructor<T, R>();
+            TryScoped<T>(tag, autoConstructor.Creator);
+        }
+
+        public void ForceScoped<T>(Func<T> creator)
+        {
+            ForceScoped(null, creator);
+        }
+
+        public void ForceScoped<T>(object tag, Func<T> creator)
+        {
+            ForceAddDependency<T>(tag, new Scoped<T>(ToProviderCreator(creator)));
+        }
+
+        private void ForceScoped<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            AddDependency<T>(tag, new Scoped<T>(creator));
+        }
+
+        public void ForceScoped<T>(object tag = null)
+            where T : class
+        {
+            ForceScoped<T, T>(tag);
+        }
+
+        public void ForceScoped<T, R>(object tag = null)
+            where R : class, T
+        {
+            var autoConstructor = new AutoConstructor<T, R>();
+            ForceScoped<T>(tag, autoConstructor.Creator);
         }
 
         private void AddDependency<T>(object tag, IDependency dependency)
@@ -250,7 +364,29 @@ namespace DI_Lite
                 throw new DependencyNotRegisteredException(key);
             }
             var dependency = dependencies[key];
-            return (T)dependency.Get();
+            return (T)dependency.Get(this);
+        }
+
+        public ScopedContainer CreateScope()
+        {
+            var dependencies = this.dependencies
+                .Select(ToScopeDependency)
+                .ToDictionary(x => x.Key, x => x.Value);
+            return new ScopedContainer(dependencies);
+        }
+
+        private KeyValuePair<DependencyKey, IDependency> ToScopeDependency(KeyValuePair<DependencyKey, IDependency> dependency)
+        {
+            if (dependency.Value is IScopedDependency scopedDependency)
+            {
+                return new KeyValuePair<DependencyKey, IDependency>(dependency.Key, scopedDependency.ToSingleton());
+            }
+            return dependency;
+        }
+
+        private Func<IDependencyProvider, T> ToProviderCreator<T>(Func<T> creator)
+        {
+            return new Func<IDependencyProvider, T>(provider => creator());
         }
     }
 }
