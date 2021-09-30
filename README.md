@@ -12,6 +12,7 @@ DI-Lite is a small size, high performance tool for storing and retrieving object
   - Registering singletons
   - Registering factories
   - Registering scoped dependencies
+  - Removing registered dependencies
   - Getting dependencies
   - Scoping dependencies
   - Auto creating objects base on their constructor
@@ -70,6 +71,29 @@ Container.TryFactory(() => "2"); // this will not override the dependency
 /*******/
 Container.Factory(() => "1"));
 Container.ForceFactory(() => "2"); // this will override the dependency
+```
+
+ ```CSharp
+// every depedency can be removed from a Container at any given time
+// remove all dependencies registed for a type
+Container.Remove<DependencyType>();
+// remove all dependencies registed with a tag
+Container.Remove("tag");
+// remove dependency registed for a type with a tag (type and tag create KEY)
+Container.Remove<DependencyType>("tag");
+// remove all dependencies that match predicate
+Container.Remove(dep =>
+	 dep.Type != typeof(DependencyType) ||
+	 dep.Tag != null);
+// remove dependency with a given KEY
+var key = Container.Dependencies.ElementAt(0).Key;
+Container.Remove(key);
+// remove all dependencies by collection of KEYS
+var keys = new DependencyKey[] {
+	new DependencyKey(typeof(DependencyType), null),
+	new DependencyKey(typeof(AnotherDependencyType), null),
+ };
+Container.Remove(keys);
 ```
 
  ```CSharp
