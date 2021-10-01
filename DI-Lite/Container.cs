@@ -8,297 +8,301 @@ namespace DI_Lite
 {
     public class Container : IDependencyProvider
     {
-        private Dictionary<DependencyKey, IDependency> dependencies = new Dictionary<DependencyKey, IDependency>();
-        public IEnumerable<KeyValuePair<DependencyKey, IDependency>> Dependencies { get => dependencies; }
+        private readonly Dictionary<DependencyKey, IDependency> _dependencies = new Dictionary<DependencyKey, IDependency>();
+        public IEnumerable<KeyValuePair<DependencyKey, IDependency>> Dependencies { get => _dependencies; }
 
-        public void Single<T>(T instance)
+        #region SINGLE
+        public void Single<ReferenceType>(ReferenceType instance)
         {
             Single(null, instance);
         }
 
-        public void Single<T>(object tag, T instance)
+        public void Single<ReferenceType>(object tag, ReferenceType instance)
         {
             Single(tag, () => instance);
         }
 
-        public void Single<T>(Func<T> creator)
+        public void Single<ReferenceType>(Func<ReferenceType> creator)
         {
             Single(null, creator);
         }
 
-        public void Single<T>(object tag, Func<T> creator)
+        public void Single<ReferenceType>(object tag, Func<ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Singleton<T>(ToProviderCreator(creator)));
+            AddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void Single<T>(object tag, Func<IDependencyProvider, T> creator)
+        private void Single<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Singleton<T>(creator));
+            AddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(creator));
         }
 
-        public void Single<T>(object tag = null)
-            where T : class
+        public void Single<ConcreteType>(object tag = null)
+            where ConcreteType : class
         {
-            Single<T, T>(tag);
+            Single<ConcreteType, ConcreteType>(tag);
         }
 
-        public void Single<T, R>(object tag = null)
-            where R : class, T
+        public void Single<ReferenceType, ConcreteType>(object tag = null)
+            where ConcreteType : class, ReferenceType
         {
-            var autoConstructor = new AutoConstructor<T, R>();
-            Single<T>(tag, autoConstructor.Creator);
+            var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
+            Single(tag, autoConstructor.Creator);
         }
 
-        public void TrySingle<T>(T instance)
+        public void TrySingle<ReferenceType>(ReferenceType instance)
         {
             TrySingle(null, instance);
         }
 
-        public void TrySingle<T>(object tag, T instance)
+        public void TrySingle<ReferenceType>(object tag, ReferenceType instance)
         {
             TrySingle(tag, () => instance);
         }
 
-        public void TrySingle<T>(Func<T> creator)
+        public void TrySingle<ReferenceType>(Func<ReferenceType> creator)
         {
             TrySingle(null, creator);
         }
 
-        public void TrySingle<T>(object tag, Func<T> creator)
+        public void TrySingle<ReferenceType>(object tag, Func<ReferenceType> creator)
         {
-            TryAddDependency<T>(tag, new Singleton<T>(ToProviderCreator(creator)));
+            TryAddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void TrySingle<T>(object tag, Func<IDependencyProvider, T> creator)
+        private void TrySingle<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Singleton<T>(creator));
+            AddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(creator));
         }
 
-        public void TrySingle<T>(object tag = null)
-            where T : class
+        public void TrySingle<ConcreteType>(object tag = null)
+            where ConcreteType : class
         {
-            TrySingle<T, T>(tag);
+            TrySingle<ConcreteType, ConcreteType>(tag);
         }
 
-        public void TrySingle<T, R>(object tag = null)
-            where R : class, T
+        public void TrySingle<ReferenceType, ConcreteType>(object tag = null)
+            where ConcreteType : class, ReferenceType
         {
-            var autoConstructor = new AutoConstructor<T, R>();
-            TrySingle<T>(tag, autoConstructor.Creator);
+            var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
+            TrySingle(tag, autoConstructor.Creator);
         }
 
-        public void ForceSingle<T>(T instance)
+        public void ForceSingle<ReferenceType>(ReferenceType instance)
         {
             ForceSingle(null, instance);
         }
 
-        public void ForceSingle<T>(object tag, T instance)
+        public void ForceSingle<ReferenceType>(object tag, ReferenceType instance)
         {
             ForceSingle(tag, () => instance);
         }
 
-        public void ForceSingle<T>(Func<T> creator)
+        public void ForceSingle<ReferenceType>(Func<ReferenceType> creator)
         {
             ForceSingle(null, creator);
         }
 
-        public void ForceSingle<T>(object tag, Func<T> creator)
+        public void ForceSingle<ReferenceType>(object tag, Func<ReferenceType> creator)
         {
-            ForceAddDependency<T>(tag, new Singleton<T>(ToProviderCreator(creator)));
+            ForceAddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void ForceSingle<T>(object tag, Func<IDependencyProvider, T> creator)
+        private void ForceSingle<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Singleton<T>(creator));
+            AddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(creator));
         }
 
-        public void ForceSingle<T>(object tag = null)
-            where T : class
+        public void ForceSingle<ConcreteType>(object tag = null)
+            where ConcreteType : class
         {
-            ForceSingle<T, T>(tag);
+            ForceSingle<ConcreteType, ConcreteType>(tag);
         }
 
-        public void ForceSingle<T, R>(object tag = null)
-            where R : class, T
+        public void ForceSingle<ReferenceType, ConcreteType>(object tag = null)
+            where ConcreteType : class, ReferenceType
         {
-            var autoConstructor = new AutoConstructor<T, R>();
-            ForceSingle<T>(tag, autoConstructor.Creator);
+            var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
+            ForceSingle(tag, autoConstructor.Creator);
         }
-
-        public void Factory<T>(Func<T> creator)
+        #endregion
+        #region FACTORY
+        public void Factory<ReferenceType>(Func<ReferenceType> creator)
         {
             Factory(null, creator);
         }
 
-        public void Factory<T>(object tag, Func<T> creator)
+        public void Factory<ReferenceType>(object tag, Func<ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Factory<T>(ToProviderCreator(creator)));
+            AddDependency<ReferenceType>(tag, new Factory<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void Factory<T>(object tag, Func<IDependencyProvider, T> creator)
+        private void Factory<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Factory<T>(creator));
+            AddDependency<ReferenceType>(tag, new Factory<ReferenceType>(creator));
         }
 
-        public void Factory<T>(object tag = null)
-            where T : class
+        public void Factory<ConcreteType>(object tag = null)
+            where ConcreteType : class
         {
-            Factory<T, T>(tag);
+            Factory<ConcreteType, ConcreteType>(tag);
         }
 
-        public void Factory<T, R>(object tag = null)
-            where R : class, T
+        public void Factory<ReferenceType, ConcreteType>(object tag = null)
+            where ConcreteType : class, ReferenceType
         {
-            var autoConstructor = new AutoConstructor<T, R>();
-            Factory<T>(tag, autoConstructor.Creator);
+            var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
+            Factory(tag, autoConstructor.Creator);
         }
 
-        public void TryFactory<T>(Func<T> creator)
+        public void TryFactory<ReferenceType>(Func<ReferenceType> creator)
         {
             TryFactory(null, creator);
         }
 
-        public void TryFactory<T>(object tag, Func<T> creator)
+        public void TryFactory<ReferenceType>(object tag, Func<ReferenceType> creator)
         {
-            TryAddDependency<T>(tag, new Factory<T>(ToProviderCreator(creator)));
+            TryAddDependency<ReferenceType>(tag, new Factory<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void TryFactory<T>(object tag, Func<IDependencyProvider, T> creator)
+        private void TryFactory<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Factory<T>(creator));
+            AddDependency<ReferenceType>(tag, new Factory<ReferenceType>(creator));
         }
 
-        public void TryFactory<T>(object tag = null)
-            where T : class
+        public void TryFactory<ConcreteType>(object tag = null)
+            where ConcreteType : class
         {
-            TryFactory<T, T>(tag);
+            TryFactory<ConcreteType, ConcreteType>(tag);
         }
 
-        public void TryFactory<T, R>(object tag = null)
-            where R : class, T
+        public void TryFactory<ReferenceType, ConcreteType>(object tag = null)
+            where ConcreteType : class, ReferenceType
         {
-            var autoConstructor = new AutoConstructor<T, R>();
-            TryFactory<T>(tag, autoConstructor.Creator);
+            var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
+            TryFactory(tag, autoConstructor.Creator);
         }
 
-        public void ForceFactory<T>(Func<T> creator)
+        public void ForceFactory<ReferenceType>(Func<ReferenceType> creator)
         {
             ForceFactory(null, creator);
         }
 
-        public void ForceFactory<T>(object tag, Func<T> creator)
+        public void ForceFactory<ReferenceType>(object tag, Func<ReferenceType> creator)
         {
-            ForceAddDependency<T>(tag, new Factory<T>(ToProviderCreator(creator)));
+            ForceAddDependency<ReferenceType>(tag, new Factory<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void ForceFactory<T>(object tag, Func<IDependencyProvider, T> creator)
+        private void ForceFactory<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Factory<T>(creator));
+            AddDependency<ReferenceType>(tag, new Factory<ReferenceType>(creator));
         }
 
-        public void ForceFactory<T>(object tag = null)
-            where T : class
+        public void ForceFactory<ConcreteType>(object tag = null)
+            where ConcreteType : class
         {
-            ForceFactory<T, T>(tag);
+            ForceFactory<ConcreteType, ConcreteType>(tag);
         }
 
-        public void ForceFactory<T, R>(object tag = null)
-            where R : class, T
+        public void ForceFactory<ReferenceType, ConcreteType>(object tag = null)
+            where ConcreteType : class, ReferenceType
         {
-            var autoConstructor = new AutoConstructor<T, R>();
-            ForceFactory<T>(tag, autoConstructor.Creator);
+            var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
+            ForceFactory(tag, autoConstructor.Creator);
         }
-
-        public void Scoped<T>(Func<T> creator)
+        #endregion
+        #region SCOPED
+        public void Scoped<ReferenceType>(Func<ReferenceType> creator)
         {
             Scoped(null, creator);
         }
 
-        public void Scoped<T>(object tag, Func<T> creator)
+        public void Scoped<ReferenceType>(object tag, Func<ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Scoped<T>(ToProviderCreator(creator)));
+            AddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void Scoped<T>(object tag, Func<IDependencyProvider, T> creator)
+        private void Scoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Scoped<T>(creator));
+            AddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(creator));
         }
 
-        public void Scoped<T>(object tag = null)
-            where T : class
+        public void Scoped<ConcreteType>(object tag = null)
+            where ConcreteType : class
         {
-            Scoped<T, T>(tag);
+            Scoped<ConcreteType, ConcreteType>(tag);
         }
 
-        public void Scoped<T, R>(object tag = null)
-            where R : class, T
+        public void Scoped<ReferenceType, ConcreteType>(object tag = null)
+            where ConcreteType : class, ReferenceType
         {
-            var autoConstructor = new AutoConstructor<T, R>();
-            Scoped<T>(tag, autoConstructor.Creator);
+            var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
+            Scoped(tag, autoConstructor.Creator);
         }
 
-        public void TryScoped<T>(Func<T> creator)
+        public void TryScoped<ReferenceType>(Func<ReferenceType> creator)
         {
             TryScoped(null, creator);
         }
 
-        public void TryScoped<T>(object tag, Func<T> creator)
+        public void TryScoped<ReferenceType>(object tag, Func<ReferenceType> creator)
         {
-            TryAddDependency<T>(tag, new Scoped<T>(ToProviderCreator(creator)));
+            TryAddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void TryScoped<T>(object tag, Func<IDependencyProvider, T> creator)
+        private void TryScoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Scoped<T>(creator));
+            AddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(creator));
         }
 
-        public void TryScoped<T>(object tag = null)
-            where T : class
+        public void TryScoped<ConcreteType>(object tag = null)
+            where ConcreteType : class
         {
-            TryScoped<T, T>(tag);
+            TryScoped<ConcreteType, ConcreteType>(tag);
         }
 
-        public void TryScoped<T, R>(object tag = null)
-            where R : class, T
+        public void TryScoped<ReferenceType, ConcreteType>(object tag = null)
+            where ConcreteType : class, ReferenceType
         {
-            var autoConstructor = new AutoConstructor<T, R>();
-            TryScoped<T>(tag, autoConstructor.Creator);
+            var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
+            TryScoped(tag, autoConstructor.Creator);
         }
 
-        public void ForceScoped<T>(Func<T> creator)
+        public void ForceScoped<ReferenceType>(Func<ReferenceType> creator)
         {
             ForceScoped(null, creator);
         }
 
-        public void ForceScoped<T>(object tag, Func<T> creator)
+        public void ForceScoped<ReferenceType>(object tag, Func<ReferenceType> creator)
         {
-            ForceAddDependency<T>(tag, new Scoped<T>(ToProviderCreator(creator)));
+            ForceAddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void ForceScoped<T>(object tag, Func<IDependencyProvider, T> creator)
+        private void ForceScoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<T>(tag, new Scoped<T>(creator));
+            AddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(creator));
         }
 
-        public void ForceScoped<T>(object tag = null)
-            where T : class
+        public void ForceScoped<ConcreteType>(object tag = null)
+            where ConcreteType : class
         {
-            ForceScoped<T, T>(tag);
+            ForceScoped<ConcreteType, ConcreteType>(tag);
         }
 
-        public void ForceScoped<T, R>(object tag = null)
-            where R : class, T
+        public void ForceScoped<ReferenceType, ConcreteType>(object tag = null)
+            where ConcreteType : class, ReferenceType
         {
-            var autoConstructor = new AutoConstructor<T, R>();
-            ForceScoped<T>(tag, autoConstructor.Creator);
+            var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
+            ForceScoped(tag, autoConstructor.Creator);
         }
-
-        private void AddDependency<T>(object tag, IDependency dependency)
+        #endregion
+        #region DEPENDENCY
+        private void AddDependency<ReferenceType>(object tag, IDependency dependency)
         {
-            var key = new DependencyKey(typeof(T), tag);
+            var key = new DependencyKey(typeof(ReferenceType), tag);
             try
             {
-                dependencies.Add(key, dependency);
+                _dependencies.Add(key, dependency);
             }
             catch (ArgumentException)
             {
@@ -306,25 +310,26 @@ namespace DI_Lite
             }
         }
 
-        private void TryAddDependency<T>(object tag, IDependency dependency)
+        private void TryAddDependency<ReferenceType>(object tag, IDependency dependency)
         {
-            try { AddDependency<T>(tag, dependency); }
+            try { AddDependency<ReferenceType>(tag, dependency); }
             catch (Exception) { }
         }
 
-        private void ForceAddDependency<T>(object tag, IDependency dependency)
+        private void ForceAddDependency<ReferenceType>(object tag, IDependency dependency)
         {
-            var key = new DependencyKey(typeof(T), tag);
-            if (dependencies.ContainsKey(key))
+            var key = new DependencyKey(typeof(ReferenceType), tag);
+            if (_dependencies.ContainsKey(key))
             {
-                dependencies.Remove(key);
+                _dependencies.Remove(key);
             }
-            dependencies.Add(key, dependency);
+            _dependencies.Add(key, dependency);
         }
-
-        public void Remove<T>()
+        #endregion
+        #region REMOVE
+        public void Remove<ReferenceType>()
         {
-            var type = typeof(T);
+            var type = typeof(ReferenceType);
             Remove(key => key.Type == type);
         }
 
@@ -333,15 +338,15 @@ namespace DI_Lite
             Remove(key => key.Tag == tag);
         }
 
-        public void Remove<T>(object tag)
+        public void Remove<ReferenceType>(object tag)
         {
-            var type = typeof(T);
+            var type = typeof(ReferenceType);
             Remove(key => key.Type == type && key.Tag == tag);
         }
 
         public void Remove(Func<DependencyKey, bool> predicate)
         {
-            var keys = dependencies.Keys.Where(predicate);
+            var keys = _dependencies.Keys.Where(predicate);
             Remove(keys);
         }
 
@@ -353,29 +358,31 @@ namespace DI_Lite
 
         public void Remove(DependencyKey key)
         {
-            dependencies.Remove(key);
+            _dependencies.Remove(key);
         }
-
-        public T Get<T>(object tag = null)
+        #endregion
+        #region GET
+        public ReferenceType Get<ReferenceType>(object tag = null)
         {
-            var key = new DependencyKey(typeof(T), tag);
-            if (!dependencies.ContainsKey(key))
+            var key = new DependencyKey(typeof(ReferenceType), tag);
+            if (!_dependencies.ContainsKey(key))
             {
                 throw new DependencyNotRegisteredException(key);
             }
-            var dependency = dependencies[key];
-            return (T)dependency.Get(this);
+            var dependency = _dependencies[key];
+            return (ReferenceType)dependency.Get(this);
         }
-
+        #endregion
+        #region SCOPE
         public ScopedContainer CreateScope()
         {
-            var dependencies = this.dependencies
-                .Select(ToScopeDependency)
+            var dependencies = this._dependencies
+                .Select(ReferenceTypeoScopeDependency)
                 .ToDictionary(x => x.Key, x => x.Value);
             return new ScopedContainer(dependencies);
         }
 
-        private KeyValuePair<DependencyKey, IDependency> ToScopeDependency(KeyValuePair<DependencyKey, IDependency> dependency)
+        private KeyValuePair<DependencyKey, IDependency> ReferenceTypeoScopeDependency(KeyValuePair<DependencyKey, IDependency> dependency)
         {
             if (dependency.Value is IScopedDependency scopedDependency)
             {
@@ -383,10 +390,12 @@ namespace DI_Lite
             }
             return dependency;
         }
-
-        private Func<IDependencyProvider, T> ToProviderCreator<T>(Func<T> creator)
+        #endregion
+        #region UTIL
+        private Func<IDependencyProvider, ReferenceType> ToProviderCreator<ReferenceType>(Func<ReferenceType> creator)
         {
-            return new Func<IDependencyProvider, T>(provider => creator());
+            return new Func<IDependencyProvider, ReferenceType>(provider => creator());
         }
+        #endregion
     }
 }

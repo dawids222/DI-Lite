@@ -2,11 +2,11 @@
 
 namespace DI_Lite.Dependencies
 {
-    public class Factory<T> : IDependency
+    public class Factory<ReferenceType> : IDependency
     {
-        public Func<IDependencyProvider, T> Creator { get; }
+        protected Func<IDependencyProvider, ReferenceType> Creator { get; }
 
-        public Factory(Func<IDependencyProvider, T> creator)
+        public Factory(Func<IDependencyProvider, ReferenceType> creator)
         {
             Creator = creator;
         }

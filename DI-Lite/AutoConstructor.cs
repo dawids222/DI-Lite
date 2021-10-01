@@ -6,40 +6,38 @@ using System.Reflection;
 
 namespace DI_Lite
 {
-    internal class AutoConstructor<T, R>
-        where R : class, T
+    internal class AutoConstructor<ReferenceType, ConcreteType>
+        where ConcreteType : class, ReferenceType
     {
-        public Func<IDependencyProvider, T> Creator { get; }
+        public Func<IDependencyProvider, ReferenceType> Creator { get; }
 
         public AutoConstructor()
         {
             Creator = InitializeCreator();
         }
 
-        private Func<IDependencyProvider, T> InitializeCreator()
+        private Func<IDependencyProvider, ReferenceType> InitializeCreator()
         {
-            var type = typeof(R);
+            var concreteType = typeof(ConcreteType);
             var parameters = GetConstructorParameters();
 
             return (provider) =>
             {
                 var args = GetConstructorArguments(parameters, provider);
-                return (T)Activator.CreateInstance(type, args);
+                return (ReferenceType)Activator.CreateInstance(concreteType, args);
             };
         }
 
         private object[] GetConstructorArguments(IEnumerable<Type> parameters, IDependencyProvider provider)
         {
-            object[] args;
             try
             {
-                args = GetConstructorArgumentsUnsafe(parameters, provider);
+                return GetConstructorArgumentsUnsafe(parameters, provider);
             }
             catch (TargetInvocationException ex)
             {
                 throw ex.InnerException;
             }
-            return args;
         }
 
         private object[] GetConstructorArgumentsUnsafe(IEnumerable<Type> parameters, IDependencyProvider provider)
@@ -54,20 +52,20 @@ namespace DI_Lite
 
         private IEnumerable<Type> GetConstructorParameters()
         {
-            var longestConstructor = GetLongestConstructor();
-            return longestConstructor
+            var constructor = GetConstructor();
+            return constructor
                 .GetParameters()
                 .Select(x => x.ParameterType);
         }
 
-        private ConstructorInfo GetLongestConstructor()
+        private ConstructorInfo GetConstructor()
         {
-            var type = typeof(R);
-            var constructors = type.GetConstructors();
+            var concreteType = typeof(ConcreteType);
+            var constructors = concreteType.GetConstructors();
             if (constructors.Length == 0)
-                throw new DependencyHasNoConstructorException(type);
+                throw new DependencyHasNoConstructorException(concreteType);
             if (constructors.Length > 1)
-                throw new DependencyHasMultipleConstructorsException(type);
+                throw new DependencyHasMultipleConstructorsException(concreteType);
             return constructors.First();
         }
     }

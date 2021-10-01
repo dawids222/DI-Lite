@@ -7,7 +7,7 @@ namespace DI_Lite.Exceptions
         public Type Type { get; }
 
         public DependencyHasNoConstructorException(Type type)
-            : base($"Dependency of type {type.FullName} can not be registered, because it contains no public constructor. Dependecy types must contain only 1 public constructor")
+            : base($"Dependency of type {type.FullName} can not be automatically registered, because it contains no public constructor. Dependecy types created automatically must contain exactly 1 public constructor")
         {
             Type = type;
         }

@@ -2,15 +2,13 @@
 
 namespace DI_Lite.Dependencies
 {
-    public class Singleton<T> : IDependency
+    public class Singleton<ReferenceType> : IDependency
     {
-        protected Func<IDependencyProvider, T> Creator { get; set; }
-        private T Instance { get; set; }
+        protected Func<IDependencyProvider, ReferenceType> Creator { get; }
+        private ReferenceType Instance { get; set; }
         private bool IsInitialized { get; set; } = false;
 
-        protected Singleton() { }
-
-        public Singleton(Func<IDependencyProvider, T> creator)
+        public Singleton(Func<IDependencyProvider, ReferenceType> creator)
         {
             Creator = creator;
         }

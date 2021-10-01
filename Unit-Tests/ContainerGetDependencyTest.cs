@@ -201,7 +201,7 @@ namespace Unit_Tests
 
             string act() => Container.Get<string>();
 
-            Assert.ThrowsException<DependencyRetrievalRequireScopeException>(act);
+            Assert.ThrowsException<DependencyRetrievalRequiresScopeException>(act);
         }
     }
 }

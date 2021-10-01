@@ -3,23 +3,23 @@ using System;
 
 namespace DI_Lite.Dependencies
 {
-    public class Scoped<T> : IScopedDependency
+    public class Scoped<ReferenceType> : IScopedDependency
     {
-        protected Func<IDependencyProvider, T> Creator { get; set; }
+        protected Func<IDependencyProvider, ReferenceType> Creator { get; }
 
-        public Scoped(Func<IDependencyProvider, T> creator)
+        public Scoped(Func<IDependencyProvider, ReferenceType> creator)
         {
             Creator = creator;
         }
 
         public object Get(IDependencyProvider provider)
         {
-            throw new DependencyRetrievalRequireScopeException();
+            throw new DependencyRetrievalRequiresScopeException();
         }
 
         public IDependency ToSingleton()
         {
-            return new Singleton<T>(Creator);
+            return new Singleton<ReferenceType>(Creator);
         }
     }
 }
