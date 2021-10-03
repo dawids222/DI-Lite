@@ -1,4 +1,5 @@
-﻿using DI_Lite.Exceptions;
+﻿using DI_Lite.Dependencies.Contracts;
+using DI_Lite.Exceptions;
 using System;
 
 namespace DI_Lite.Dependencies

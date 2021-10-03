@@ -1,4 +1,4 @@
-﻿namespace DI_Lite.Dependencies
+﻿namespace DI_Lite.Dependencies.Contracts
 {
     public interface IDependency
     {

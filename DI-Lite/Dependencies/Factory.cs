@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DI_Lite.Dependencies.Contracts;
+using System;
 
 namespace DI_Lite.Dependencies
 {
