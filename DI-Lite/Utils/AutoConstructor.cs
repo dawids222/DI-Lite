@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DI_Lite
+namespace DI_Lite.Utils
 {
     internal class AutoConstructor<ReferenceType, ConcreteType>
         where ConcreteType : class, ReferenceType
