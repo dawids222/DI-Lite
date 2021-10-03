@@ -21,7 +21,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void Remove_ByType_RemovesAlldependenciesWithGivenType()
+        public void RemovesAlldependenciesWithGivenType()
         {
             Container.Remove<string>();
 
@@ -30,7 +30,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void Remove_ByTag_RemovesAlldependenciesWithGivenTag()
+        public void RemovesAlldependenciesWithGivenTag()
         {
             Container.Remove("tag");
 
@@ -44,7 +44,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void Remove_ByTypeAndTag_RemovesAlldependenciesWithGivenypeAndTag()
+        public void RemovesAlldependenciesWithGivenypeAndTag()
         {
             Container.Remove<string>("tag");
 
@@ -61,7 +61,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void Remove_ByPredicate_RemovesAlldependenciesThatMatchesThePredicate()
+        public void RemovesAlldependenciesThatMatchesThePredicate()
         {
             Container.Remove(d =>
                 d.Type != typeof(string) ||
@@ -74,7 +74,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void Remove_ByKey_RemovesDependencyWithGivenKey()
+        public void RemovesDependencyWithGivenKey()
         {
             var key = Container.Dependencies.ElementAt(1).Key;
 
@@ -93,7 +93,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void Remove_ByKey_KeyDoesNotExist_DoesNothig()
+        public void KeyDoesNotExist_DoesNothig()
         {
             var key = new DependencyKey(typeof(double), null);
 
@@ -103,7 +103,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void Remove_ByKeys_RemovesAllDependenciesWithGivenKeys()
+        public void RemovesAllDependenciesWithGivenKeys()
         {
             var keys = Container.Dependencies
                 .Where(d => (string)d.Key.Tag == "tag")
@@ -121,7 +121,7 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void Remove_ByKeys_KeysDoNotExist_DoesNothig()
+        public void KeysDoNotExist_DoesNothig()
         {
             var keys = new DependencyKey[] {
                 new DependencyKey(typeof(double), null),
