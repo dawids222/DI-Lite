@@ -3,6 +3,22 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>DI_Lite</RootNamespace>
+    <Company>LiteLib</Company>
+    <PackageId>LiteLib.DI-Lite</PackageId>
+    <Authors>dawids222</Authors>
+    <RepositoryUrl>https://github.com/dawids222/DI-Lite</RepositoryUrl>
+    <PackageTags>fast lightweight library csharp dependency-injection container ioc ioc-container</PackageTags>
+    <PackageProjectUrl>https://github.com/dawids222/DI-Lite</PackageProjectUrl>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>Copyright (c) 2020 dawids222</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
