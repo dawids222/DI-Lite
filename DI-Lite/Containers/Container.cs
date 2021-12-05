@@ -10,7 +10,7 @@ namespace DI_Lite
 {
     public class Container : IDependencyProvider
     {
-        private readonly Dictionary<DependencyKey, IDependency> _dependencies = new Dictionary<DependencyKey, IDependency>();
+        private readonly Dictionary<DependencyKey, IDependency> _dependencies = new();
         public IEnumerable<KeyValuePair<DependencyKey, IDependency>> Dependencies { get => _dependencies; }
 
         #region SINGLE
@@ -34,7 +34,12 @@ namespace DI_Lite
             AddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void Single<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
+        public void Single<ReferenceType>(Func<IDependencyProvider, ReferenceType> creator)
+        {
+            Single(null, creator);
+        }
+
+        public void Single<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
             AddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(creator));
         }
@@ -72,7 +77,12 @@ namespace DI_Lite
             TryAddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void TrySingle<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
+        public void TrySingle<ReferenceType>(Func<IDependencyProvider, ReferenceType> creator)
+        {
+            TrySingle(null, creator);
+        }
+
+        public void TrySingle<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
             AddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(creator));
         }
@@ -110,7 +120,12 @@ namespace DI_Lite
             ForceAddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void ForceSingle<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
+        public void ForceSingle<ReferenceType>(Func<IDependencyProvider, ReferenceType> creator)
+        {
+            ForceSingle(null, creator);
+        }
+
+        public void ForceSingle<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
             AddDependency<ReferenceType>(tag, new Singleton<ReferenceType>(creator));
         }
@@ -139,7 +154,12 @@ namespace DI_Lite
             AddDependency<ReferenceType>(tag, new Factory<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void Factory<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
+        public void Factory<ReferenceType>(Func<IDependencyProvider, ReferenceType> creator)
+        {
+            Factory(null, creator);
+        }
+
+        public void Factory<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
             AddDependency<ReferenceType>(tag, new Factory<ReferenceType>(creator));
         }
@@ -167,7 +187,12 @@ namespace DI_Lite
             TryAddDependency<ReferenceType>(tag, new Factory<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void TryFactory<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
+        public void TryFactory<ReferenceType>(Func<IDependencyProvider, ReferenceType> creator)
+        {
+            TryFactory(null, creator);
+        }
+
+        public void TryFactory<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
             AddDependency<ReferenceType>(tag, new Factory<ReferenceType>(creator));
         }
@@ -195,7 +220,12 @@ namespace DI_Lite
             ForceAddDependency<ReferenceType>(tag, new Factory<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void ForceFactory<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
+        public void ForceFactory<ReferenceType>(Func<IDependencyProvider, ReferenceType> creator)
+        {
+            ForceFactory(null, creator);
+        }
+
+        public void ForceFactory<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
             AddDependency<ReferenceType>(tag, new Factory<ReferenceType>(creator));
         }
@@ -224,7 +254,12 @@ namespace DI_Lite
             AddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void Scoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
+        public void Scoped<ReferenceType>(Func<IDependencyProvider, ReferenceType> creator)
+        {
+            Scoped(null, creator);
+        }
+
+        public void Scoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
             AddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(creator));
         }
@@ -252,7 +287,12 @@ namespace DI_Lite
             TryAddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void TryScoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
+        public void TryScoped<ReferenceType>(Func<IDependencyProvider, ReferenceType> creator)
+        {
+            TryScoped(null, creator);
+        }
+
+        public void TryScoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
             AddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(creator));
         }
@@ -280,7 +320,12 @@ namespace DI_Lite
             ForceAddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(ToProviderCreator(creator)));
         }
 
-        private void ForceScoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
+        public void ForceScoped<ReferenceType>(Func<IDependencyProvider, ReferenceType> creator)
+        {
+            ForceScoped(null, creator);
+        }
+
+        public void ForceScoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
             AddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(creator));
         }
@@ -378,13 +423,13 @@ namespace DI_Lite
         #region SCOPE
         public ScopedContainer CreateScope()
         {
-            var dependencies = this._dependencies
-                .Select(ReferenceTypeoScopeDependency)
+            var dependencies = _dependencies
+                .Select(ReferenceTypeToScopeDependency)
                 .ToDictionary(x => x.Key, x => x.Value);
             return new ScopedContainer(dependencies);
         }
 
-        private KeyValuePair<DependencyKey, IDependency> ReferenceTypeoScopeDependency(KeyValuePair<DependencyKey, IDependency> dependency)
+        private KeyValuePair<DependencyKey, IDependency> ReferenceTypeToScopeDependency(KeyValuePair<DependencyKey, IDependency> dependency)
         {
             if (dependency.Value is IScopedDependency scopedDependency)
             {
@@ -394,7 +439,7 @@ namespace DI_Lite
         }
         #endregion
         #region UTIL
-        private Func<IDependencyProvider, ReferenceType> ToProviderCreator<ReferenceType>(Func<ReferenceType> creator)
+        private static Func<IDependencyProvider, ReferenceType> ToProviderCreator<ReferenceType>(Func<ReferenceType> creator)
         {
             return new Func<IDependencyProvider, ReferenceType>(provider => creator());
         }
