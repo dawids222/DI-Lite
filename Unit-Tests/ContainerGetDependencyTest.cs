@@ -16,9 +16,39 @@ namespace Unit_Tests
             Container.Single(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.Single(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.Single(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.Single(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.Single<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.Single<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.Single<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.Single<T>();
         }
     }
 
@@ -32,9 +62,39 @@ namespace Unit_Tests
             Container.Factory(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.Factory(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.Factory(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.Factory(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.Factory<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.Factory<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.Factory<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.Factory<T>();
         }
     }
 

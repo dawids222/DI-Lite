@@ -15,9 +15,39 @@ namespace Unit_Tests
             Container.Single(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.Single(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.Single(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.Single(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.Single<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.Single<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.Single<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.Single<T>();
         }
     }
 
@@ -29,9 +59,39 @@ namespace Unit_Tests
             Container.TrySingle(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.TrySingle(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.TrySingle(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.TrySingle(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.TrySingle<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.TrySingle<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.TrySingle<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.TrySingle<T>();
         }
     }
 
@@ -43,9 +103,39 @@ namespace Unit_Tests
             Container.ForceSingle(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.ForceSingle(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.ForceSingle(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.ForceSingle(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.ForceSingle<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.ForceSingle<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.ForceSingle<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.ForceSingle<T>();
         }
     }
 
@@ -57,9 +147,39 @@ namespace Unit_Tests
             Container.Factory(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.Factory(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.Factory(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.Factory(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.Factory<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.Factory<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.Factory<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.Factory<T>();
         }
     }
 
@@ -71,9 +191,39 @@ namespace Unit_Tests
             Container.TryFactory(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.TryFactory(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.TryFactory(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.TryFactory(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.TryFactory<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.TryFactory<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.TryFactory<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.TryFactory<T>();
         }
     }
 
@@ -85,9 +235,39 @@ namespace Unit_Tests
             Container.ForceFactory(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.ForceFactory(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.ForceFactory(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.ForceFactory(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.ForceFactory<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.ForceFactory<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.ForceFactory<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.ForceFactory<T>();
         }
     }
 
@@ -99,9 +279,39 @@ namespace Unit_Tests
             Container.Scoped(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.Scoped(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.Scoped(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.Scoped(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.Scoped<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.Scoped<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.Scoped<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.Scoped<T>();
         }
     }
 
@@ -113,9 +323,39 @@ namespace Unit_Tests
             Container.TryScoped(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.TryScoped(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.TryScoped(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.TryScoped(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.TryScoped<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.TryScoped<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.TryScoped<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.TryScoped<T>();
         }
     }
 
@@ -127,9 +367,39 @@ namespace Unit_Tests
             Container.ForceScoped(tag, creator);
         }
 
+        protected override void AddDependency<T>(Func<T> creator)
+        {
+            Container.ForceScoped(creator);
+        }
+
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
+        {
+            Container.ForceScoped(tag, creator);
+        }
+
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
+        {
+            Container.ForceScoped(creator);
+        }
+
         protected override void AddAutoConstructingDependency<T, R>(object tag)
         {
             Container.ForceScoped<T, R>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T, R>()
+        {
+            Container.ForceScoped<T, R>();
+        }
+
+        protected override void AddAutoConstructingDependency<T>(object tag)
+        {
+            Container.ForceScoped<T>(tag);
+        }
+
+        protected override void AddAutoConstructingDependency<T>()
+        {
+            Container.ForceScoped<T>();
         }
     }
 
@@ -225,6 +495,56 @@ namespace Unit_Tests
             AddDependency(new object(), () => "");
             AddDependency(this, () => "");
             AddDependency(12, () => "");
+
+            Assert.AreEqual(5, Container.Dependencies.Count());
+        }
+
+        [TestMethod]
+        public void AddsDependency_WithProvider()
+        {
+            AddDependency((provider) => "");
+
+            Assert.AreEqual(1, Container.Dependencies.Count());
+        }
+
+        [TestMethod]
+        public void AddsDependencyWithDefaultKey_WithProvider()
+        {
+            AddDependency((provider) => "");
+
+            var key = new DependencyKey(typeof(string), null);
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
+        }
+
+        [TestMethod]
+        public void AddsDependencyWithSpecifiedKey_WithProvider()
+        {
+            AddDependency("key", (provider) => "");
+
+            var key = new DependencyKey(typeof(string), "key");
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
+        }
+
+        [TestMethod]
+        public void AddsMultipleDifferentDependenciesWithSameTag_WithProvider()
+        {
+            AddDependency((provider) => "1");
+            AddDependency((provider) => 1);
+            AddDependency((provider) => 1.0);
+            AddDependency((provider) => '1');
+            AddDependency((provider) => true);
+
+            Assert.AreEqual(5, Container.Dependencies.Count());
+        }
+
+        [TestMethod]
+        public void AddsMultipleDifferentDependenciesWithSameType_WithProvider()
+        {
+            AddDependency("1", (provider) => "");
+            AddDependency("2", (provider) => "");
+            AddDependency(new object(), (provider) => "");
+            AddDependency(this, (provider) => "");
+            AddDependency(12, (provider) => "");
 
             Assert.AreEqual(5, Container.Dependencies.Count());
         }
