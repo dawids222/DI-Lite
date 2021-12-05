@@ -13,7 +13,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Copyright>Copyright (c) 2020 dawids222</Copyright>
     <Description>DI-Lite is a small size, high performance tool for storing and retrieving objects for dependency injection. Library is written in C# and has no external dependencies.</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
