@@ -550,6 +550,22 @@ namespace Unit_Tests
         }
 
         [TestMethod]
+        public void PassesCorrectProviderToScopedDependency()
+        {
+            IDependencyProvider actual = null;
+            AddDependency(provider =>
+            {
+                actual = provider;
+                return "";
+            });
+
+            var scope = Container.CreateScope();
+            scope.Get<string>();
+
+            Assert.AreEqual(scope, actual);
+        }
+
+        [TestMethod]
         public void AddsAutoConstructingDependency()
         {
             AddAutoConstructingDependency<IMockDependency, ValidConstructorlessMockDependency>();
