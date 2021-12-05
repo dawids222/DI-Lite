@@ -32,7 +32,7 @@ Container.Single<DependencyType>(() => new DependencyImp());
 // dependency can have a tag to distinguish dependencies of the same type
 Container.Single<DependencyType>("tag0", () => new DependencyImp());
 
-// parameter of type 'IDependencyProvider' can be passed. For Single and Factory this will be an instance of 'Container'. For Scoped it will be 'ScopedContainer' (mostly useful for that case).
+// parameter of type 'IDependencyProvider' can be passed. This is instance on which we invoke 'Get' method.
 Container.Single<DependencyType>(provider => new DependencyImp());
 // we can specify tag
 Container.Single<DependencyType>("tag1", provider => new DependencyImp());
