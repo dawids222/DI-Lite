@@ -10,45 +10,14 @@ namespace Unit_Tests
     [TestClass]
     public class ContainerSingleTest : ContainerStandardAddDepenedencyBaseTest
     {
-        protected override void AddDependency<T>(object tag, Func<T> creator)
-        {
-            Container.Single(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<T> creator)
-        {
-            Container.Single(creator);
-        }
-
-        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
-        {
-            Container.Single(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
-        {
-            Container.Single(creator);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>(object tag)
-        {
-            Container.Single<T, R>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>()
-        {
-            Container.Single<T, R>();
-        }
-
-        protected override void AddAutoConstructingDependency<T>(object tag)
-        {
-            Container.Single<T>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T>()
-        {
-            Container.Single<T>();
-        }
+        protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Single(tag, creator);
+        protected override void AddDependency<T>(Func<T> creator) => Container.Single(creator);
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.Single(tag, creator);
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator) => Container.Single(creator);
+        protected override void AddAutoConstructingDependency<T, R>(object tag) => Container.Single<T, R>(tag);
+        protected override void AddAutoConstructingDependency<T, R>() => Container.Single<T, R>();
+        protected override void AddAutoConstructingDependency<T>(object tag) => Container.Single<T>(tag);
+        protected override void AddAutoConstructingDependency<T>() => Container.Single<T>();
 
         [TestMethod]
         public void AddsDependencyWithDefaultKey_FromInstance()
@@ -74,45 +43,14 @@ namespace Unit_Tests
     [TestClass]
     public class ContainerTrySingleTest : ContainerTryAddDepenedencyBaseTest
     {
-        protected override void AddDependency<T>(object tag, Func<T> creator)
-        {
-            Container.TrySingle(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<T> creator)
-        {
-            Container.TrySingle(creator);
-        }
-
-        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
-        {
-            Container.TrySingle(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
-        {
-            Container.TrySingle(creator);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>(object tag)
-        {
-            Container.TrySingle<T, R>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>()
-        {
-            Container.TrySingle<T, R>();
-        }
-
-        protected override void AddAutoConstructingDependency<T>(object tag)
-        {
-            Container.TrySingle<T>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T>()
-        {
-            Container.TrySingle<T>();
-        }
+        protected override void AddDependency<T>(object tag, Func<T> creator) => Container.TrySingle(tag, creator);
+        protected override void AddDependency<T>(Func<T> creator) => Container.TrySingle(creator);
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.TrySingle(tag, creator);
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator) => Container.TrySingle(creator);
+        protected override void AddAutoConstructingDependency<T, R>(object tag) => Container.TrySingle<T, R>(tag);
+        protected override void AddAutoConstructingDependency<T, R>() => Container.TrySingle<T, R>();
+        protected override void AddAutoConstructingDependency<T>(object tag) => Container.TrySingle<T>(tag);
+        protected override void AddAutoConstructingDependency<T>() => Container.TrySingle<T>();
 
         [TestMethod]
         public void AddsDependencyWithDefaultKey_FromInstance()
@@ -138,45 +76,15 @@ namespace Unit_Tests
     [TestClass]
     public class ContainerForceSingleTest : ContainerForceAddDepenedencyBaseTest
     {
-        protected override void AddDependency<T>(object tag, Func<T> creator)
-        {
-            Container.ForceSingle(tag, creator);
-        }
+        protected override void AddDependency<T>(object tag, Func<T> creator) => Container.ForceSingle(tag, creator);
+        protected override void AddDependency<T>(Func<T> creator) => Container.ForceSingle(creator);
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.ForceSingle(tag, creator);
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator) => Container.ForceSingle(creator);
+        protected override void AddAutoConstructingDependency<T, R>(object tag) => Container.ForceSingle<T, R>(tag);
+        protected override void AddAutoConstructingDependency<T, R>() => Container.ForceSingle<T, R>();
+        protected override void AddAutoConstructingDependency<T>(object tag) => Container.ForceSingle<T>(tag);
+        protected override void AddAutoConstructingDependency<T>() => Container.ForceSingle<T>();
 
-        protected override void AddDependency<T>(Func<T> creator)
-        {
-            Container.ForceSingle(creator);
-        }
-
-        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
-        {
-            Container.ForceSingle(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
-        {
-            Container.ForceSingle(creator);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>(object tag)
-        {
-            Container.ForceSingle<T, R>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>()
-        {
-            Container.ForceSingle<T, R>();
-        }
-
-        protected override void AddAutoConstructingDependency<T>(object tag)
-        {
-            Container.ForceSingle<T>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T>()
-        {
-            Container.ForceSingle<T>();
-        }
 
         [TestMethod]
         public void AddsDependencyWithDefaultKey_FromInstance()
@@ -202,265 +110,79 @@ namespace Unit_Tests
     [TestClass]
     public class ContainerFactoryTest : ContainerStandardAddDepenedencyBaseTest
     {
-        protected override void AddDependency<T>(object tag, Func<T> creator)
-        {
-            Container.Factory(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<T> creator)
-        {
-            Container.Factory(creator);
-        }
-
-        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
-        {
-            Container.Factory(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
-        {
-            Container.Factory(creator);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>(object tag)
-        {
-            Container.Factory<T, R>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>()
-        {
-            Container.Factory<T, R>();
-        }
-
-        protected override void AddAutoConstructingDependency<T>(object tag)
-        {
-            Container.Factory<T>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T>()
-        {
-            Container.Factory<T>();
-        }
+        protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Factory(tag, creator);
+        protected override void AddDependency<T>(Func<T> creator) => Container.Factory(creator);
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.Factory(tag, creator);
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator) => Container.Factory(creator);
+        protected override void AddAutoConstructingDependency<T, R>(object tag) => Container.Factory<T, R>(tag);
+        protected override void AddAutoConstructingDependency<T, R>() => Container.Factory<T, R>();
+        protected override void AddAutoConstructingDependency<T>(object tag) => Container.Factory<T>(tag);
+        protected override void AddAutoConstructingDependency<T>() => Container.Factory<T>();
     }
 
     [TestClass]
     public class ContainerTryFactoryTest : ContainerTryAddDepenedencyBaseTest
     {
-        protected override void AddDependency<T>(object tag, Func<T> creator)
-        {
-            Container.TryFactory(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<T> creator)
-        {
-            Container.TryFactory(creator);
-        }
-
-        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
-        {
-            Container.TryFactory(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
-        {
-            Container.TryFactory(creator);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>(object tag)
-        {
-            Container.TryFactory<T, R>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>()
-        {
-            Container.TryFactory<T, R>();
-        }
-
-        protected override void AddAutoConstructingDependency<T>(object tag)
-        {
-            Container.TryFactory<T>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T>()
-        {
-            Container.TryFactory<T>();
-        }
+        protected override void AddDependency<T>(object tag, Func<T> creator) => Container.TryFactory(tag, creator);
+        protected override void AddDependency<T>(Func<T> creator) => Container.TryFactory(creator);
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.TryFactory(tag, creator);
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator) => Container.TryFactory(creator);
+        protected override void AddAutoConstructingDependency<T, R>(object tag) => Container.TryFactory<T, R>(tag);
+        protected override void AddAutoConstructingDependency<T, R>() => Container.TryFactory<T, R>();
+        protected override void AddAutoConstructingDependency<T>(object tag) => Container.TryFactory<T>(tag);
+        protected override void AddAutoConstructingDependency<T>() => Container.TryFactory<T>();
     }
 
     [TestClass]
     public class ContainerForceFactoryTest : ContainerForceAddDepenedencyBaseTest
     {
-        protected override void AddDependency<T>(object tag, Func<T> creator)
-        {
-            Container.ForceFactory(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<T> creator)
-        {
-            Container.ForceFactory(creator);
-        }
-
-        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
-        {
-            Container.ForceFactory(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
-        {
-            Container.ForceFactory(creator);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>(object tag)
-        {
-            Container.ForceFactory<T, R>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>()
-        {
-            Container.ForceFactory<T, R>();
-        }
-
-        protected override void AddAutoConstructingDependency<T>(object tag)
-        {
-            Container.ForceFactory<T>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T>()
-        {
-            Container.ForceFactory<T>();
-        }
+        protected override void AddDependency<T>(object tag, Func<T> creator) => Container.ForceFactory(tag, creator);
+        protected override void AddDependency<T>(Func<T> creator) => Container.ForceFactory(creator);
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.ForceFactory(tag, creator);
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator) => Container.ForceFactory(creator);
+        protected override void AddAutoConstructingDependency<T, R>(object tag) => Container.ForceFactory<T, R>(tag);
+        protected override void AddAutoConstructingDependency<T, R>() => Container.ForceFactory<T, R>();
+        protected override void AddAutoConstructingDependency<T>(object tag) => Container.TryFactory<T>(tag);
+        protected override void AddAutoConstructingDependency<T>() => Container.ForceFactory<T>();
     }
 
     [TestClass]
     public class ContainerScopedTest : ContainerStandardAddDepenedencyBaseTest
     {
-        protected override void AddDependency<T>(object tag, Func<T> creator)
-        {
-            Container.Scoped(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<T> creator)
-        {
-            Container.Scoped(creator);
-        }
-
-        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
-        {
-            Container.Scoped(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
-        {
-            Container.Scoped(creator);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>(object tag)
-        {
-            Container.Scoped<T, R>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>()
-        {
-            Container.Scoped<T, R>();
-        }
-
-        protected override void AddAutoConstructingDependency<T>(object tag)
-        {
-            Container.Scoped<T>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T>()
-        {
-            Container.Scoped<T>();
-        }
+        protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Scoped(tag, creator);
+        protected override void AddDependency<T>(Func<T> creator) => Container.Scoped(creator);
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.Scoped(tag, creator);
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator) => Container.Scoped(creator);
+        protected override void AddAutoConstructingDependency<T, R>(object tag) => Container.Scoped<T, R>(tag);
+        protected override void AddAutoConstructingDependency<T, R>() => Container.Scoped<T, R>();
+        protected override void AddAutoConstructingDependency<T>(object tag) => Container.Scoped<T>(tag);
+        protected override void AddAutoConstructingDependency<T>() => Container.Scoped<T>();
     }
 
     [TestClass]
     public class ContainerTryScopedTest : ContainerAddDependencyBaseTest
     {
-        protected override void AddDependency<T>(object tag, Func<T> creator)
-        {
-            Container.TryScoped(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<T> creator)
-        {
-            Container.TryScoped(creator);
-        }
-
-        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
-        {
-            Container.TryScoped(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
-        {
-            Container.TryScoped(creator);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>(object tag)
-        {
-            Container.TryScoped<T, R>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>()
-        {
-            Container.TryScoped<T, R>();
-        }
-
-        protected override void AddAutoConstructingDependency<T>(object tag)
-        {
-            Container.TryScoped<T>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T>()
-        {
-            Container.TryScoped<T>();
-        }
+        protected override void AddDependency<T>(object tag, Func<T> creator) => Container.TryScoped(tag, creator);
+        protected override void AddDependency<T>(Func<T> creator) => Container.TryScoped(creator);
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.TryScoped(tag, creator);
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator) => Container.TryScoped(creator);
+        protected override void AddAutoConstructingDependency<T, R>(object tag) => Container.TryScoped<T, R>(tag);
+        protected override void AddAutoConstructingDependency<T, R>() => Container.TryScoped<T, R>();
+        protected override void AddAutoConstructingDependency<T>(object tag) => Container.TryScoped<T>(tag);
+        protected override void AddAutoConstructingDependency<T>() => Container.TryScoped<T>();
     }
 
     [TestClass]
     public class ContainerForceScopedTest : ContainerAddDependencyBaseTest
     {
-        protected override void AddDependency<T>(object tag, Func<T> creator)
-        {
-            Container.ForceScoped(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<T> creator)
-        {
-            Container.ForceScoped(creator);
-        }
-
-        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator)
-        {
-            Container.ForceScoped(tag, creator);
-        }
-
-        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator)
-        {
-            Container.ForceScoped(creator);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>(object tag)
-        {
-            Container.ForceScoped<T, R>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T, R>()
-        {
-            Container.ForceScoped<T, R>();
-        }
-
-        protected override void AddAutoConstructingDependency<T>(object tag)
-        {
-            Container.ForceScoped<T>(tag);
-        }
-
-        protected override void AddAutoConstructingDependency<T>()
-        {
-            Container.ForceScoped<T>();
-        }
+        protected override void AddDependency<T>(object tag, Func<T> creator) => Container.ForceScoped(tag, creator);
+        protected override void AddDependency<T>(Func<T> creator) => Container.ForceScoped(creator);
+        protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.ForceScoped(tag, creator);
+        protected override void AddDependency<T>(Func<IDependencyProvider, T> creator) => Container.ForceScoped(creator);
+        protected override void AddAutoConstructingDependency<T, R>(object tag) => Container.ForceScoped<T, R>(tag);
+        protected override void AddAutoConstructingDependency<T, R>() => Container.ForceScoped<T, R>();
+        protected override void AddAutoConstructingDependency<T>(object tag) => Container.ForceScoped<T>(tag);
+        protected override void AddAutoConstructingDependency<T>() => Container.ForceScoped<T>();
     }
 
     [TestClass]
