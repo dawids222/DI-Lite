@@ -18,26 +18,6 @@ namespace Unit_Tests
         protected override void AddAutoConstructingDependency<T, R>() => Container.Single<T, R>();
         protected override void AddAutoConstructingDependency<T>(object tag) => Container.Single<T>(tag);
         protected override void AddAutoConstructingDependency<T>() => Container.Single<T>();
-
-        [TestMethod]
-        public void AddsDependencyWithDefaultKey_FromInstance()
-        {
-            var instance = "";
-            Container.Single(instance);
-
-            var key = new DependencyKey(typeof(string), null);
-            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
-        }
-
-        [TestMethod]
-        public void AddsDependencyWithSpecifiedKey_FromInstance()
-        {
-            var instance = "";
-            Container.Single("key", instance);
-
-            var key = new DependencyKey(typeof(string), "key");
-            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
-        }
     }
 
     [TestClass]
@@ -51,26 +31,6 @@ namespace Unit_Tests
         protected override void AddAutoConstructingDependency<T, R>() => Container.TrySingle<T, R>();
         protected override void AddAutoConstructingDependency<T>(object tag) => Container.TrySingle<T>(tag);
         protected override void AddAutoConstructingDependency<T>() => Container.TrySingle<T>();
-
-        [TestMethod]
-        public void AddsDependencyWithDefaultKey_FromInstance()
-        {
-            var instance = "";
-            Container.TrySingle(instance);
-
-            var key = new DependencyKey(typeof(string), null);
-            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
-        }
-
-        [TestMethod]
-        public void AddsDependencyWithSpecifiedKey_FromInstance()
-        {
-            var instance = "";
-            Container.TrySingle("key", instance);
-
-            var key = new DependencyKey(typeof(string), "key");
-            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
-        }
     }
 
     [TestClass]
@@ -84,27 +44,6 @@ namespace Unit_Tests
         protected override void AddAutoConstructingDependency<T, R>() => Container.ForceSingle<T, R>();
         protected override void AddAutoConstructingDependency<T>(object tag) => Container.ForceSingle<T>(tag);
         protected override void AddAutoConstructingDependency<T>() => Container.ForceSingle<T>();
-
-
-        [TestMethod]
-        public void AddsDependencyWithDefaultKey_FromInstance()
-        {
-            var instance = "";
-            Container.ForceSingle(instance);
-
-            var key = new DependencyKey(typeof(string), null);
-            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
-        }
-
-        [TestMethod]
-        public void AddsDependencyWithSpecifiedKey_FromInstance()
-        {
-            var instance = "";
-            Container.ForceSingle("key", instance);
-
-            var key = new DependencyKey(typeof(string), "key");
-            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
-        }
     }
 
     [TestClass]
@@ -225,6 +164,54 @@ namespace Unit_Tests
             var result = Container.Get<string>();
 
             Assert.AreEqual(result, "2");
+        }
+    }
+
+    [TestClass]
+    public class ContainerSingleInstanceAddDependencyTest : ContainerAddInstanceDependencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, T instance) => Container.Single(tag, instance);
+        protected override void AddDependency<T>(T instance) => Container.Single(instance);
+    }
+
+    [TestClass]
+    public class ContainerTrySingleInstanceAddDependencyTest : ContainerAddInstanceDependencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, T instance) => Container.TrySingle(tag, instance);
+        protected override void AddDependency<T>(T instance) => Container.TrySingle(instance);
+    }
+
+    [TestClass]
+    public class ContainerForceSingleInstanceAddDependencyTest : ContainerAddInstanceDependencyBaseTest
+    {
+        protected override void AddDependency<T>(object tag, T instance) => Container.ForceSingle(tag, instance);
+        protected override void AddDependency<T>(T instance) => Container.ForceSingle(instance);
+    }
+
+    [TestClass]
+    public abstract class ContainerAddInstanceDependencyBaseTest : ContainerBaseTest
+    {
+        protected abstract void AddDependency<T>(object tag, T instance);
+        protected abstract void AddDependency<T>(T instance);
+
+        [TestMethod]
+        public void AddsDependencyWithDefaultKey_FromInstance()
+        {
+            var instance = "";
+            AddDependency(instance);
+
+            var key = new DependencyKey(typeof(string), null);
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
+        }
+
+        [TestMethod]
+        public void AddsDependencyWithSpecifiedKey_FromInstance()
+        {
+            var instance = "";
+            AddDependency("key", instance);
+
+            var key = new DependencyKey(typeof(string), "key");
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
         }
     }
 
