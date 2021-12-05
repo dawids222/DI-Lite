@@ -8,7 +8,7 @@ using Unit_Tests.Models;
 namespace Unit_Tests
 {
     [TestClass]
-    public class ContainerSingleTest : ContainerStandardAddDepenedencyBaseTest
+    public class ContainerAddDependencyStandardSingleTest : ContainerAddDependencyStandardBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Single(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.Single(creator);
@@ -21,7 +21,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerTrySingleTest : ContainerTryAddDepenedencyBaseTest
+    public class ContainerAddDependencyTrySingleTest : ContainerAddDependencyTryBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.TrySingle(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.TrySingle(creator);
@@ -34,7 +34,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerForceSingleTest : ContainerForceAddDepenedencyBaseTest
+    public class ContainerAddDependencyForceSingleTest : ContainerAddDependencyForceBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.ForceSingle(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.ForceSingle(creator);
@@ -47,7 +47,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerFactoryTest : ContainerStandardAddDepenedencyBaseTest
+    public class ContainerAddDependencyStandardFactoryTest : ContainerAddDependencyStandardBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Factory(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.Factory(creator);
@@ -60,7 +60,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerTryFactoryTest : ContainerTryAddDepenedencyBaseTest
+    public class ContainerAddDependencyTryFactoryTest : ContainerAddDependencyTryBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.TryFactory(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.TryFactory(creator);
@@ -73,7 +73,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerForceFactoryTest : ContainerForceAddDepenedencyBaseTest
+    public class ContainerAddDependencyForceFactoryTest : ContainerAddDependencyForceBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.ForceFactory(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.ForceFactory(creator);
@@ -86,7 +86,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerScopedTest : ContainerStandardAddDepenedencyBaseTest
+    public class ContainerAddDependencyStandardScopedTest : ContainerAddDependencyStandardBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Scoped(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.Scoped(creator);
@@ -99,7 +99,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerTryScopedTest : ContainerAddDependencyBaseTest
+    public class ContainerAddDependencyTryScopedTest : ContainerAddDependencyBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.TryScoped(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.TryScoped(creator);
@@ -112,7 +112,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerForceScopedTest : ContainerAddDependencyBaseTest
+    public class ContainerAddDependencyForceScopedTest : ContainerAddDependencyBaseTest
     {
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.ForceScoped(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.ForceScoped(creator);
@@ -125,7 +125,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public abstract class ContainerStandardAddDepenedencyBaseTest : ContainerAddDependencyBaseTest
+    public abstract class ContainerAddDependencyStandardBaseTest : ContainerAddDependencyBaseTest
     {
         [TestMethod]
         public void ThrowsWhenSameDependenciesAreBeingRegistered()
@@ -138,7 +138,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public abstract class ContainerTryAddDepenedencyBaseTest : ContainerAddDependencyBaseTest
+    public abstract class ContainerAddDependencyTryBaseTest : ContainerAddDependencyBaseTest
     {
         [TestMethod]
         public void TakesFirstWhenSameDependenciesAreBeingRegistered()
@@ -153,7 +153,7 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public abstract class ContainerForceAddDepenedencyBaseTest : ContainerAddDependencyBaseTest
+    public abstract class ContainerAddDependencyForceBaseTest : ContainerAddDependencyBaseTest
     {
         [TestMethod]
         public void TakesSecondWhenSameDependenciesAreBeingRegistered()
@@ -168,28 +168,28 @@ namespace Unit_Tests
     }
 
     [TestClass]
-    public class ContainerSingleInstanceAddDependencyTest : ContainerAddInstanceDependencyBaseTest
+    public class ContainerAddDependencyInstanceSingleTest : ContainerAddDependencyInstanceBaseTest
     {
         protected override void AddDependency<T>(object tag, T instance) => Container.Single(tag, instance);
         protected override void AddDependency<T>(T instance) => Container.Single(instance);
     }
 
     [TestClass]
-    public class ContainerTrySingleInstanceAddDependencyTest : ContainerAddInstanceDependencyBaseTest
+    public class ContainerAddDependencyInstanceTrySingleTest : ContainerAddDependencyInstanceBaseTest
     {
         protected override void AddDependency<T>(object tag, T instance) => Container.TrySingle(tag, instance);
         protected override void AddDependency<T>(T instance) => Container.TrySingle(instance);
     }
 
     [TestClass]
-    public class ContainerForceSingleInstanceAddDependencyTest : ContainerAddInstanceDependencyBaseTest
+    public class ContainerAddDependencyInstanceForceSingleTest : ContainerAddDependencyInstanceBaseTest
     {
         protected override void AddDependency<T>(object tag, T instance) => Container.ForceSingle(tag, instance);
         protected override void AddDependency<T>(T instance) => Container.ForceSingle(instance);
     }
 
     [TestClass]
-    public abstract class ContainerAddInstanceDependencyBaseTest : ContainerBaseTest
+    public abstract class ContainerAddDependencyInstanceBaseTest : ContainerBaseTest
     {
         protected abstract void AddDependency<T>(object tag, T instance);
         protected abstract void AddDependency<T>(T instance);
