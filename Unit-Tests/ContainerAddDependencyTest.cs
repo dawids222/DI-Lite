@@ -49,6 +49,26 @@ namespace Unit_Tests
         {
             Container.Single<T>();
         }
+
+        [TestMethod]
+        public void AddsDependencyWithDefaultKey_FromInstance()
+        {
+            var instance = "";
+            Container.Single(instance);
+
+            var key = new DependencyKey(typeof(string), null);
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
+        }
+
+        [TestMethod]
+        public void AddsDependencyWithSpecifiedKey_FromInstance()
+        {
+            var instance = "";
+            Container.Single("key", instance);
+
+            var key = new DependencyKey(typeof(string), "key");
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
+        }
     }
 
     [TestClass]
@@ -93,6 +113,26 @@ namespace Unit_Tests
         {
             Container.TrySingle<T>();
         }
+
+        [TestMethod]
+        public void AddsDependencyWithDefaultKey_FromInstance()
+        {
+            var instance = "";
+            Container.TrySingle(instance);
+
+            var key = new DependencyKey(typeof(string), null);
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
+        }
+
+        [TestMethod]
+        public void AddsDependencyWithSpecifiedKey_FromInstance()
+        {
+            var instance = "";
+            Container.TrySingle("key", instance);
+
+            var key = new DependencyKey(typeof(string), "key");
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
+        }
     }
 
     [TestClass]
@@ -136,6 +176,26 @@ namespace Unit_Tests
         protected override void AddAutoConstructingDependency<T>()
         {
             Container.ForceSingle<T>();
+        }
+
+        [TestMethod]
+        public void AddsDependencyWithDefaultKey_FromInstance()
+        {
+            var instance = "";
+            Container.ForceSingle(instance);
+
+            var key = new DependencyKey(typeof(string), null);
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
+        }
+
+        [TestMethod]
+        public void AddsDependencyWithSpecifiedKey_FromInstance()
+        {
+            var instance = "";
+            Container.ForceSingle("key", instance);
+
+            var key = new DependencyKey(typeof(string), "key");
+            Assert.AreEqual(key, Container.Dependencies.ElementAt(0).Key);
         }
     }
 
