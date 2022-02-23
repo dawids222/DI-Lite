@@ -10,6 +10,7 @@ namespace DI_Lite.Utils
         where ConcreteType : class, ReferenceType
     {
         public Func<IDependencyProvider, ReferenceType> Creator { get; }
+        public IEnumerable<Type> Parameters { get; private set; }
 
         public AutoConstructor()
         {
@@ -19,11 +20,11 @@ namespace DI_Lite.Utils
         private Func<IDependencyProvider, ReferenceType> InitializeCreator()
         {
             var concreteType = typeof(ConcreteType);
-            var parameters = GetConstructorParameters();
+            Parameters = GetConstructorParameters();
 
             return (provider) =>
             {
-                var args = GetConstructorArguments(parameters, provider);
+                var args = GetConstructorArguments(Parameters, provider);
                 return (ReferenceType)Activator.CreateInstance(concreteType, args);
             };
         }

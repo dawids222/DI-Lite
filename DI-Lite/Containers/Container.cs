@@ -54,7 +54,13 @@ namespace DI_Lite
             where ConcreteType : class, ReferenceType
         {
             var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
-            Single(tag, autoConstructor.Creator);
+            Single(tag, autoConstructor);
+        }
+
+        private void Single<ReferenceType, ConcreteType>(object tag, AutoConstructor<ReferenceType, ConcreteType> constructor)
+            where ConcreteType : class, ReferenceType
+        {
+            AddDependency<ReferenceType>(tag, new AutoConstructedSingleton<ReferenceType, ConcreteType>(constructor));
         }
 
         public void TrySingle<ReferenceType>(ReferenceType instance)
@@ -97,7 +103,13 @@ namespace DI_Lite
             where ConcreteType : class, ReferenceType
         {
             var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
-            TrySingle(tag, autoConstructor.Creator);
+            TrySingle(tag, autoConstructor);
+        }
+
+        private void TrySingle<ReferenceType, ConcreteType>(object tag, AutoConstructor<ReferenceType, ConcreteType> constructor)
+            where ConcreteType : class, ReferenceType
+        {
+            TryAddDependency<ReferenceType>(tag, new AutoConstructedSingleton<ReferenceType, ConcreteType>(constructor));
         }
 
         public void ForceSingle<ReferenceType>(ReferenceType instance)
@@ -140,7 +152,13 @@ namespace DI_Lite
             where ConcreteType : class, ReferenceType
         {
             var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
-            ForceSingle(tag, autoConstructor.Creator);
+            ForceSingle(tag, autoConstructor);
+        }
+
+        private void ForceSingle<ReferenceType, ConcreteType>(object tag, AutoConstructor<ReferenceType, ConcreteType> constructor)
+            where ConcreteType : class, ReferenceType
+        {
+            ForceAddDependency<ReferenceType>(tag, new AutoConstructedSingleton<ReferenceType, ConcreteType>(constructor));
         }
         #endregion
         #region FACTORY
@@ -174,7 +192,12 @@ namespace DI_Lite
             where ConcreteType : class, ReferenceType
         {
             var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
-            Factory(tag, autoConstructor.Creator);
+            Factory(tag, autoConstructor);
+        }
+        private void Factory<ReferenceType, ConcreteType>(object tag, AutoConstructor<ReferenceType, ConcreteType> constructor)
+            where ConcreteType : class, ReferenceType
+        {
+            AddDependency<ReferenceType>(tag, new AutoConstructedFactory<ReferenceType, ConcreteType>(constructor));
         }
 
         public void TryFactory<ReferenceType>(Func<ReferenceType> creator)
@@ -207,7 +230,13 @@ namespace DI_Lite
             where ConcreteType : class, ReferenceType
         {
             var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
-            TryFactory(tag, autoConstructor.Creator);
+            TryFactory(tag, autoConstructor);
+        }
+
+        private void TryFactory<ReferenceType, ConcreteType>(object tag, AutoConstructor<ReferenceType, ConcreteType> constructor)
+            where ConcreteType : class, ReferenceType
+        {
+            TryAddDependency<ReferenceType>(tag, new AutoConstructedFactory<ReferenceType, ConcreteType>(constructor));
         }
 
         public void ForceFactory<ReferenceType>(Func<ReferenceType> creator)
@@ -240,7 +269,13 @@ namespace DI_Lite
             where ConcreteType : class, ReferenceType
         {
             var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
-            ForceFactory(tag, autoConstructor.Creator);
+            ForceFactory(tag, autoConstructor);
+        }
+
+        private void ForceFactory<ReferenceType, ConcreteType>(object tag, AutoConstructor<ReferenceType, ConcreteType> constructor)
+            where ConcreteType : class, ReferenceType
+        {
+            ForceAddDependency<ReferenceType>(tag, new AutoConstructedFactory<ReferenceType, ConcreteType>(constructor));
         }
         #endregion
         #region SCOPED
@@ -274,7 +309,13 @@ namespace DI_Lite
             where ConcreteType : class, ReferenceType
         {
             var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
-            Scoped(tag, autoConstructor.Creator);
+            Scoped(tag, autoConstructor);
+        }
+
+        private void Scoped<ReferenceType, ConcreteType>(object tag, AutoConstructor<ReferenceType, ConcreteType> constructor)
+            where ConcreteType : class, ReferenceType
+        {
+            AddDependency<ReferenceType>(tag, new AutoConstructedScoped<ReferenceType, ConcreteType>(constructor));
         }
 
         public void TryScoped<ReferenceType>(Func<ReferenceType> creator)
@@ -294,7 +335,7 @@ namespace DI_Lite
 
         public void TryScoped<ReferenceType>(object tag, Func<IDependencyProvider, ReferenceType> creator)
         {
-            AddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(creator));
+            TryAddDependency<ReferenceType>(tag, new Scoped<ReferenceType>(creator));
         }
 
         public void TryScoped<ConcreteType>(object tag = null)
@@ -307,7 +348,13 @@ namespace DI_Lite
             where ConcreteType : class, ReferenceType
         {
             var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
-            TryScoped(tag, autoConstructor.Creator);
+            TryScoped(tag, autoConstructor);
+        }
+
+        private void TryScoped<ReferenceType, ConcreteType>(object tag, AutoConstructor<ReferenceType, ConcreteType> constructor)
+            where ConcreteType : class, ReferenceType
+        {
+            TryAddDependency<ReferenceType>(tag, new AutoConstructedScoped<ReferenceType, ConcreteType>(constructor));
         }
 
         public void ForceScoped<ReferenceType>(Func<ReferenceType> creator)
@@ -340,7 +387,13 @@ namespace DI_Lite
             where ConcreteType : class, ReferenceType
         {
             var autoConstructor = new AutoConstructor<ReferenceType, ConcreteType>();
-            ForceScoped(tag, autoConstructor.Creator);
+            ForceScoped(tag, autoConstructor);
+        }
+
+        private void ForceScoped<ReferenceType, ConcreteType>(object tag, AutoConstructor<ReferenceType, ConcreteType> constructor)
+            where ConcreteType : class, ReferenceType
+        {
+            ForceAddDependency<ReferenceType>(tag, new AutoConstructedScoped<ReferenceType, ConcreteType>(constructor));
         }
         #endregion
         #region DEPENDENCY
@@ -439,6 +492,42 @@ namespace DI_Lite
         }
         #endregion
         #region UTIL
+        public bool IsConstructable()
+        {
+            try
+            {
+                ThrowIfIsNotConstructable();
+                return true;
+            }
+            catch (ContainerNotConstructableException)
+            {
+                return false;
+            }
+        }
+
+        public void ThrowIfIsNotConstructable()
+        {
+            var exceptions = new List<DependencyNotConstructableException>();
+
+            _dependencies
+                .Where(d => d.Value is IAutoConstructedDependency)
+                .Select(d => d.Value as IAutoConstructedDependency)
+                .ToList()
+                .ForEach(d =>
+                {
+                    try { d.ThrowIfIsNotConstructable(this); }
+                    catch (DependencyNotConstructableException ex) { exceptions.Add(ex); }
+                });
+
+            if (exceptions.Any()) { throw new ContainerNotConstructableException(exceptions.Distinct()); }
+        }
+
+        internal bool Contains(Type refecenceType)
+        {
+            var key = new DependencyKey(refecenceType, null);
+            return _dependencies.ContainsKey(key);
+        }
+
         private static Func<IDependencyProvider, ReferenceType> ToProviderCreator<ReferenceType>(Func<ReferenceType> creator)
         {
             return new Func<IDependencyProvider, ReferenceType>(provider => creator());
