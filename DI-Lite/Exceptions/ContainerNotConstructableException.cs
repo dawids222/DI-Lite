@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DI_Lite.Dependencies.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,20 +7,20 @@ namespace DI_Lite.Exceptions
 {
     public class ContainerNotConstructableException : Exception
     {
-        public IEnumerable<DependencyNotConstructableException> Exceptions { get; }
+        public IEnumerable<DependencyConstructabilityReport> FailedReports { get; }
 
         public ContainerNotConstructableException(
-            IEnumerable<DependencyNotConstructableException> exceptions)
-            : base(CreateMessage(exceptions))
+            IEnumerable<DependencyConstructabilityReport> failedReports)
+            : base(CreateMessage(failedReports))
         {
-            Exceptions = exceptions;
+            FailedReports = failedReports;
         }
 
         private static string CreateMessage(
-            IEnumerable<DependencyNotConstructableException> exceptions)
+            IEnumerable<DependencyConstructabilityReport> failedReports)
         {
-            var mesasges = exceptions.Select(e => e.Message);
-            return string.Join(Environment.NewLine, mesasges);
+            var errors = failedReports.Select(r => r.Error);
+            return string.Join(Environment.NewLine, errors);
         }
     }
 }

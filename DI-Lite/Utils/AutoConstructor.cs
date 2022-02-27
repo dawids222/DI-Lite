@@ -29,7 +29,7 @@ namespace DI_Lite.Utils
             };
         }
 
-        private object[] GetConstructorArguments(IEnumerable<Type> parameters, IDependencyProvider provider)
+        private static object[] GetConstructorArguments(IEnumerable<Type> parameters, IDependencyProvider provider)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace DI_Lite.Utils
             }
         }
 
-        private object[] GetConstructorArgumentsUnsafe(IEnumerable<Type> parameters, IDependencyProvider provider)
+        private static object[] GetConstructorArgumentsUnsafe(IEnumerable<Type> parameters, IDependencyProvider provider)
         {
             return parameters
                 .Select(type => typeof(IDependencyProvider)
@@ -51,7 +51,7 @@ namespace DI_Lite.Utils
                 .ToArray();
         }
 
-        private IEnumerable<Type> GetConstructorParameters()
+        private static IEnumerable<Type> GetConstructorParameters()
         {
             var constructor = GetConstructor();
             return constructor
@@ -59,7 +59,7 @@ namespace DI_Lite.Utils
                 .Select(x => x.ParameterType);
         }
 
-        private ConstructorInfo GetConstructor()
+        private static ConstructorInfo GetConstructor()
         {
             var concreteType = typeof(ConcreteType);
             var constructors = concreteType.GetConstructors();

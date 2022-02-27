@@ -493,28 +493,22 @@ namespace DI_Lite
         }
         #endregion
         #region UTIL
-        public bool IsConstructable()
-        {
-            return _dependencies
-                .OfType<IAutoConstructedDependency>()
-                .All(d => d.IsConstructable(this));
-        }
+        public bool IsConstructable => _dependencies.Values
+            .OfType<IAutoConstructedDependency>()
+            .All(d => d.IsConstructable(this));
 
-        public IEnumerable<ConstructabilityReport> GetConstructabilityReports()
+        public ContainerConstructabilityReport GetConstructabilityReport()
         {
-            return _dependencies
+            var reports = _dependencies.Values
                 .OfType<IAutoConstructedDependency>()
                 .Select(d => d.GetConstructabilityReport(this));
+            return new ContainerConstructabilityReport(reports);
         }
 
         public void ThrowIfNotConstructable()
         {
-            var exceptions = GetConstructabilityReports()
-                .Where(r => !r.IsConstructable)
-                .Select(r => new DependencyNotConstructableException(r.ConcreteType, r.MissingDependencies))
-                .Distinct();
-
-            if (exceptions.Any()) { throw new ContainerNotConstructableException(exceptions); }
+            var failedReports = GetConstructabilityReport().FailedConstructabilityReports;
+            if (failedReports.Any()) { throw new ContainerNotConstructableException(failedReports); }
         }
 
         internal bool Contains(Type refecenceType)

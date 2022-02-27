@@ -26,8 +26,8 @@ namespace DI_Lite.Dependencies.Contracts
         public override object Get(IDependencyProvider provider)
             => _dependency.Get(provider);
 
-        public ConstructabilityReport GetConstructabilityReport(Container container)
-            => new(typeof(RefType), typeof(ConType), GetMissingDependencies(container));
+        public DependencyConstructabilityReport GetConstructabilityReport(Container container)
+            => new(ReferenceType, ConcreteType, GetMissingDependencies(container));
 
         public bool IsConstructable(Container container)
             => !GetMissingDependencies(container).Any();

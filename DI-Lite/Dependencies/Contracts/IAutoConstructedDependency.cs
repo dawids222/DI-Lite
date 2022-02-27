@@ -4,7 +4,7 @@ namespace DI_Lite.Dependencies.Contracts
 {
     internal interface IAutoConstructedDependency : IDependency
     {
-        ConstructabilityReport GetConstructabilityReport(Container container);
+        DependencyConstructabilityReport GetConstructabilityReport(Container container);
         bool IsConstructable(Container container);
     }
 }
