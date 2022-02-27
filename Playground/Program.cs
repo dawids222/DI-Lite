@@ -15,7 +15,7 @@ namespace Playground
             container.Single<IHuman, Human>("");
             try
             {
-                container.ThrowIfIsNotConstructable();
+                container.ThrowIfNotConstructable();
                 var scope = container.CreateScope();
                 var human = scope.Get<Human>();
                 human.Greet();

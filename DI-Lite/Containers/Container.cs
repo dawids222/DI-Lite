@@ -1,5 +1,6 @@
 ﻿using DI_Lite.Dependencies;
 using DI_Lite.Dependencies.Contracts;
+using DI_Lite.Dependencies.Models;
 using DI_Lite.Exceptions;
 using DI_Lite.Utils;
 using System;
@@ -494,32 +495,26 @@ namespace DI_Lite
         #region UTIL
         public bool IsConstructable()
         {
-            try
-            {
-                ThrowIfIsNotConstructable();
-                return true;
-            }
-            catch (ContainerNotConstructableException)
-            {
-                return false;
-            }
+            return _dependencies
+                .OfType<IAutoConstructedDependency>()
+                .All(d => d.IsConstructable(this));
         }
 
-        public void ThrowIfIsNotConstructable()
+        public IEnumerable<ConstructabilityReport> GetConstructabilityReports()
         {
-            var exceptions = new List<DependencyNotConstructableException>();
+            return _dependencies
+                .OfType<IAutoConstructedDependency>()
+                .Select(d => d.GetConstructabilityReport(this));
+        }
 
-            _dependencies
-                .Where(d => d.Value is IAutoConstructedDependency)
-                .Select(d => d.Value as IAutoConstructedDependency)
-                .ToList()
-                .ForEach(d =>
-                {
-                    try { d.ThrowIfIsNotConstructable(this); }
-                    catch (DependencyNotConstructableException ex) { exceptions.Add(ex); }
-                });
+        public void ThrowIfNotConstructable()
+        {
+            var exceptions = GetConstructabilityReports()
+                .Where(r => !r.IsConstructable)
+                .Select(r => new DependencyNotConstructableException(r.ConcreteType, r.MissingDependencies))
+                .Distinct();
 
-            if (exceptions.Any()) { throw new ContainerNotConstructableException(exceptions.Distinct()); }
+            if (exceptions.Any()) { throw new ContainerNotConstructableException(exceptions); }
         }
 
         internal bool Contains(Type refecenceType)

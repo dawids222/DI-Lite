@@ -3,16 +3,11 @@ using System;
 
 namespace DI_Lite.Dependencies
 {
-    public class Factory<ReferenceType> : IDependency
+    public class Factory<ReferenceType> : Dependency<ReferenceType>
     {
-        protected Func<IDependencyProvider, ReferenceType> Creator { get; }
+        public Factory(Func<IDependencyProvider, ReferenceType> creator) : base(creator) { }
 
-        public Factory(Func<IDependencyProvider, ReferenceType> creator)
-        {
-            Creator = creator;
-        }
-
-        public object Get(IDependencyProvider provider)
+        public override object Get(IDependencyProvider provider)
         {
             return Creator(provider);
         }

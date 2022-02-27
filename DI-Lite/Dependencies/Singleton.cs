@@ -3,18 +3,14 @@ using System;
 
 namespace DI_Lite.Dependencies
 {
-    public class Singleton<ReferenceType> : IDependency
+    public class Singleton<ReferenceType> : Dependency<ReferenceType>
     {
-        protected Func<IDependencyProvider, ReferenceType> Creator { get; }
         private ReferenceType Instance { get; set; }
         private bool IsInitialized { get; set; } = false;
 
-        public Singleton(Func<IDependencyProvider, ReferenceType> creator)
-        {
-            Creator = creator;
-        }
+        public Singleton(Func<IDependencyProvider, ReferenceType> creator) : base(creator) { }
 
-        public object Get(IDependencyProvider provider)
+        public override object Get(IDependencyProvider provider)
         {
             if (!IsInitialized) { Initialize(provider); }
             return Instance;

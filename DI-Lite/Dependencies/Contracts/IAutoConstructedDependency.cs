@@ -1,7 +1,10 @@
-﻿namespace DI_Lite.Dependencies.Contracts
+﻿using DI_Lite.Dependencies.Models;
+
+namespace DI_Lite.Dependencies.Contracts
 {
     internal interface IAutoConstructedDependency : IDependency
     {
-        void ThrowIfIsNotConstructable(Container container);
+        ConstructabilityReport GetConstructabilityReport(Container container);
+        bool IsConstructable(Container container);
     }
 }

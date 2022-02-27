@@ -4,16 +4,11 @@ using System;
 
 namespace DI_Lite.Dependencies
 {
-    public class Scoped<ReferenceType> : IScopedDependency
+    public class Scoped<ReferenceType> : Dependency<ReferenceType>, IScopedDependency
     {
-        protected Func<IDependencyProvider, ReferenceType> Creator { get; }
+        public Scoped(Func<IDependencyProvider, ReferenceType> creator) : base(creator) { }
 
-        public Scoped(Func<IDependencyProvider, ReferenceType> creator)
-        {
-            Creator = creator;
-        }
-
-        public object Get(IDependencyProvider provider)
+        public override object Get(IDependencyProvider provider)
         {
             throw new DependencyRetrievalRequiresScopeException();
         }
