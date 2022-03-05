@@ -44,7 +44,10 @@ namespace DI_Lite.Utils
         {
             return parameters
                 .Select(type => typeof(IDependencyProvider)
-                    .GetMethod(nameof(IDependencyProvider.Get))
+                    .GetMethods()
+                    .First(method =>
+                        method.Name == nameof(IDependencyProvider.Get) &&
+                        method.IsGenericMethod)
                     .MakeGenericMethod(type)
                     .Invoke(provider, new object[] { null }))
                 .ToArray();
