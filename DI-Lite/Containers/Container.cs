@@ -492,7 +492,7 @@ namespace DI_Lite
             return dependency;
         }
         #endregion
-        #region UTIL
+        #region CONSTRUCTABILITY
         public bool IsConstructable => _dependencies.Values
             .OfType<IAutoConstructedDependency>()
             .All(d => d.IsConstructable(this));
@@ -510,7 +510,8 @@ namespace DI_Lite
             var failedReports = GetConstructabilityReport().FailedConstructabilityReports;
             if (failedReports.Any()) { throw new ContainerNotConstructableException(failedReports); }
         }
-
+        #endregion
+        #region UTIL
         internal bool Contains(Type refecenceType)
         {
             var key = new DependencyKey(refecenceType, null);

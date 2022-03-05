@@ -18,6 +18,18 @@
         public void DoSomething() { }
     }
 
+    public class ValidParameterMockDependency : IMockDependency
+    {
+        public IMockDependency Inner { get; }
+
+        public ValidParameterMockDependency(IMockDependency inner)
+        {
+            Inner = inner;
+        }
+
+        public void DoSomething() { }
+    }
+
     public class ValidParameterlessMockDependency : IMockDependency
     {
         public IMockDependency Inner { get; }
