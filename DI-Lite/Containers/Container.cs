@@ -425,6 +425,18 @@ namespace DI_Lite
             return dependency.Get(this);
         }
         #endregion
+        #region CONTAINS
+        public bool Contains<T>(object tag = null)
+        {
+            return Contains(typeof(T), tag);
+        }
+
+        public bool Contains(Type referenceType, object tag = null)
+        {
+            var key = new DependencyKey(referenceType, tag);
+            return _dependencies.ContainsKey(key);
+        }
+        #endregion
         #region SCOPE
         public ScopedContainer CreateScope()
         {

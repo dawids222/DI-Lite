@@ -29,5 +29,16 @@ namespace DI_Lite
             var dependency = _dependencies[key];
             return dependency.Get(this);
         }
+
+        public bool Contains<T>(object tag = null)
+        {
+            return Contains(typeof(T), tag);
+        }
+
+        public bool Contains(Type referenceType, object tag = null)
+        {
+            var key = new DependencyKey(referenceType, tag);
+            return _dependencies.ContainsKey(key);
+        }
     }
 }
