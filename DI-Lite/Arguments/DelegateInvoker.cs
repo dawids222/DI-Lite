@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DI_Lite.Arguments
 {
-    public class DelegateInvoker
+    public class DelegateInvoker : IDelegateInvoker
     {
         private readonly Delegate _delegate;
         private readonly IArgumentsProvider _provider;
