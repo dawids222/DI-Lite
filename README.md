@@ -16,6 +16,7 @@ DI-Lite is a small size, high performance tool for storing and retrieving object
   - Getting dependencies
   - Scoping dependencies
   - Auto creating objects base on their constructor
+  - Invoking delegates via Reflection
 
 ## Examples
 
@@ -128,10 +129,38 @@ var dependency = scope.Get<DependencyType>();
 var dependency = scope.Get<DependencyType>("tag");
 ```
 
+ ```CSharp
+ var container = new Container();
+container.Single<DependencyType, DependencyImp>();
+// to automatically invoke a delegate we have to define providers 
+// which will contain arguments for it
+var providers = new IArgumentsProvider[]
+{
+	// we can use our container to provider complex objects
+    new ContainerArgumentsProvider(container),
+	// and a string dictionary to provide simple values
+    new DictionaryArgumentsProvider(
+        new Dictionary<string, string>() {
+            { "name", "David" },
+            { "age", "25" },
+            { "birthday", "1996-12-21 8:00:00" }
+        }),
+};
+// aggreagted provider can be used to provide values from multiple sources
+var provider = new AggregatedArgumentsProvider(providers);
+// here we define delegate we want to invoke
+var del = (DependencyType dependency, string name, int age, DateTime birthday) => dependency.DoSomething(name, age, birthday);
+// then we can instantiate our invoker and invoke a delegate
+var invoker = new DelegateInvoker(del, provider);
+// async
+var result = await invoker.InvokeAsync();
+// or sync
+var result = invoker.Invoke();
+```
+
 ### Todos
 
  - Write MORE Tests
  - Add method descriptions
  - Add example usecase classes
- - Add 'object Get(Type referenceType)' to 'IDependencyProvider'
  - Add interface for 'Container'
