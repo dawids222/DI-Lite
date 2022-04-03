@@ -16,6 +16,7 @@ DI-Lite is a small size, high performance tool for storing and retrieving object
   - Getting dependencies
   - Scoping dependencies
   - Auto creating objects base on their constructor
+  - Checking if all registered dependencies can be constructed
   - Invoking delegates via Reflection
 
 ## Examples
@@ -127,6 +128,19 @@ var scope = Container.CreateScope();
 var dependency = scope.Get<DependencyType>();
 // or
 var dependency = scope.Get<DependencyType>("tag");
+```
+
+ ```CSharp
+// we can check if all registered dependencies are constructable in multiple ways
+
+// will simply check whether continer is constructable or not
+var isConstructable = Container.IsConstructable;
+
+// will return an object telling if the container is constructable and what is missing
+var constructabilityReport = Container.GetConstructabilityReport();
+
+// will throw if container is not constructable
+Container.ThrowIfNotConstructable();
 ```
 
  ```CSharp
