@@ -465,13 +465,30 @@ namespace DI_Lite
         #region GET
         public ReferenceType Get<ReferenceType>(object tag = null)
         {
-            var key = new DependencyKey(typeof(ReferenceType), tag);
+            return (ReferenceType)Get(typeof(ReferenceType), tag);
+        }
+
+        public object Get(Type referenceType, object tag = null)
+        {
+            var key = new DependencyKey(referenceType, tag);
             if (!_dependencies.ContainsKey(key))
             {
                 throw new DependencyNotRegisteredException(key);
             }
             var dependency = _dependencies[key];
-            return (ReferenceType)dependency.Get(this);
+            return dependency.Get(this);
+        }
+        #endregion
+        #region CONTAINS
+        public bool Contains<T>(object tag = null)
+        {
+            return Contains(typeof(T), tag);
+        }
+
+        public bool Contains(Type referenceType, object tag = null)
+        {
+            var key = new DependencyKey(referenceType, tag);
+            return _dependencies.ContainsKey(key);
         }
         #endregion
         #region SCOPE

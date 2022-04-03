@@ -10,8 +10,9 @@ namespace Unit_Tests
     public class ScopedContainerGetSingleTest : ScopedContainerGetDependencyBaseTest
     {
         protected override bool SameKeyProducesSameDependencyForSameScope => true;
-
         protected override bool SameKeyProducesSameDependencyForDifferentScopes => true;
+
+        protected override T Get<T>(ScopedContainer scope, object tag) => (T)scope.Get(typeof(T), tag);
 
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Single(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.Single(creator);
@@ -24,11 +25,18 @@ namespace Unit_Tests
     }
 
     [TestClass]
+    public class ScopedContainerGetGenericSingleTest : ScopedContainerGetSingleTest
+    {
+        protected override T Get<T>(ScopedContainer scope, object tag) => scope.Get<T>(tag);
+    }
+
+    [TestClass]
     public class ScopedContainerGetFactoryTest : ScopedContainerGetDependencyBaseTest
     {
         protected override bool SameKeyProducesSameDependencyForSameScope => false;
-
         protected override bool SameKeyProducesSameDependencyForDifferentScopes => false;
+
+        protected override T Get<T>(ScopedContainer scope, object tag) => (T)scope.Get(typeof(T), tag);
 
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Factory(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.Factory(creator);
@@ -41,11 +49,18 @@ namespace Unit_Tests
     }
 
     [TestClass]
+    public class ScopedContainerGetGenericFactoryTest : ScopedContainerGetFactoryTest
+    {
+        protected override T Get<T>(ScopedContainer scope, object tag) => scope.Get<T>(tag);
+    }
+
+    [TestClass]
     public class ScopedContainerGetScopedTest : ScopedContainerGetDependencyBaseTest
     {
         protected override bool SameKeyProducesSameDependencyForSameScope => true;
-
         protected override bool SameKeyProducesSameDependencyForDifferentScopes => false;
+
+        protected override T Get<T>(ScopedContainer scope, object tag = null) => (T)scope.Get(typeof(T), tag);
 
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Scoped(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.Scoped(creator);
@@ -63,11 +78,17 @@ namespace Unit_Tests
             AddAutoConstructingDependency<ValidMockDependency>();
             var scope = Container.CreateScope();
 
-            var dep1 = scope.Get<IMockDependency>();
-            var dep2 = scope.Get<ValidMockDependency>();
+            var dep1 = Get<IMockDependency>(scope);
+            var dep2 = Get<ValidMockDependency>(scope);
 
             Assert.AreEqual(dep1, dep2.Inner);
         }
+    }
+
+    [TestClass]
+    public class ScopedContainerGetGenericScopedTest : ScopedContainerGetScopedTest
+    {
+        protected override T Get<T>(ScopedContainer scope, object tag) => scope.Get<T>(tag);
     }
 
     [TestClass]
@@ -77,7 +98,7 @@ namespace Unit_Tests
         protected abstract bool SameKeyProducesSameDependencyForSameScope { get; }
         protected abstract bool SameKeyProducesSameDependencyForDifferentScopes { get; }
 
-
+        protected abstract T Get<T>(ScopedContainer scope, object tag = null);
 
         [TestInitialize]
         public override void Before()
@@ -92,8 +113,8 @@ namespace Unit_Tests
             AddDependency(CreateFunction);
             var scope = Container.CreateScope();
 
-            var dep1 = scope.Get<IMockDependency>();
-            var dep2 = scope.Get<IMockDependency>();
+            var dep1 = Get<IMockDependency>(scope);
+            var dep2 = Get<IMockDependency>(scope);
 
             AssertEqualBaseOnSameKeyScopeProducesSameDependency(dep1, dep2);
         }
@@ -104,8 +125,8 @@ namespace Unit_Tests
             AddDependency("tag", CreateFunction);
             var scope = Container.CreateScope();
 
-            var dep1 = scope.Get<IMockDependency>("tag");
-            var dep2 = scope.Get<IMockDependency>("tag");
+            var dep1 = Get<IMockDependency>(scope, "tag");
+            var dep2 = Get<IMockDependency>(scope, "tag");
 
             AssertEqualBaseOnSameKeyScopeProducesSameDependency(dep1, dep2);
         }
@@ -117,8 +138,8 @@ namespace Unit_Tests
             AddDependency("gat", CreateFunction);
             var scope = Container.CreateScope();
 
-            var dep1 = scope.Get<IMockDependency>("tag");
-            var dep2 = scope.Get<IMockDependency>("gat");
+            var dep1 = Get<IMockDependency>(scope, "tag");
+            var dep2 = Get<IMockDependency>(scope, "gat");
 
             Assert.AreNotEqual(dep1, dep2);
         }
@@ -130,8 +151,8 @@ namespace Unit_Tests
             AddDependency(() => "");
             var scope = Container.CreateScope();
 
-            var dep1 = scope.Get<IMockDependency>();
-            var dep2 = scope.Get<string>();
+            var dep1 = Get<IMockDependency>(scope);
+            var dep2 = Get<string>(scope);
 
             Assert.AreNotEqual(dep1, dep2);
         }
@@ -142,7 +163,7 @@ namespace Unit_Tests
         {
             var scope = Container.CreateScope();
 
-            scope.Get<IMockDependency>();
+            Get<IMockDependency>(scope);
         }
 
         [TestMethod]
@@ -152,8 +173,8 @@ namespace Unit_Tests
             AddAutoConstructingDependency<ValidMockDependency, ValidMockDependency>();
             var scope = Container.CreateScope();
 
-            var inner = scope.Get<IMockDependency>();
-            var outer = scope.Get<ValidMockDependency>();
+            var inner = Get<IMockDependency>(scope);
+            var outer = Get<ValidMockDependency>(scope);
 
             Assert.AreEqual(null, inner.Inner);
             Assert.AreNotEqual(null, outer.Inner);
@@ -166,8 +187,8 @@ namespace Unit_Tests
             AddAutoConstructingDependency<ValidMockDependency, ValidMockDependency>();
             var scope = Container.CreateScope();
 
-            var dep1 = scope.Get<ValidMockDependency>();
-            var dep2 = scope.Get<ValidMockDependency>();
+            var dep1 = Get<ValidMockDependency>(scope);
+            var dep2 = Get<ValidMockDependency>(scope);
 
             AssertEqualBaseOnSameKeyScopeProducesSameDependency(dep1, dep2);
         }
@@ -179,8 +200,8 @@ namespace Unit_Tests
             AddAutoConstructingDependency<ValidMockDependency>();
             var scope = Container.CreateScope();
 
-            var dep1 = scope.Get<ValidMockDependency>();
-            var dep2 = scope.Get<ValidMockDependency>();
+            var dep1 = Get<ValidMockDependency>(scope);
+            var dep2 = Get<ValidMockDependency>(scope);
 
             AssertEqualBaseOnSameKeyScopeProducesSameDependency(dep1, dep2);
         }
@@ -192,7 +213,7 @@ namespace Unit_Tests
             AddAutoConstructingDependency<ValidMockDependency>();
             var scope = Container.CreateScope();
 
-            scope.Get<ValidMockDependency>();
+            Get<ValidMockDependency>(scope);
         }
 
         [TestMethod]
@@ -200,10 +221,10 @@ namespace Unit_Tests
         {
             AddDependency<IMockDependency>(() => new ValidMockDependency());
             var scope = Container.CreateScope();
-            AddDependency<IMockDependency>("", () => new ValidMockDependency(scope.Get<IMockDependency>()));
+            AddDependency<IMockDependency>("", () => new ValidMockDependency(Get<IMockDependency>(scope)));
             scope = Container.CreateScope();
 
-            var dependency = scope.Get<IMockDependency>("");
+            var dependency = Get<IMockDependency>(scope, "");
 
             Assert.AreNotEqual(null, dependency.Inner);
             Assert.AreEqual(null, dependency.Inner.Inner);
@@ -213,11 +234,11 @@ namespace Unit_Tests
         public void GetNestedDependenciesRegisteredInNotLogicalOrder()
         {
             var scope = Container.CreateScope();
-            AddDependency<IMockDependency>("", () => new ValidMockDependency(scope.Get<IMockDependency>()));
+            AddDependency<IMockDependency>("", () => new ValidMockDependency(Get<IMockDependency>(scope)));
             AddDependency<IMockDependency>(() => new ValidMockDependency());
             scope = Container.CreateScope();
 
-            var dependency = scope.Get<IMockDependency>("");
+            var dependency = Get<IMockDependency>(scope, "");
 
             Assert.AreNotEqual(null, dependency.Inner);
             Assert.AreEqual(null, dependency.Inner.Inner);
@@ -230,8 +251,8 @@ namespace Unit_Tests
             var scope1 = Container.CreateScope();
             var scope2 = Container.CreateScope();
 
-            var dep1 = scope1.Get<ValidMockDependency>();
-            var dep2 = scope2.Get<ValidMockDependency>();
+            var dep1 = Get<ValidMockDependency>(scope1);
+            var dep2 = Get<ValidMockDependency>(scope2);
 
             AssertEqualBaseOnSameKeyScopesProduceSameDependency(dep1, dep2);
         }
@@ -243,8 +264,8 @@ namespace Unit_Tests
             var scope1 = Container.CreateScope();
             var scope2 = Container.CreateScope();
 
-            var dep1 = scope1.Get<ValidParameterlessMockDependency>();
-            var dep2 = scope2.Get<ValidParameterlessMockDependency>();
+            var dep1 = Get<ValidParameterlessMockDependency>(scope1);
+            var dep2 = Get<ValidParameterlessMockDependency>(scope2);
 
             AssertEqualBaseOnSameKeyScopesProduceSameDependency(dep1, dep2);
         }

@@ -1,5 +1,6 @@
 ﻿using DI_Lite.Dependencies.Contracts;
 using DI_Lite.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace DI_Lite
@@ -13,15 +14,31 @@ namespace DI_Lite
             _dependencies = dependencies;
         }
 
-        public T Get<T>(object tag = null)
+        public ReferenceType Get<ReferenceType>(object tag = null)
         {
-            var key = new DependencyKey(typeof(T), tag);
+            return (ReferenceType)Get(typeof(ReferenceType), tag);
+        }
+
+        public object Get(Type referenceType, object tag = null)
+        {
+            var key = new DependencyKey(referenceType, tag);
             if (!_dependencies.ContainsKey(key))
             {
                 throw new DependencyNotRegisteredException(key);
             }
             var dependency = _dependencies[key];
-            return (T)dependency.Get(this);
+            return dependency.Get(this);
+        }
+
+        public bool Contains<T>(object tag = null)
+        {
+            return Contains(typeof(T), tag);
+        }
+
+        public bool Contains(Type referenceType, object tag = null)
+        {
+            var key = new DependencyKey(referenceType, tag);
+            return _dependencies.ContainsKey(key);
         }
     }
 }

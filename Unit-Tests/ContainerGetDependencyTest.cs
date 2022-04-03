@@ -11,6 +11,8 @@ namespace Unit_Tests
     {
         protected override bool SameKeyProducesSameDependency => true;
 
+        protected override T Get<T>(object tag) => (T)Container.Get(typeof(T), tag);
+
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Single(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.Single(creator);
         protected override void AddDependency<T>(object tag, Func<IDependencyProvider, T> creator) => Container.Single(tag, creator);
@@ -22,9 +24,17 @@ namespace Unit_Tests
     }
 
     [TestClass]
+    public class ContainerGetGenericSingleTest : ContainerGetSingleTest
+    {
+        protected override T Get<T>(object tag) => Container.Get<T>(tag);
+    }
+
+    [TestClass]
     public class ContainerGetFactoryTest : ContainerGetDependencyBaseTest
     {
         protected override bool SameKeyProducesSameDependency => false;
+
+        protected override T Get<T>(object tag) => (T)Container.Get(typeof(T), tag);
 
         protected override void AddDependency<T>(object tag, Func<T> creator) => Container.Factory(tag, creator);
         protected override void AddDependency<T>(Func<T> creator) => Container.Factory(creator);
@@ -37,10 +47,18 @@ namespace Unit_Tests
     }
 
     [TestClass]
+    public class ContainerGetGenericFactoryTest : ContainerGetFactoryTest
+    {
+        protected override T Get<T>(object tag) => Container.Get<T>(tag);
+    }
+
+    [TestClass]
     public abstract class ContainerGetDependencyBaseTest : ContainerAddDependencyAbstractionBaseTest
     {
         private Func<IMockDependency> CreateFunction { get; set; }
         protected abstract bool SameKeyProducesSameDependency { get; }
+
+        protected abstract T Get<T>(object tag = null);
 
         [TestInitialize]
         public override void Before()
@@ -54,8 +72,8 @@ namespace Unit_Tests
         {
             AddDependency(CreateFunction);
 
-            var dep1 = Container.Get<IMockDependency>();
-            var dep2 = Container.Get<IMockDependency>();
+            var dep1 = Get<IMockDependency>();
+            var dep2 = Get<IMockDependency>();
 
             AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
@@ -65,8 +83,8 @@ namespace Unit_Tests
         {
             AddDependency("tag", CreateFunction);
 
-            var dep1 = Container.Get<IMockDependency>("tag");
-            var dep2 = Container.Get<IMockDependency>("tag");
+            var dep1 = Get<IMockDependency>("tag");
+            var dep2 = Get<IMockDependency>("tag");
 
             AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
@@ -77,8 +95,8 @@ namespace Unit_Tests
             AddDependency("tag", CreateFunction);
             AddDependency("gat", CreateFunction);
 
-            var dep1 = Container.Get<IMockDependency>("tag");
-            var dep2 = Container.Get<IMockDependency>("gat");
+            var dep1 = Get<IMockDependency>("tag");
+            var dep2 = Get<IMockDependency>("gat");
 
             Assert.AreNotEqual(dep1, dep2);
         }
@@ -89,8 +107,8 @@ namespace Unit_Tests
             AddDependency(CreateFunction);
             AddDependency(() => "");
 
-            var dep1 = Container.Get<IMockDependency>();
-            var dep2 = Container.Get<string>();
+            var dep1 = Get<IMockDependency>();
+            var dep2 = Get<string>();
 
             Assert.AreNotEqual(dep1, dep2);
         }
@@ -99,7 +117,7 @@ namespace Unit_Tests
         [ExpectedException(typeof(DependencyNotRegisteredException))]
         public void ThrowsDependencyNotRegisteredException()
         {
-            Container.Get<IMockDependency>();
+            Get<IMockDependency>();
         }
 
         [TestMethod]
@@ -108,8 +126,8 @@ namespace Unit_Tests
             AddDependency<IMockDependency>(() => new ValidMockDependency());
             AddAutoConstructingDependency<ValidMockDependency, ValidMockDependency>();
 
-            var inner = Container.Get<IMockDependency>();
-            var outer = Container.Get<ValidMockDependency>();
+            var inner = Get<IMockDependency>();
+            var outer = Get<ValidMockDependency>();
 
             Assert.AreEqual(null, inner.Inner);
             Assert.AreNotEqual(null, outer.Inner);
@@ -121,8 +139,8 @@ namespace Unit_Tests
             AddDependency<IMockDependency>(() => new ValidMockDependency());
             AddAutoConstructingDependency<ValidMockDependency, ValidMockDependency>();
 
-            var dep1 = Container.Get<ValidMockDependency>();
-            var dep2 = Container.Get<ValidMockDependency>();
+            var dep1 = Get<ValidMockDependency>();
+            var dep2 = Get<ValidMockDependency>();
 
             AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
@@ -133,8 +151,8 @@ namespace Unit_Tests
             AddDependency<IMockDependency>(() => new ValidMockDependency());
             AddAutoConstructingDependency<ValidMockDependency>();
 
-            var dep1 = Container.Get<ValidMockDependency>();
-            var dep2 = Container.Get<ValidMockDependency>();
+            var dep1 = Get<ValidMockDependency>();
+            var dep2 = Get<ValidMockDependency>();
 
             AssertEqualBaseOnSameKeyProducesSameDependency(dep1, dep2);
         }
@@ -145,16 +163,16 @@ namespace Unit_Tests
         {
             AddAutoConstructingDependency<ValidMockDependency>();
 
-            Container.Get<ValidMockDependency>();
+            Get<ValidMockDependency>();
         }
 
         [TestMethod]
         public void GetNestedDependenciesRegisteredInLogicalOrder()
         {
             AddDependency<IMockDependency>(() => new ValidMockDependency());
-            AddDependency<IMockDependency>("", () => new ValidMockDependency(Container.Get<IMockDependency>()));
+            AddDependency<IMockDependency>("", () => new ValidMockDependency(Get<IMockDependency>()));
 
-            var dependency = Container.Get<IMockDependency>("");
+            var dependency = Get<IMockDependency>("");
 
             Assert.AreNotEqual(null, dependency.Inner);
             Assert.AreEqual(null, dependency.Inner.Inner);
@@ -163,10 +181,10 @@ namespace Unit_Tests
         [TestMethod]
         public void GetNestedDependenciesRegisteredInNotLogicalOrder()
         {
-            AddDependency<IMockDependency>("", () => new ValidMockDependency(Container.Get<IMockDependency>()));
+            AddDependency<IMockDependency>("", () => new ValidMockDependency(Get<IMockDependency>()));
             AddDependency<IMockDependency>(() => new ValidMockDependency());
 
-            var dependency = Container.Get<IMockDependency>("");
+            var dependency = Get<IMockDependency>("");
 
             Assert.AreNotEqual(null, dependency.Inner);
             Assert.AreEqual(null, dependency.Inner.Inner);
@@ -193,11 +211,21 @@ namespace Unit_Tests
         }
 
         [TestMethod]
-        public void ThrowsExceptionWhenGettingScopedDepenedencyFromContainer()
+        public void ThrowsExceptionWhenGettingGenericScopedDepenedencyFromContainer()
         {
             Container.Scoped(() => "TEST");
 
             string act() => Container.Get<string>();
+
+            Assert.ThrowsException<DependencyRetrievalRequiresScopeException>(act);
+        }
+
+        [TestMethod]
+        public void ThrowsExceptionWhenGettingScopedDepenedencyFromContainer()
+        {
+            Container.Scoped(() => "TEST");
+
+            string act() => (string)Container.Get(typeof(string));
 
             Assert.ThrowsException<DependencyRetrievalRequiresScopeException>(act);
         }
