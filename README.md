@@ -15,7 +15,7 @@ DI-Lite is a small size, high performance tool for storing and retrieving object
   - Removing registered dependencies
   - Getting dependencies
   - Scoping dependencies
-  - Auto creating objects base on their constructor
+  - Auto creating objects based on their constructor
   - Checking if all registered dependencies can be constructed
   - Invoking delegates via Reflection
 
@@ -128,6 +128,19 @@ var scope = Container.CreateScope();
 var dependency = scope.Get<DependencyType>();
 // or
 var dependency = scope.Get<DependencyType>("tag");
+```
+
+ ```CSharp
+// to automatically inject dependency with tag specified we can add WithTag attribute to constructor's parameter
+public class DependencyWithTag
+{
+    public DependencyWithTag([WithTag("MyTag")] IMockDependency dependency) { }
+}
+// now we just have to registed required dependency
+Container.Single<IMockDependency, MockDependency>("MyTag");
+Container.Single<DependencyWithTag>();
+// now registered IMockDependency with tag "MyTag" will be used to construct instance of DependencyWithTag
+Container.Get<DependencyWithTag>();
 ```
 
  ```CSharp
