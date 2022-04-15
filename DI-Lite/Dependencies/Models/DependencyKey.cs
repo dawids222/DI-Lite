@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DI_Lite.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace DI_Lite
 {
@@ -13,21 +16,22 @@ namespace DI_Lite
             Tag = tag;
         }
 
+        public DependencyKey(ParameterInfo info)
+        {
+            Type = info.ParameterType;
+            Tag = info.GetCustomAttribute<WithTagAttribute>()?.Tag;
+        }
+
         public override bool Equals(object obj)
         {
-            if (obj is DependencyKey o)
-            {
-                return (Type == o.Type && Tag == o.Tag);
-            }
-            return false;
+            return obj is DependencyKey key &&
+                   EqualityComparer<Type>.Default.Equals(Type, key.Type) &&
+                   EqualityComparer<object>.Default.Equals(Tag, key.Tag);
         }
 
         public override int GetHashCode()
         {
-            int hash = 17;
-            hash = hash * 23 + Type.GetHashCode();
-            hash = hash * 23 + Tag?.GetHashCode() ?? 0;
-            return hash;
+            return HashCode.Combine(Type, Tag);
         }
     }
 }

@@ -270,6 +270,30 @@ namespace Unit_Tests
             AssertEqualBaseOnSameKeyScopesProduceSameDependency(dep1, dep2);
         }
 
+        [TestMethod]
+        public void ThrowsDependencyNotRegisteredWhenThereIsNoDependencyWithTag()
+        {
+            AddDependency<IMockDependency>(() => new ValidMockDependency());
+            AddAutoConstructingDependency<ValidDependencyWithTag>();
+            var scope = Container.CreateScope();
+
+            void act() => Get<ValidDependencyWithTag>(scope);
+
+            Assert.ThrowsException<DependencyNotRegisteredException>(act);
+        }
+
+        [TestMethod]
+        public void GetsDependewncyWithRequiredTag()
+        {
+            AddDependency<IMockDependency>(ValidDependencyWithTag.TAG, () => new ValidMockDependency());
+            AddAutoConstructingDependency<ValidDependencyWithTag>();
+            var scope = Container.CreateScope();
+
+            var dependency = Get<ValidDependencyWithTag>(scope);
+
+            Assert.IsNotNull(dependency);
+        }
+
         private void AssertEqualBaseOnSameKeyScopeProducesSameDependency<T>(T dep1, T dep2)
         {
             if (SameKeyProducesSameDependencyForSameScope)

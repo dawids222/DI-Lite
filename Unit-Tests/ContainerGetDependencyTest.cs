@@ -190,6 +190,28 @@ namespace Unit_Tests
             Assert.AreEqual(null, dependency.Inner.Inner);
         }
 
+        [TestMethod]
+        public void ThrowsDependencyNotRegisteredWhenThereIsNoDependencyWithTag()
+        {
+            AddDependency<IMockDependency>(() => new ValidMockDependency());
+            AddAutoConstructingDependency<ValidDependencyWithTag>();
+
+            void act() => Get<ValidDependencyWithTag>();
+
+            Assert.ThrowsException<DependencyNotRegisteredException>(act);
+        }
+
+        [TestMethod]
+        public void GetsDependewncyWithRequiredTag()
+        {
+            AddDependency<IMockDependency>(ValidDependencyWithTag.TAG, () => new ValidMockDependency());
+            AddAutoConstructingDependency<ValidDependencyWithTag>();
+
+            var dependency = Get<ValidDependencyWithTag>();
+
+            Assert.IsNotNull(dependency);
+        }
+
         private void AssertEqualBaseOnSameKeyProducesSameDependency<T>(T dep1, T dep2)
         {
             if (SameKeyProducesSameDependency)

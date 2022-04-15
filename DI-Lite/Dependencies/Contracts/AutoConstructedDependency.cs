@@ -32,7 +32,7 @@ namespace DI_Lite.Dependencies.Contracts
         public bool IsConstructable(Container container)
             => !GetMissingDependencies(container).Any();
 
-        private IEnumerable<Type> GetMissingDependencies(Container container)
-            => _constructor.Parameters.Where(p => !container.Contains(p));
+        private IEnumerable<DependencyKey> GetMissingDependencies(Container container)
+            => _constructor.Parameters.Where(x => !container.Contains(x.Type, x.Tag));
     }
 }

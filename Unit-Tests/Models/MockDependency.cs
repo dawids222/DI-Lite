@@ -1,4 +1,6 @@
-﻿namespace Unit_Tests.Models
+﻿using DI_Lite.Attributes;
+
+namespace Unit_Tests.Models
 {
     public interface IMockDependency
     {
@@ -65,6 +67,20 @@
         public IMockDependency Inner { get; }
 
         private InvalidPrivateConstructorMockDependency() { }
+
+        public void DoSomething() { }
+    }
+
+    public class ValidDependencyWithTag : IMockDependency
+    {
+        public const string TAG = "TAG";
+
+        public IMockDependency Inner { get; }
+
+        public ValidDependencyWithTag([WithTag(TAG)] IMockDependency dependency)
+        {
+            Inner = dependency;
+        }
 
         public void DoSomething() { }
     }

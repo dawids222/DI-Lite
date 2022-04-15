@@ -8,7 +8,7 @@ namespace DI_Lite.Dependencies.Models
     {
         public Type ReferenceType { get; }
         public Type ConcreteType { get; }
-        public IEnumerable<Type> MissingDependencies { get; }
+        public IEnumerable<DependencyKey> MissingDependencies { get; }
 
         public bool IsConstructable => !MissingDependencies.Any();
         public string Error => GetError();
@@ -16,7 +16,7 @@ namespace DI_Lite.Dependencies.Models
         public DependencyConstructabilityReport(
             Type referenceType,
             Type concreteType,
-            IEnumerable<Type> missingDependencies)
+            IEnumerable<DependencyKey> missingDependencies)
         {
             ReferenceType = referenceType;
             ConcreteType = concreteType;
@@ -26,9 +26,9 @@ namespace DI_Lite.Dependencies.Models
         private string GetError()
         {
             if (!MissingDependencies.Any()) { return null; }
-            var missingTypeNames = MissingDependencies.Select(t => $"'{t.FullName}'");
-            var missingTypesString = string.Join(", ", missingTypeNames);
-            return $"Instance of class '{ConcreteType.FullName}' can not be constructed because the following dependencies are not registered: {missingTypesString}.";
+            var missingDependencies = MissingDependencies.Select(x => $"{{Tag: '{x.Tag}', Type: '{x.Type.FullName}'}}");
+            var missingDependenciesString = string.Join(", ", missingDependencies);
+            return $"Instance of class '{ConcreteType.FullName}' can not be constructed because the following dependencies are not registered: {missingDependenciesString}.";
         }
     }
 }

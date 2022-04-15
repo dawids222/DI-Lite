@@ -10,7 +10,7 @@ namespace DI_Lite.Utils
         where ConcreteType : class, ReferenceType
     {
         public Func<IDependencyProvider, ReferenceType> Creator { get; }
-        public IEnumerable<Type> Parameters { get; private set; }
+        public IEnumerable<DependencyKey> Parameters { get; private set; }
 
         public AutoConstructor()
         {
@@ -29,7 +29,7 @@ namespace DI_Lite.Utils
             };
         }
 
-        private static object[] GetConstructorArguments(IEnumerable<Type> parameters, IDependencyProvider provider)
+        private static object[] GetConstructorArguments(IEnumerable<DependencyKey> parameters, IDependencyProvider provider)
         {
             try
             {
@@ -41,25 +41,25 @@ namespace DI_Lite.Utils
             }
         }
 
-        private static object[] GetConstructorArgumentsUnsafe(IEnumerable<Type> parameters, IDependencyProvider provider)
+        private static object[] GetConstructorArgumentsUnsafe(IEnumerable<DependencyKey> parameters, IDependencyProvider provider)
         {
             return parameters
-                .Select(type => typeof(IDependencyProvider)
+                .Select(parameter => typeof(IDependencyProvider)
                     .GetMethods()
                     .First(method =>
                         method.Name == nameof(IDependencyProvider.Get) &&
                         method.IsGenericMethod)
-                    .MakeGenericMethod(type)
-                    .Invoke(provider, new object[] { null }))
+                    .MakeGenericMethod(parameter.Type)
+                    .Invoke(provider, new object[] { parameter.Tag }))
                 .ToArray();
         }
 
-        private static IEnumerable<Type> GetConstructorParameters()
+        private static IEnumerable<DependencyKey> GetConstructorParameters()
         {
             var constructor = GetConstructor();
             return constructor
                 .GetParameters()
-                .Select(x => x.ParameterType);
+                .Select(x => new DependencyKey(x));
         }
 
         private static ConstructorInfo GetConstructor()
