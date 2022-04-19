@@ -1,4 +1,5 @@
 ﻿using DI_Lite.Arguments.Contracts;
+using DI_Lite.Arguments.Models;
 using DI_Lite.Arguments.Providers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -8,71 +9,49 @@ using System.Linq;
 namespace Unit_Tests.Arguments
 {
     [TestClass]
-    public class AggregatedArgumentsProviderGetGenericTests : AggregatedArgumentsProviderGetTestsBase
+    public class AggregatedArgumentsProviderGetTests : AggregatedArgumentsProviderTestsBase
     {
-        protected override T Get<T>(string name) => _provider.Get<T>(name);
-    }
-
-    [TestClass]
-    public class AggregatedArgumentsProviderGetTypeTests : AggregatedArgumentsProviderGetTestsBase
-    {
-        protected override T Get<T>(string name) => (T)_provider.Get(typeof(T), name);
-    }
-
-    public abstract class AggregatedArgumentsProviderGetTestsBase : AggregatedArgumentsProviderTestsBase
-    {
-        protected abstract T Get<T>(string name);
+        protected object Get(ArgumentInfo info) => _provider.Get(info);
 
         [TestMethod]
-        public void Contains_FirstProviderReturnsValue_ReturnsValue()
+        public void Get_FirstProviderReturnsValue_ReturnsValue()
         {
-            var result = Get<string>(STRING_ENTRY_NAME);
+            var result = Get(MockInfo<string>(STRING_ENTRY_NAME));
 
             Assert.AreEqual(_mockEntries1[0].Value, result);
         }
 
         [TestMethod]
-        public void Contains_SecondProviderReturnsValue_ReturnsValue()
+        public void Get_SecondProviderReturnsValue_ReturnsValue()
         {
-            var result = Get<bool>(BOOL_ENTRY_NAME);
+            var result = Get(MockInfo<bool>(BOOL_ENTRY_NAME));
 
             Assert.AreEqual(_mockEntries2[0].Value, result);
         }
 
         [TestMethod]
-        public void Contains_NoneProviderReturnsValue_Throws()
+        public void Get_NoneProviderReturnsValue_Throws()
         {
-            void act() => Get<AggregatedArgumentsProviderGetTestsBase>("");
+            void act() => Get(MockInfo<AggregatedArgumentsProviderGetTests>());
 
             Assert.ThrowsException<InvalidOperationException>(act);
         }
     }
 
     [TestClass]
-    public class AggregatedArgumentsProviderContainsGenericTests : AggregatedArgumentsProviderContainsTestsBase
+    public class AggregatedArgumentsProviderContainsTests : AggregatedArgumentsProviderTestsBase
     {
-        protected override bool Contains<T>(string name) => _provider.Contains<T>(name);
-    }
-
-    [TestClass]
-    public class AggregatedArgumentsProviderContainsTypeTests : AggregatedArgumentsProviderContainsTestsBase
-    {
-        protected override bool Contains<T>(string name) => _provider.Contains(typeof(T), name);
-    }
-
-    public abstract class AggregatedArgumentsProviderContainsTestsBase : AggregatedArgumentsProviderTestsBase
-    {
-        protected abstract bool Contains<T>(string name);
+        protected bool Contains(ArgumentInfo info) => _provider.Contains(info);
 
         [TestMethod]
         public void Contains_AnyProviderReturnsTrue_ReturnsTrue()
         {
             var results = new bool[]
             {
-                Contains<string>(STRING_ENTRY_NAME),
-                Contains<int>(INT_ENTRY_NAME),
-                Contains<bool>(BOOL_ENTRY_NAME),
-                Contains<DateTime>(DATETIME_ENTRY_NAME),
+                Contains(MockInfo<string>(STRING_ENTRY_NAME)),
+                Contains(MockInfo<int>(INT_ENTRY_NAME)),
+                Contains(MockInfo<bool>(BOOL_ENTRY_NAME)),
+                Contains(MockInfo<DateTime>(DATETIME_ENTRY_NAME)),
             };
 
             var trues = results.Select(x => true).ToArray();
@@ -84,12 +63,12 @@ namespace Unit_Tests.Arguments
         {
             var results = new bool[]
             {
-                Contains<string>(INT_ENTRY_NAME),
-                Contains<int>(STRING_ENTRY_NAME),
-                Contains<bool>(DATETIME_ENTRY_NAME),
-                Contains<DateTime>(BOOL_ENTRY_NAME),
-                Contains<double>("value"),
-                Contains<AggregatedArgumentsProviderContainsTestsBase>("??"),
+                Contains(MockInfo<string>(INT_ENTRY_NAME)),
+                Contains(MockInfo<int>(STRING_ENTRY_NAME)),
+                Contains(MockInfo<bool>(DATETIME_ENTRY_NAME)),
+                Contains(MockInfo<DateTime>(BOOL_ENTRY_NAME)),
+                Contains(MockInfo<double>("value")),
+                Contains(MockInfo<AggregatedArgumentsProviderContainsTests>("??")),
             };
 
             var falses = results.Select(x => false).ToArray();
@@ -97,7 +76,7 @@ namespace Unit_Tests.Arguments
         }
     }
 
-    public abstract class AggregatedArgumentsProviderTestsBase
+    public abstract class AggregatedArgumentsProviderTestsBase : ArgumentsTestsBase
     {
         protected const string DATETIME_ENTRY_NAME = "datetime";
         protected const string STRING_ENTRY_NAME = "string";
@@ -130,19 +109,19 @@ namespace Unit_Tests.Arguments
             foreach (var entry in _mockEntries1)
             {
                 _providerMock1
-                    .Setup(x => x.Contains(entry.Type, entry.Name))
+                    .Setup(x => x.Contains(MockInfo(entry.Type, entry.Name)))
                     .Returns(true);
                 _providerMock1
-                    .Setup(x => x.Get(entry.Type, entry.Name))
+                    .Setup(x => x.Get(MockInfo(entry.Type, entry.Name)))
                     .Returns(entry.Value);
             }
             foreach (var entry in _mockEntries2)
             {
                 _providerMock2
-                    .Setup(x => x.Contains(entry.Type, entry.Name))
+                    .Setup(x => x.Contains(MockInfo(entry.Type, entry.Name)))
                     .Returns(true);
                 _providerMock2
-                    .Setup(x => x.Get(entry.Type, entry.Name))
+                    .Setup(x => x.Get(MockInfo(entry.Type, entry.Name)))
                     .Returns(entry.Value);
             }
 

@@ -1,5 +1,7 @@
 ﻿using DI_Lite;
+using DI_Lite.Arguments.Models;
 using DI_Lite.Arguments.Providers;
+using DI_Lite.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -7,22 +9,9 @@ using System;
 namespace Unit_Tests.Arguments
 {
     [TestClass]
-    public class ContainerArgumentsProviderGetGenericTests : ContainerArgumentsProviderGetTestsBase
+    public class ContainerArgumentsProviderGetTests : ContainerArgumentsProviderTestsBase
     {
-        protected override T Get<T>(string name)
-            => _provider.Get<T>(name);
-    }
-
-    [TestClass]
-    public class ContainerArgumentsProviderGetTypeTests : ContainerArgumentsProviderGetTestsBase
-    {
-        protected override T Get<T>(string name)
-            => (T)_provider.Get(typeof(T), name);
-    }
-
-    public abstract class ContainerArgumentsProviderGetTestsBase : ContainerArgumentsProviderTestsBase
-    {
-        protected abstract T Get<T>(string name);
+        protected object Get(ArgumentInfo info) => _provider.Get(info);
 
         [TestMethod]
         public void Get_ProviderReturnsValue_ReturnsValue()
@@ -33,7 +22,22 @@ namespace Unit_Tests.Arguments
                 .Setup(x => x.Get(typeof(string), null))
                 .Returns(expected);
 
-            var result = Get<string>(name);
+            var result = Get(MockInfo<string>(name));
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Get_WithTag_ProviderReturnsValue_ReturnsValue()
+        {
+            var name = "name";
+            var tag = "tag";
+            var expected = "expected";
+            _dependencyProviderMock
+                .Setup(x => x.Get(typeof(string), tag))
+                .Returns(expected);
+
+            var result = Get(MockInfo<string>(name, new Attribute[] { new WithTagAttribute(tag) }));
 
             Assert.AreEqual(expected, result);
         }
@@ -47,29 +51,16 @@ namespace Unit_Tests.Arguments
                 .Setup(x => x.Get(typeof(string), null))
                 .Throws(exception);
 
-            void act() => Get<string>(name);
+            void act() => Get(MockInfo<string>(name));
 
             Assert.ThrowsException<Exception>(act, exception.Message);
         }
     }
 
     [TestClass]
-    public class ContainerArgumentsProviderContainsGenericTests : ContainerArgumentsProviderContainsTestsBase
+    public class ContainerArgumentsProviderContainsTests : ContainerArgumentsProviderTestsBase
     {
-        protected override bool Contains<T>(string name)
-            => _provider.Contains<T>(name);
-    }
-
-    [TestClass]
-    public class ContainerArgumentsProviderContainsTypeTests : ContainerArgumentsProviderContainsTestsBase
-    {
-        protected override bool Contains<T>(string name)
-            => _provider.Contains(typeof(T), name);
-    }
-
-    public abstract class ContainerArgumentsProviderContainsTestsBase : ContainerArgumentsProviderTestsBase
-    {
-        protected abstract bool Contains<T>(string name);
+        protected bool Contains(ArgumentInfo info) => _provider.Contains(info);
 
         [TestMethod]
         public void Contains_ProviderReturnsTrue_ReturnsTrue()
@@ -80,7 +71,22 @@ namespace Unit_Tests.Arguments
                 .Setup(x => x.Contains(typeof(string), null))
                 .Returns(expected);
 
-            var result = Contains<string>(name);
+            var result = Contains(MockInfo<string>(name));
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Contains_WithTag_ProviderReturnsTrue_ReturnsTrue()
+        {
+            var name = "name";
+            var tag = "tag";
+            var expected = true;
+            _dependencyProviderMock
+                .Setup(x => x.Contains(typeof(string), tag))
+                .Returns(expected);
+
+            var result = Contains(MockInfo<string>(name, new Attribute[] { new WithTagAttribute(tag) }));
 
             Assert.AreEqual(expected, result);
         }
@@ -94,7 +100,21 @@ namespace Unit_Tests.Arguments
                 .Setup(x => x.Contains(typeof(string), null))
                 .Returns(expected);
 
-            var result = Contains<string>(name);
+            var result = Contains(MockInfo<string>(name));
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Contains_WithTag_ProviderReturnsFalse_ReturnsFalse()
+        {
+            var name = "name";
+            var expected = false;
+            _dependencyProviderMock
+                .Setup(x => x.Contains(typeof(string), "tag"))
+                .Returns(expected);
+
+            var result = Contains(MockInfo<string>(name, new Attribute[] { new WithTagAttribute("gat") }));
 
             Assert.AreEqual(expected, result);
         }
@@ -108,13 +128,13 @@ namespace Unit_Tests.Arguments
                 .Setup(x => x.Contains(typeof(string), null))
                 .Throws(exception);
 
-            void act() => Contains<string>(name);
+            void act() => Contains(MockInfo<string>(name));
 
             Assert.ThrowsException<Exception>(act, exception.Message);
         }
     }
 
-    public abstract class ContainerArgumentsProviderTestsBase
+    public abstract class ContainerArgumentsProviderTestsBase : ArgumentsTestsBase
     {
         protected Mock<IDependencyProvider> _dependencyProviderMock;
         protected ContainerArgumentsProvider _provider;

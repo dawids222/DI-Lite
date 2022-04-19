@@ -1,4 +1,5 @@
 ﻿using DI_Lite.Arguments.Contracts;
+using DI_Lite.Arguments.Models;
 using DI_Lite.Extensions;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,14 @@ namespace DI_Lite.Arguments.Providers
     public class DictionaryArgumentsProvider : ArgumentsProvider
     {
         private readonly IDictionary<string, string> _dictionary;
-        private readonly static Type _sourceType = typeof(string);
 
         public DictionaryArgumentsProvider(IDictionary<string, string> dictionary)
         {
             _dictionary = dictionary;
         }
 
-        public override object Get(Type type, string name)
-            => Convert(type, _dictionary[name]);
+        public override object Get(ArgumentInfo info)
+            => Convert(info.Type, _dictionary[info.Name]);
 
         private static object Convert(Type type, string value)
         {
@@ -25,8 +25,9 @@ namespace DI_Lite.Arguments.Providers
             return converter.ConvertFromInvariantString(value);
         }
 
-        public override bool Contains(Type type, string name)
-            => _dictionary.ContainsKey(name) && CanConvert(type, _dictionary[name]);
+        public override bool Contains(ArgumentInfo info) =>
+            _dictionary.ContainsKey(info.Name) &&
+            CanConvert(info.Type, _dictionary[info.Name]);
 
         private static (bool Success, object Result) TryConvert(Type targetType, string value)
         {

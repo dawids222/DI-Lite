@@ -1,5 +1,7 @@
 ﻿using DI_Lite.Arguments.Contracts;
-using System;
+using DI_Lite.Arguments.Models;
+using DI_Lite.Attributes;
+using System.Linq;
 
 namespace DI_Lite.Arguments.Providers
 {
@@ -12,8 +14,16 @@ namespace DI_Lite.Arguments.Providers
             _container = dependencyProvider;
         }
 
-        public override object Get(Type type, string name) => _container.Get(type);
+        public override object Get(ArgumentInfo info) => _container.Get(info.Type, GetTag(info));
+        public override bool Contains(ArgumentInfo info) => _container.Contains(info.Type, GetTag(info));
 
-        public override bool Contains(Type type, string name) => _container.Contains(type);
+        private static object GetTag(ArgumentInfo info)
+        {
+            return info
+                .Attributes
+                .OfType<WithTagAttribute>()
+                .FirstOrDefault()
+                ?.Tag;
+        }
     }
 }

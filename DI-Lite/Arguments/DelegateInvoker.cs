@@ -1,4 +1,5 @@
 ﻿using DI_Lite.Arguments.Contracts;
+using DI_Lite.Arguments.Models;
 using DI_Lite.Extensions;
 using System;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace DI_Lite.Arguments
         {
             return _delegate.Method
                 .GetParameters()
-                .Select(p => _provider.Get(p.ParameterType, p.Name))
+                .Select(p => _provider.Get(new ArgumentInfo(p)))
                 .ToArray();
         }
     }

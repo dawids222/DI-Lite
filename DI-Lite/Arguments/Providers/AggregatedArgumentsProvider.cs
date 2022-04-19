@@ -1,5 +1,5 @@
 ﻿using DI_Lite.Arguments.Contracts;
-using System;
+using DI_Lite.Arguments.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,11 +14,12 @@ namespace DI_Lite.Arguments.Providers
             _providers = providers;
         }
 
-        public override object Get(Type type, string name) => _providers
-            .First(p => p.Contains(type, name))
-            .Get(type, name);
+        // TODO: If no match throwing or returning null should be configurable?
+        public override object Get(ArgumentInfo info) => _providers
+            .First(p => p.Contains(info))
+            .Get(info);
 
-        public override bool Contains(Type type, string name) => _providers
-            .Any(p => p.Contains(type, name));
+        public override bool Contains(ArgumentInfo info) => _providers
+            .Any(p => p.Contains(info));
     }
 }

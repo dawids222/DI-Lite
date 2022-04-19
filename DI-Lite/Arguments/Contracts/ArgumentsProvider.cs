@@ -1,13 +1,10 @@
-﻿using System;
+﻿using DI_Lite.Arguments.Models;
 
 namespace DI_Lite.Arguments.Contracts
 {
     public abstract class ArgumentsProvider : IArgumentsProvider
     {
-        public T Get<T>(string name) => (T)Get(typeof(T), name);
-        public abstract object Get(Type type, string name);
-
-        public bool Contains<T>(string name) => Contains(typeof(T), name);
-        public abstract bool Contains(Type type, string name);
+        public abstract object Get(ArgumentInfo info);
+        public abstract bool Contains(ArgumentInfo info);
     }
 }
