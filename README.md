@@ -185,6 +185,33 @@ var result = await invoker.InvokeAsync();
 var result = invoker.Invoke();
 ```
 
+```CSharp
+// when using AggregatedArgumentsProvider we can use FromProvider attribute
+// to specify from which provider argument should be taken
+ var container1 = new Container();
+container1.Single<IPet, Zerg>();
+container1.Single<IPerson, Alien>();
+
+var container2 = new Container();
+container2.Single<IPet, Dog>("Dog");
+container2.Single<IPet, Zerg>("Zerg");
+container2.Single<IPerson, Human>("Dawid");
+container2.Single<IPerson, NinjeTurtle>("Rafael");
+
+ var provider = new AggregatedArgumentsProvider(new IArgumentsProvider[]
+ {
+ 		// here we register providers with tags specified
+		new ContainerArgumentsProvider(container1, "1"),
+		new ContainerArgumentsProvider(container2, "2"),
+});
+// here we specifie that instance of IHuman has to be taken from provider with tag "2"
+// WithTag attribute can be used same as in standard DI scenario
+var func = ([FromProvider("2")][WithTag("Rafael")] IPerson human) => human.Greet();
+var invoker = new DelegateInvoker(func, provider);
+
+invoker.Invoke();
+```
+
 ### Todos
 
  - Write MORE Tests
