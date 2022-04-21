@@ -9,7 +9,9 @@ namespace DI_Lite.Arguments.Providers
     {
         private readonly IDependencyProvider _container;
 
-        public ContainerArgumentsProvider(IDependencyProvider dependencyProvider)
+        public ContainerArgumentsProvider(
+            IDependencyProvider dependencyProvider,
+            object tag = null) : base(tag)
         {
             _container = dependencyProvider;
         }

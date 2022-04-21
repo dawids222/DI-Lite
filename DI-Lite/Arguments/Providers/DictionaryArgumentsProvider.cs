@@ -11,7 +11,9 @@ namespace DI_Lite.Arguments.Providers
     {
         private readonly IDictionary<string, string> _dictionary;
 
-        public DictionaryArgumentsProvider(IDictionary<string, string> dictionary)
+        public DictionaryArgumentsProvider(
+            IDictionary<string, string> dictionary,
+            object tag = null) : base(tag)
         {
             _dictionary = dictionary;
         }

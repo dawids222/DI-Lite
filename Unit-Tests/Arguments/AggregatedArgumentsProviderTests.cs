@@ -1,4 +1,5 @@
-﻿using DI_Lite.Arguments.Contracts;
+﻿using DI_Lite.Arguments.Attributes;
+using DI_Lite.Arguments.Contracts;
 using DI_Lite.Arguments.Models;
 using DI_Lite.Arguments.Providers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,11 +23,27 @@ namespace Unit_Tests.Arguments
         }
 
         [TestMethod]
+        public void Get_FromProvider_SecondProviderReturnsValue_ReturnsValue()
+        {
+            var result = Get(MockInfo<string>(STRING_ENTRY_NAME, new Attribute[] { new FromProviderAttribute(ProviderType.ProviderType2) }));
+
+            Assert.AreEqual(_mockEntries2[2].Value, result);
+        }
+
+        [TestMethod]
         public void Get_SecondProviderReturnsValue_ReturnsValue()
         {
             var result = Get(MockInfo<bool>(BOOL_ENTRY_NAME));
 
             Assert.AreEqual(_mockEntries2[0].Value, result);
+        }
+
+        [TestMethod]
+        public void Get_FromProvider_ProviderDoesNotExist_Throws()
+        {
+            void act() => Get(MockInfo<string>(STRING_ENTRY_NAME, new Attribute[] { new FromProviderAttribute(ProviderType.ProviderType3) }));
+
+            Assert.ThrowsException<InvalidOperationException>(act);
         }
 
         [TestMethod]
@@ -96,6 +113,7 @@ namespace Unit_Tests.Arguments
         {
             new ProviderEntry(typeof(bool), BOOL_ENTRY_NAME, true),
             new ProviderEntry(typeof(DateTime), DATETIME_ENTRY_NAME, DateTime.Parse("1996-12-21 08:00:00")),
+            new ProviderEntry(typeof(string), STRING_ENTRY_NAME, "NameTest"),
         };
 
         protected AggregatedArgumentsProvider _provider;
@@ -106,22 +124,36 @@ namespace Unit_Tests.Arguments
             _providerMock1 = new();
             _providerMock2 = new();
 
+            _providerMock1
+                .Setup(x => x.Tag)
+                .Returns(ProviderType.ProviderType1);
             foreach (var entry in _mockEntries1)
             {
                 _providerMock1
-                    .Setup(x => x.Contains(MockInfo(entry.Type, entry.Name)))
+                    .Setup(x => x.Contains(It.Is<ArgumentInfo>(info =>
+                        info.Type == entry.Type &&
+                        info.Name == entry.Name)))
                     .Returns(true);
                 _providerMock1
-                    .Setup(x => x.Get(MockInfo(entry.Type, entry.Name)))
+                    .Setup(x => x.Get(It.Is<ArgumentInfo>(info =>
+                        info.Type == entry.Type &&
+                        info.Name == entry.Name)))
                     .Returns(entry.Value);
             }
+            _providerMock2
+                .Setup(x => x.Tag)
+                .Returns(ProviderType.ProviderType2);
             foreach (var entry in _mockEntries2)
             {
                 _providerMock2
-                    .Setup(x => x.Contains(MockInfo(entry.Type, entry.Name)))
+                    .Setup(x => x.Contains(It.Is<ArgumentInfo>(info =>
+                        info.Type == entry.Type &&
+                        info.Name == entry.Name)))
                     .Returns(true);
                 _providerMock2
-                    .Setup(x => x.Get(MockInfo(entry.Type, entry.Name)))
+                    .Setup(x => x.Get(It.Is<ArgumentInfo>(info =>
+                        info.Type == entry.Type &&
+                        info.Name == entry.Name)))
                     .Returns(entry.Value);
             }
 
@@ -145,6 +177,13 @@ namespace Unit_Tests.Arguments
                 Name = name;
                 Value = value;
             }
+        }
+
+        protected enum ProviderType
+        {
+            ProviderType1,
+            ProviderType2,
+            ProviderType3,
         }
     }
 }
