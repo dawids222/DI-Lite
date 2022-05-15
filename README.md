@@ -23,7 +23,11 @@ DI-Lite is a small size, high performance tool for storing and retrieving object
 
  ```CSharp
 // creating a DI container
-var Container = new Container();
+// container implements IDisposable interface in order to clean
+// after any resolved dependency that also implements IDisposable
+// that's why it is advised to instantiate it with 'using' keyword
+// or rememeber to call .Dispose() when it is no longed needed
+using var Container = new Container();
 ```
 
  ```CSharp
@@ -122,7 +126,10 @@ var dependency = Container.Get<DependencyType>("tag");
 
  ```CSharp
 // to Get scoped dependencies we first have to create a scope
-var scope = Container.CreateScope();
+// scope implements IDisposable interface as container does
+// that's why it is advised to instantiate it with 'using' keyword
+// or rememeber to call .Dispose() when it is no longed needed
+using var scope = Container.CreateScope();
 // scope is able to Get all kinds of dependencies
 // it is performed the same way as with Container
 var dependency = scope.Get<DependencyType>();
