@@ -1,4 +1,5 @@
 ﻿using DI_Lite.Attributes;
+using System;
 
 namespace Unit_Tests.Models
 {
@@ -83,5 +84,38 @@ namespace Unit_Tests.Models
         }
 
         public void DoSomething() { }
+    }
+
+    public class DisposableDependency : IMockDependency, IDisposable
+    {
+        private readonly Action _onDispose;
+
+        public DisposableDependency(Action onDispose)
+        {
+            _onDispose = onDispose;
+        }
+
+        public IMockDependency Inner => throw new NotImplementedException();
+
+        public void DoSomething() { }
+
+        public void Dispose()
+        {
+            _onDispose();
+        }
+
+        // Method had been implemented that way in purpose to 
+        // make sure that containers work based on reference equality
+        public override bool Equals(object obj)
+        {
+            return true;
+        }
+
+        // Method had been implemented that way in purpose to 
+        // make sure that containers work based on reference equality
+        public override int GetHashCode()
+        {
+            return 0;
+        }
     }
 }

@@ -12,8 +12,8 @@ namespace DI_Lite.Dependencies
         protected override Dependency<ReferenceType> CreateDependency()
             => new Scoped<ReferenceType>(Creator);
 
-        public IDependency ToSingleton()
-            => AsScopedDependency().ToSingleton();
+        public IDependency ToScopedSingleton()
+            => AsScopedDependency().ToScopedSingleton();
 
         private IScopedDependency AsScopedDependency()
             => (IScopedDependency)_dependency;

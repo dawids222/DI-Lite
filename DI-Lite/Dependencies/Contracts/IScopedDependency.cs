@@ -2,6 +2,6 @@
 {
     public interface IScopedDependency : IDependency
     {
-        IDependency ToSingleton();
+        IDependency ToScopedSingleton();
     }
 }

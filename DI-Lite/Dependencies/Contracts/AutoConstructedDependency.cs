@@ -1,4 +1,5 @@
 ﻿using DI_Lite.Dependencies.Models;
+using DI_Lite.Enums;
 using DI_Lite.Utils;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace DI_Lite.Dependencies.Contracts
         : Dependency<RefType>, IAutoConstructedDependency
         where ConType : class, RefType
     {
+        public override DependencyType DependencyType => _dependency.DependencyType;
+
         internal static Type ConcreteType => typeof(ConType);
 
         protected readonly AutoConstructor<RefType, ConType> _constructor;

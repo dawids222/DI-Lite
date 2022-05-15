@@ -9,10 +9,11 @@ using System.Linq;
 
 namespace DI_Lite
 {
-    public class Container : IDependencyProvider
+    public class Container : DependencyProvider
     {
-        private readonly Dictionary<DependencyKey, IDependency> _dependencies = new();
         public IEnumerable<KeyValuePair<DependencyKey, IDependency>> Dependencies { get => _dependencies; }
+
+        public Container() : base(new Dictionary<DependencyKey, IDependency>()) { }
 
         #region SINGLE
         public void Single<ReferenceType>(ReferenceType instance)
@@ -462,49 +463,20 @@ namespace DI_Lite
             _dependencies.Remove(key);
         }
         #endregion
-        #region GET
-        public ReferenceType Get<ReferenceType>(object tag = null)
-        {
-            return (ReferenceType)Get(typeof(ReferenceType), tag);
-        }
-
-        public object Get(Type referenceType, object tag = null)
-        {
-            var key = new DependencyKey(referenceType, tag);
-            if (!_dependencies.ContainsKey(key))
-            {
-                throw new DependencyNotRegisteredException(key);
-            }
-            var dependency = _dependencies[key];
-            return dependency.Get(this);
-        }
-        #endregion
-        #region CONTAINS
-        public bool Contains<T>(object tag = null)
-        {
-            return Contains(typeof(T), tag);
-        }
-
-        public bool Contains(Type referenceType, object tag = null)
-        {
-            var key = new DependencyKey(referenceType, tag);
-            return _dependencies.ContainsKey(key);
-        }
-        #endregion
         #region SCOPE
         public ScopedContainer CreateScope()
         {
             var dependencies = _dependencies
                 .Select(ReferenceTypeToScopeDependency)
                 .ToDictionary(x => x.Key, x => x.Value);
-            return new ScopedContainer(dependencies);
+            return new ScopedContainer(dependencies, this);
         }
 
         private KeyValuePair<DependencyKey, IDependency> ReferenceTypeToScopeDependency(KeyValuePair<DependencyKey, IDependency> dependency)
         {
             if (dependency.Value is IScopedDependency scopedDependency)
             {
-                return new KeyValuePair<DependencyKey, IDependency>(dependency.Key, scopedDependency.ToSingleton());
+                return new KeyValuePair<DependencyKey, IDependency>(dependency.Key, scopedDependency.ToScopedSingleton());
             }
             return dependency;
         }
@@ -529,10 +501,9 @@ namespace DI_Lite
         }
         #endregion
         #region UTIL
-        internal bool Contains(Type refecenceType)
+        internal void AddDisposable(IDisposable disposable)
         {
-            var key = new DependencyKey(refecenceType, null);
-            return _dependencies.ContainsKey(key);
+            _disposables.Add(disposable);
         }
 
         private static Func<IDependencyProvider, ReferenceType> ToProviderCreator<ReferenceType>(Func<ReferenceType> creator)

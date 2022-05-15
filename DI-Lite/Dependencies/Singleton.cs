@@ -1,10 +1,13 @@
 ﻿using DI_Lite.Dependencies.Contracts;
+using DI_Lite.Enums;
 using System;
 
 namespace DI_Lite.Dependencies
 {
     public class Singleton<ReferenceType> : Dependency<ReferenceType>
     {
+        public override DependencyType DependencyType => DependencyType.SINGLETON;
+
         private ReferenceType Instance { get; set; }
         private bool IsInitialized { get; set; } = false;
 

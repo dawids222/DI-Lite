@@ -1,44 +1,26 @@
 ﻿using DI_Lite.Dependencies.Contracts;
-using DI_Lite.Exceptions;
 using System;
 using System.Collections.Generic;
 
 namespace DI_Lite
 {
-    public class ScopedContainer : IDependencyProvider
+    public class ScopedContainer : DependencyProvider
     {
-        private readonly Dictionary<DependencyKey, IDependency> _dependencies;
+        private readonly Container _parent;
 
-        internal ScopedContainer(Dictionary<DependencyKey, IDependency> dependencies)
+        internal ScopedContainer(
+            Dictionary<DependencyKey, IDependency> dependencies,
+            Container parent)
+            : base(dependencies)
         {
-            _dependencies = dependencies;
+            _parent = parent;
         }
 
-        public ReferenceType Get<ReferenceType>(object tag = null)
+        protected override void OnGetIDisposable(IDisposable disposable, IDependency dependency)
         {
-            return (ReferenceType)Get(typeof(ReferenceType), tag);
-        }
-
-        public object Get(Type referenceType, object tag = null)
-        {
-            var key = new DependencyKey(referenceType, tag);
-            if (!_dependencies.ContainsKey(key))
-            {
-                throw new DependencyNotRegisteredException(key);
-            }
-            var dependency = _dependencies[key];
-            return dependency.Get(this);
-        }
-
-        public bool Contains<T>(object tag = null)
-        {
-            return Contains(typeof(T), tag);
-        }
-
-        public bool Contains(Type referenceType, object tag = null)
-        {
-            var key = new DependencyKey(referenceType, tag);
-            return _dependencies.ContainsKey(key);
+            var isSingleton = dependency.DependencyType == Enums.DependencyType.SINGLETON;
+            if (isSingleton) { _parent.AddDisposable(disposable); }
+            else { base.OnGetIDisposable(disposable, dependency); }
         }
     }
 }
