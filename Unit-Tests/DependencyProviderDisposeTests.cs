@@ -185,5 +185,25 @@ namespace Unit_Tests
 
             Assert.AreEqual(4, value);
         }
+
+        [TestMethod]
+        public void Dispose_IDependencyProvider_DoesNotDispose()
+        {
+            var value = 0;
+            var incrementValue = () => { value++; };
+            Container.Single(1, provider => provider);
+            Container.Factory(2, provider => provider);
+            Container.Scoped(3, provider => provider);
+
+            using (var provider = GetDependencyProvider())
+            {
+                provider.Get<IDependencyProvider>(1);
+                provider.Get<IDependencyProvider>(2);
+                if (provider is ScopedContainer)
+                    provider.Get<IDependencyProvider>(3);
+            }
+
+            Assert.AreEqual(0, value);
+        }
     }
 }

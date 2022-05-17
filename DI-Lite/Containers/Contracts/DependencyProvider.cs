@@ -33,7 +33,7 @@ namespace DI_Lite
             var dependency = _dependencies[key];
             var result = dependency.Get(this);
 
-            if (result is IDisposable disposable)
+            if (result is IDisposable disposable and not IDependencyProvider)
             {
                 OnGetIDisposable(disposable, dependency);
             }
