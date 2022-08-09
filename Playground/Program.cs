@@ -1,7 +1,6 @@
-﻿using DI_Lite;
-using System;
+﻿using System;
 
-namespace Playground
+namespace LibLite.DI.Lite.Playground
 {
     class Program
     {

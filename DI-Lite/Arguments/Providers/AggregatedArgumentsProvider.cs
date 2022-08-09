@@ -1,10 +1,10 @@
-﻿using DI_Lite.Arguments.Attributes;
-using DI_Lite.Arguments.Contracts;
-using DI_Lite.Arguments.Models;
+﻿using LibLite.DI.Lite.Arguments.Attributes;
+using LibLite.DI.Lite.Arguments.Contracts;
+using LibLite.DI.Lite.Arguments.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DI_Lite.Arguments.Providers
+namespace LibLite.DI.Lite.Arguments.Providers
 {
     public class AggregatedArgumentsProvider : ArgumentsProvider
     {

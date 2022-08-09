@@ -1,4 +1,4 @@
-﻿namespace DI_Lite.Enums
+﻿namespace LibLite.DI.Lite.Enums
 {
     public enum DependencyType
     {

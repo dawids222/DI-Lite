@@ -1,9 +1,9 @@
-﻿using DI_Lite.Dependencies.Contracts;
-using DI_Lite.Exceptions;
+﻿using LibLite.DI.Lite.Dependencies.Contracts;
+using LibLite.DI.Lite.Exceptions;
 using System;
 using System.Collections.Generic;
 
-namespace DI_Lite
+namespace LibLite.DI.Lite
 {
     public abstract class DependencyProvider : IDependencyProvider, IDisposable
     {

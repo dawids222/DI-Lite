@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DI_Lite.Arguments.Contracts
+namespace LibLite.DI.Lite.Arguments.Contracts
 {
     public interface IDelegateInvoker
     {

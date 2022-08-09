@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DI_Lite
+namespace LibLite.DI.Lite
 {
     public interface IDependencyProvider
     {

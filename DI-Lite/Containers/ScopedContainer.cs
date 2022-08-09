@@ -1,8 +1,8 @@
-﻿using DI_Lite.Dependencies.Contracts;
+﻿using LibLite.DI.Lite.Dependencies.Contracts;
 using System;
 using System.Collections.Generic;
 
-namespace DI_Lite
+namespace LibLite.DI.Lite
 {
     public class ScopedContainer : DependencyProvider
     {

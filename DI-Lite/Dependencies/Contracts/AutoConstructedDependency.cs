@@ -1,11 +1,11 @@
-﻿using DI_Lite.Dependencies.Models;
-using DI_Lite.Enums;
-using DI_Lite.Utils;
+﻿using LibLite.DI.Lite.Dependencies.Models;
+using LibLite.DI.Lite.Enums;
+using LibLite.DI.Lite.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DI_Lite.Dependencies.Contracts
+namespace LibLite.DI.Lite.Dependencies.Contracts
 {
     internal abstract class AutoConstructedDependency<RefType, ConType>
         : Dependency<RefType>, IAutoConstructedDependency

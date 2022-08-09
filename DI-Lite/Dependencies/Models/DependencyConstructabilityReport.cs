@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DI_Lite.Dependencies.Models
+namespace LibLite.DI.Lite.Dependencies.Models
 {
     public class DependencyConstructabilityReport
     {

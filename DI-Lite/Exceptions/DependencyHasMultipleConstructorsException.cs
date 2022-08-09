@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DI_Lite.Exceptions
+namespace LibLite.DI.Lite.Exceptions
 {
     public class DependencyHasMultipleConstructorsException : Exception
     {

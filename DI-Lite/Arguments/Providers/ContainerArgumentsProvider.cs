@@ -1,9 +1,9 @@
-﻿using DI_Lite.Arguments.Contracts;
-using DI_Lite.Arguments.Models;
-using DI_Lite.Attributes;
+﻿using LibLite.DI.Lite.Arguments.Contracts;
+using LibLite.DI.Lite.Arguments.Models;
+using LibLite.DI.Lite.Attributes;
 using System.Linq;
 
-namespace DI_Lite.Arguments.Providers
+namespace LibLite.DI.Lite.Arguments.Providers
 {
     public class ContainerArgumentsProvider : ArgumentsProvider
     {

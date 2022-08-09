@@ -1,13 +1,13 @@
-﻿using DI_Lite.Dependencies;
-using DI_Lite.Dependencies.Contracts;
-using DI_Lite.Dependencies.Models;
-using DI_Lite.Exceptions;
-using DI_Lite.Utils;
+﻿using LibLite.DI.Lite.Dependencies;
+using LibLite.DI.Lite.Dependencies.Contracts;
+using LibLite.DI.Lite.Dependencies.Models;
+using LibLite.DI.Lite.Exceptions;
+using LibLite.DI.Lite.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DI_Lite
+namespace LibLite.DI.Lite
 {
     public class Container : DependencyProvider
     {

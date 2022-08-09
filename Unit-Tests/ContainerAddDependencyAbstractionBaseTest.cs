@@ -1,8 +1,7 @@
-﻿using DI_Lite;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Unit_Tests
+namespace LibLite.DI.Lite.Tests
 {
     [TestClass]
     public abstract class ContainerAddDependencyAbstractionBaseTest : ContainerBaseTest

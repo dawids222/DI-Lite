@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace DI_Lite.Extensions
+namespace LibLite.DI.Lite.Extensions
 {
     internal static class DelegateExtensions
     {

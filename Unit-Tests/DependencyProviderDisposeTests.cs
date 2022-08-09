@@ -1,8 +1,8 @@
-﻿using DI_Lite;
+﻿using LibLite.DI.Lite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unit_Tests.Models;
+using LibLite.DI.Lite.Tests.Models;
 
-namespace Unit_Tests
+namespace LibLite.DI.Lite.Tests
 {
     [TestClass]
     public class ContainerDisposeTests : DependencyProviderDisposeTestsBase

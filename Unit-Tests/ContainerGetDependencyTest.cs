@@ -1,10 +1,10 @@
-﻿using DI_Lite;
-using DI_Lite.Exceptions;
+﻿using LibLite.DI.Lite;
+using LibLite.DI.Lite.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Unit_Tests.Models;
+using LibLite.DI.Lite.Tests.Models;
 
-namespace Unit_Tests
+namespace LibLite.DI.Lite.Tests
 {
     [TestClass]
     public class ContainerGetSingleTest : ContainerGetDependencyBaseTest

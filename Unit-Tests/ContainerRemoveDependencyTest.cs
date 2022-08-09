@@ -1,8 +1,8 @@
-﻿using DI_Lite;
+﻿using LibLite.DI.Lite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace Unit_Tests
+namespace LibLite.DI.Lite.Tests
 {
     [TestClass]
     public class ContainerRemoveDependencyTest

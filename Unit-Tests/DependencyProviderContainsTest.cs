@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Unit_Tests
+namespace LibLite.DI.Lite.Tests
 {
     [TestClass]
     public class ContainerContainsGenericTest : DependencyProviderContainsTestBase

@@ -1,13 +1,13 @@
-﻿using DI_Lite.Arguments.Attributes;
-using DI_Lite.Arguments.Contracts;
-using DI_Lite.Arguments.Models;
-using DI_Lite.Arguments.Providers;
+﻿using LibLite.DI.Lite.Arguments.Attributes;
+using LibLite.DI.Lite.Arguments.Contracts;
+using LibLite.DI.Lite.Arguments.Models;
+using LibLite.DI.Lite.Arguments.Providers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Linq;
 
-namespace Unit_Tests.Arguments
+namespace LibLite.DI.Lite.Tests.Arguments
 {
     [TestClass]
     public class AggregatedArgumentsProviderGetTests : AggregatedArgumentsProviderTestsBase

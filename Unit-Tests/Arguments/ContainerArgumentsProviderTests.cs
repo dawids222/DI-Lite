@@ -1,12 +1,12 @@
-﻿using DI_Lite;
-using DI_Lite.Arguments.Models;
-using DI_Lite.Arguments.Providers;
-using DI_Lite.Attributes;
+﻿using LibLite.DI.Lite;
+using LibLite.DI.Lite.Arguments.Models;
+using LibLite.DI.Lite.Arguments.Providers;
+using LibLite.DI.Lite.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 
-namespace Unit_Tests.Arguments
+namespace LibLite.DI.Lite.Tests.Arguments
 {
     [TestClass]
     public class ContainerArgumentsProviderGetTests : ContainerArgumentsProviderTestsBase

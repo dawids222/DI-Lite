@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DI_Lite.Attributes
+namespace LibLite.DI.Lite.Attributes
 {
     [AttributeUsage(AttributeTargets.Parameter)]
     public class WithTagAttribute : Attribute

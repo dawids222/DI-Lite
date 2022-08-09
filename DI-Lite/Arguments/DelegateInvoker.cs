@@ -1,11 +1,11 @@
-﻿using DI_Lite.Arguments.Contracts;
-using DI_Lite.Arguments.Models;
-using DI_Lite.Extensions;
+﻿using LibLite.DI.Lite.Arguments.Contracts;
+using LibLite.DI.Lite.Arguments.Models;
+using LibLite.DI.Lite.Extensions;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DI_Lite.Arguments
+namespace LibLite.DI.Lite.Arguments
 {
     public class DelegateInvoker : IDelegateInvoker
     {

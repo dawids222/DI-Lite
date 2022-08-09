@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DI-Lite\DI-Lite.csproj" />
+    <ProjectReference Include="..\DI-Lite\LibLite.DI.Lite.csproj" />
   </ItemGroup>
 
 </Project>

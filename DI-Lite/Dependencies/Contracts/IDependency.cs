@@ -1,6 +1,6 @@
-﻿using DI_Lite.Enums;
+﻿using LibLite.DI.Lite.Enums;
 
-namespace DI_Lite.Dependencies.Contracts
+namespace LibLite.DI.Lite.Dependencies.Contracts
 {
     public interface IDependency
     {

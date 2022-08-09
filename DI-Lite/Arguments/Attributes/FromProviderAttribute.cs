@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DI_Lite.Arguments.Attributes
+namespace LibLite.DI.Lite.Arguments.Attributes
 {
     [AttributeUsage(AttributeTargets.Parameter)]
     public class FromProviderAttribute : Attribute

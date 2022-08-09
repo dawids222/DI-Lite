@@ -1,11 +1,11 @@
-﻿using DI_Lite.Arguments.Models;
-using DI_Lite.Arguments.Providers;
+﻿using LibLite.DI.Lite.Arguments.Models;
+using LibLite.DI.Lite.Arguments.Providers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Unit_Tests.Arguments
+namespace LibLite.DI.Lite.Tests.Arguments
 {
     [TestClass]
     public class DictionaryArgumentsProviderGetTests : DictionaryArgumentsProviderTestsBase

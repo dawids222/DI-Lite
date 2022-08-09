@@ -1,7 +1,7 @@
-﻿using DI_Lite.Arguments.Models;
+﻿using LibLite.DI.Lite.Arguments.Models;
 using System;
 
-namespace Unit_Tests.Arguments
+namespace LibLite.DI.Lite.Tests.Arguments
 {
     public abstract class ArgumentsTestsBase
     {

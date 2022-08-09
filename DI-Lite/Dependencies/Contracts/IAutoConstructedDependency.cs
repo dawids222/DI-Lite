@@ -1,6 +1,6 @@
-﻿using DI_Lite.Dependencies.Models;
+﻿using LibLite.DI.Lite.Dependencies.Models;
 
-namespace DI_Lite.Dependencies.Contracts
+namespace LibLite.DI.Lite.Dependencies.Contracts
 {
     internal interface IAutoConstructedDependency : IDependency
     {

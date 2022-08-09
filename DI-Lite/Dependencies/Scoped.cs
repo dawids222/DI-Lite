@@ -1,9 +1,9 @@
-﻿using DI_Lite.Dependencies.Contracts;
-using DI_Lite.Enums;
-using DI_Lite.Exceptions;
+﻿using LibLite.DI.Lite.Dependencies.Contracts;
+using LibLite.DI.Lite.Enums;
+using LibLite.DI.Lite.Exceptions;
 using System;
 
-namespace DI_Lite.Dependencies
+namespace LibLite.DI.Lite.Dependencies
 {
     public class Scoped<ReferenceType> : Dependency<ReferenceType>, IScopedDependency
     {

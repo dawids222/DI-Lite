@@ -1,7 +1,7 @@
-﻿using DI_Lite.Enums;
+﻿using LibLite.DI.Lite.Enums;
 using System;
 
-namespace DI_Lite.Dependencies
+namespace LibLite.DI.Lite.Dependencies
 {
     public class ScopedSingleton<ReferenceType> : Singleton<ReferenceType>
     {

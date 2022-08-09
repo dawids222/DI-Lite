@@ -1,9 +1,9 @@
-﻿using DI_Lite.Dependencies.Models;
+﻿using LibLite.DI.Lite.Dependencies.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DI_Lite.Exceptions
+namespace LibLite.DI.Lite.Exceptions
 {
     public class ContainerNotConstructableException : Exception
     {

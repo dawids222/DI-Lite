@@ -1,4 +1,4 @@
-﻿namespace DI_Lite.Dependencies.Contracts
+﻿namespace LibLite.DI.Lite.Dependencies.Contracts
 {
     public interface IScopedDependency : IDependency
     {

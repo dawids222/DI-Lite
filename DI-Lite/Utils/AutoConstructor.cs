@@ -1,10 +1,10 @@
-﻿using DI_Lite.Exceptions;
+﻿using LibLite.DI.Lite.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DI_Lite.Utils
+namespace LibLite.DI.Lite.Utils
 {
     internal class AutoConstructor<ReferenceType, ConcreteType>
         where ConcreteType : class, ReferenceType

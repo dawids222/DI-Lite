@@ -1,7 +1,7 @@
-﻿using DI_Lite.Attributes;
+﻿using LibLite.DI.Lite.Attributes;
 using System;
 
-namespace Unit_Tests.Models
+namespace LibLite.DI.Lite.Tests.Models
 {
     public interface IMockDependency
     {

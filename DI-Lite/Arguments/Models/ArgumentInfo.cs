@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DI_Lite.Arguments.Models
+namespace LibLite.DI.Lite.Arguments.Models
 {
     public class ArgumentInfo
     {

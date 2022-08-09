@@ -1,7 +1,7 @@
-﻿using DI_Lite.Enums;
+﻿using LibLite.DI.Lite.Enums;
 using System;
 
-namespace DI_Lite.Dependencies.Contracts
+namespace LibLite.DI.Lite.Dependencies.Contracts
 {
     public abstract class Dependency<RefType> : IDependency
     {

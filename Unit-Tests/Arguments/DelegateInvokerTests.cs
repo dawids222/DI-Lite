@@ -1,12 +1,12 @@
-﻿using DI_Lite.Arguments;
-using DI_Lite.Arguments.Contracts;
-using DI_Lite.Arguments.Models;
+﻿using LibLite.DI.Lite.Arguments;
+using LibLite.DI.Lite.Arguments.Contracts;
+using LibLite.DI.Lite.Arguments.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Threading.Tasks;
 
-namespace Unit_Tests.Arguments
+namespace LibLite.DI.Lite.Tests.Arguments
 {
     [TestClass]
     public class DelegateInvokerTests : ArgumentsTestsBase

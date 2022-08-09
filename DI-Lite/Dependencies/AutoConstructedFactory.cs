@@ -1,7 +1,7 @@
-﻿using DI_Lite.Dependencies.Contracts;
-using DI_Lite.Utils;
+﻿using LibLite.DI.Lite.Dependencies.Contracts;
+using LibLite.DI.Lite.Utils;
 
-namespace DI_Lite.Dependencies
+namespace LibLite.DI.Lite.Dependencies
 {
     internal class AutoConstructedFactory<ReferenceType, ConcreteType>
         : AutoConstructedDependency<ReferenceType, ConcreteType>

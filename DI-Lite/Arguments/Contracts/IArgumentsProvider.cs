@@ -1,6 +1,6 @@
-﻿using DI_Lite.Arguments.Models;
+﻿using LibLite.DI.Lite.Arguments.Models;
 
-namespace DI_Lite.Arguments.Contracts
+namespace LibLite.DI.Lite.Arguments.Contracts
 {
     public interface IArgumentsProvider
     {

@@ -1,9 +1,9 @@
-﻿using DI_Lite.Attributes;
+﻿using LibLite.DI.Lite.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace DI_Lite
+namespace LibLite.DI.Lite
 {
     public class DependencyKey
     {
