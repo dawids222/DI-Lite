@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibLite.DI.Lite.Attributes;
+using System;
 
 namespace LibLite.DI.Lite.Exceptions
 {
@@ -7,7 +8,7 @@ namespace LibLite.DI.Lite.Exceptions
         public Type Type { get; }
 
         public DependencyHasMultipleConstructorsException(Type type)
-            : base($"Dependency of type {type.FullName} can not be automatically registered, because it contains multiple public constructors. Dependecy types created automatically must contain exactly 1 public constructor")
+            : base($"Dependency of type {type.FullName} can not be automatically registered, because it contains multiple public constructors. Dependecy types created automatically must contain exactly 1 public constructor or have 1 decorated with '${nameof(UseConstructorAttribute)}'.")
         {
             Type = type;
         }

@@ -10,18 +10,17 @@ namespace LibLite.DI.Lite.Utils
         where ConcreteType : class, ReferenceType
     {
         public Func<IDependencyProvider, ReferenceType> Creator { get; }
-        public IEnumerable<DependencyKey> Parameters { get; private set; }
+        public IEnumerable<DependencyKey> Parameters { get; }
 
         public AutoConstructor()
         {
+            Parameters = GetConstructorParameters();
             Creator = InitializeCreator();
         }
 
         private Func<IDependencyProvider, ReferenceType> InitializeCreator()
         {
             var concreteType = typeof(ConcreteType);
-            Parameters = GetConstructorParameters();
-
             return (provider) =>
             {
                 var args = GetConstructorArguments(Parameters, provider);
@@ -59,18 +58,22 @@ namespace LibLite.DI.Lite.Utils
             var constructor = GetConstructor();
             return constructor
                 .GetParameters()
-                .Select(x => new DependencyKey(x));
+                .Select(x => new DependencyKey(x))
+                .ToList();
         }
 
         private static ConstructorInfo GetConstructor()
         {
             var concreteType = typeof(ConcreteType);
-            var constructors = concreteType.GetConstructors();
-            if (constructors.Length == 0)
-                throw new DependencyHasNoConstructorException(concreteType);
-            if (constructors.Length > 1)
-                throw new DependencyHasMultipleConstructorsException(concreteType);
-            return constructors.First();
+            var constructors = new AutoConstructorsInfo(concreteType);
+            return constructors switch
+            {
+                { Total: 0 } => throw new DependencyHasNoConstructorException(concreteType),
+                { Total: > 1, Decorated: 0 } => throw new DependencyHasMultipleConstructorsException(concreteType),
+                { Total: > 1, Decorated: > 1 } => throw new DependencyHasMultipleUseConstructorAttributesException(concreteType),
+                { Total: > 1, Decorated: 1 } => constructors.FirstDecorated(),
+                _ => constructors.First(),
+            };
         }
     }
 }

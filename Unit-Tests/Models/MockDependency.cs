@@ -1,4 +1,5 @@
 ﻿using LibLite.DI.Lite.Attributes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace LibLite.DI.Lite.Tests.Models
@@ -49,6 +50,22 @@ namespace LibLite.DI.Lite.Tests.Models
         public void DoSomething() { }
     }
 
+    public class ValidUseConstructorMockDependency : IMockDependency
+    {
+        public IMockDependency Inner { get; }
+
+        public void DoSomething() { }
+
+        [UseConstructor]
+        public ValidUseConstructorMockDependency() { }
+
+        public ValidUseConstructorMockDependency(IMockDependency inner = null)
+        {
+            Inner = inner;
+            Assert.Fail();
+        }
+    }
+
     public class InvalidMockDependency : IMockDependency
     {
         public IMockDependency Inner { get; }
@@ -56,6 +73,22 @@ namespace LibLite.DI.Lite.Tests.Models
         public InvalidMockDependency() { }
 
         public InvalidMockDependency(IMockDependency inner = null)
+        {
+            Inner = inner;
+        }
+
+        public void DoSomething() { }
+    }
+
+    public class InvalidUseConstructorMockDependency : IMockDependency
+    {
+        public IMockDependency Inner { get; }
+
+        [UseConstructor]
+        public InvalidUseConstructorMockDependency() { }
+
+        [UseConstructor]
+        public InvalidUseConstructorMockDependency(IMockDependency inner = null)
         {
             Inner = inner;
         }

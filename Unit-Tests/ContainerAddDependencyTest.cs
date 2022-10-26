@@ -1,9 +1,8 @@
-﻿using LibLite.DI.Lite;
-using LibLite.DI.Lite.Exceptions;
+﻿using LibLite.DI.Lite.Exceptions;
+using LibLite.DI.Lite.Tests.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using LibLite.DI.Lite.Tests.Models;
 
 namespace LibLite.DI.Lite.Tests
 {
@@ -351,6 +350,14 @@ namespace LibLite.DI.Lite.Tests
         }
 
         [TestMethod]
+        public void AddsAutoConstructingDependencyWithUseConstructor()
+        {
+            AddAutoConstructingDependency<ValidUseConstructorMockDependency>();
+
+            Assert.AreEqual(1, Container.Dependencies.Count());
+        }
+
+        [TestMethod]
         public void AddsAutoConstructingDependencyWithDefaultKey()
         {
             AddDependency<IMockDependency>(() => new ValidMockDependency());
@@ -382,6 +389,13 @@ namespace LibLite.DI.Lite.Tests
         public void ThrowsDependencyHasNoConstructorExceptionWhileAutoConstructing()
         {
             AddAutoConstructingDependency<InvalidPrivateConstructorMockDependency>();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DependencyHasMultipleUseConstructorAttributesException))]
+        public void ThrowsDependencyHasMultipleUseConstructorAttributesExceptionWhileAutoConstructing()
+        {
+            AddAutoConstructingDependency<InvalidUseConstructorMockDependency>();
         }
     }
 }
